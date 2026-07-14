@@ -124,6 +124,24 @@
             gap: 12px;
             z-index: 10;
         }
+
+        .photo-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+        }
+        .photo-thumb:hover {
+            border-color: #2b3a8c;
+        }
+        
+        .photo-modal-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
@@ -431,7 +449,7 @@
                         <div>
                             <p class="text-slate-500 text-sm font-medium">Manajemen peminjaman tools R&D.</p>
                         </div>
-                        <button onclick="openModal('borrowing')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                        <button onclick="openModal('borrowing')" id="btnPinjamTool" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
                             <i class="ph-bold ph-handshake text-base"></i> Pinjam Tool
                         </button>
                     </div>
@@ -445,15 +463,17 @@
                                         <th class="p-4">Nama Tool</th>
                                         <th class="p-4">Nama Peminjam</th>
                                         <th class="p-4">Departemen</th>
+                                        <th class="p-4">Foto Pinjam</th>
                                         <th class="p-4">Tanggal Pinjam</th>
                                         <th class="p-4">Tanggal Kembali</th>
                                         <th class="p-4">Status</th>
+                                        <th class="p-4">Foto Kembali</th>
                                         <th class="p-4 w-32 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="borrowingsTableBody" class="text-sm divide-y divide-slate-100">
                                     <tr>
-                                        <td colspan="8" class="p-16 text-center">
+                                        <td colspan="10" class="p-16 text-center">
                                             <div class="flex flex-col items-center justify-center gap-4">
                                                 <div class="loader"></div>
                                                 <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
@@ -763,11 +783,6 @@
                         <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Pinjam <span class="text-brand-red">*</span></label>
                         <input type="date" id="b_tanggal_pinjam" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Kembali (diisi saat pengembalian)</label>
-                        <input type="date" id="b_tanggal_kembali" class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 font-medium" readonly disabled>
-                    </div>
                 </form>
             </div>
             
@@ -843,6 +858,16 @@
                     <i class="ph-duotone ph-floppy-disk text-base"></i> Kembalikan
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHOTO VIEWER -->
+    <div id="photoModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4 z-[100] opacity-0 transition-opacity duration-300" onclick="closePhotoModal()">
+        <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
+            <button onclick="closePhotoModal()" class="absolute -top-12 right-0 text-white hover:text-slate-300 p-2">
+                <i class="ph-bold ph-x text-3xl"></i>
+            </button>
+            <img id="photoModalImg" class="photo-modal-img w-full object-contain" src="" alt="Foto">
         </div>
     </div>
 
@@ -970,6 +995,30 @@
             }
             closeConfirm();
         });
+
+        // ========================================================================
+        // PHOTO VIEWER
+        // ========================================================================
+        function openPhotoModal(src) {
+            const modal = document.getElementById('photoModal');
+            const img = document.getElementById('photoModalImg');
+            img.src = src;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closePhotoModal() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.getElementById('photoModalImg').src = '';
+            }, 300);
+        }
 
         // ========================================================================
         // LOGIN
@@ -1905,7 +1954,7 @@
         // ========================================================================
         async function fetchBorrowings() {
             const tbody = document.getElementById('borrowingsTableBody');
-            tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
             
             try {
                 const response = await fetch(APPS_SCRIPT_URL + '?sheet=Borrowings');
@@ -1915,11 +1964,11 @@
                     borrowingsData = result.data;
                     renderBorrowingsTable(borrowingsData);
                 } else {
-                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
                     showToast("Gagal memuat data: " + result.message, "error");
                 }
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
                 showToast("Kesalahan jaringan.", "error");
             }
         }
@@ -1929,7 +1978,7 @@
             tbody.innerHTML = '';
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada peminjaman. Klik "Pinjam Tool".</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada peminjaman. Klik "Pinjam Tool".</td></tr>`;
                 return;
             }
 
@@ -1970,6 +2019,18 @@
                     }
                 } catch(e) {}
 
+                // Foto Pinjam
+                const fotoPinjam = item['Foto Pinjam'] || '';
+                const fotoPinjamHTML = fotoPinjam ? 
+                    `<img src="${fotoPinjam}" class="photo-thumb" onclick="openPhotoModal('${fotoPinjam}')" title="Klik untuk perbesar">` : 
+                    `<span class="text-slate-300 text-xs">-</span>`;
+
+                // Foto Kembali
+                const fotoKembali = item['Foto Kembali'] || '';
+                const fotoKembaliHTML = fotoKembali ? 
+                    `<img src="${fotoKembali}" class="photo-thumb" onclick="openPhotoModal('${fotoKembali}')" title="Klik untuk perbesar">` : 
+                    `<span class="text-slate-300 text-xs">-</span>`;
+
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
@@ -1978,9 +2039,11 @@
                     <td class="p-4 font-extrabold text-slate-900">${item['Nama Tool'] || '-'}</td>
                     <td class="p-4 text-slate-600 font-medium">${item['Nama Peminjam'] || '-'}</td>
                     <td class="p-4 text-slate-600 font-medium">${item['Departemen'] || '-'}</td>
+                    <td class="p-4 text-center">${fotoPinjamHTML}</td>
                     <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tglPinjam}</td>
                     <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tglKembali}</td>
                     <td class="p-4"><span class="status-badge ${statusClass}">${statusDisplay}</span></td>
+                    <td class="p-4 text-center">${fotoKembaliHTML}</td>
                     <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
                         <div class="flex items-center justify-center gap-1">
                             ${status === 'Dipinjam' ? `
@@ -2000,6 +2063,9 @@
             });
         }
 
+        // ========================================================================
+        // BORROWING FUNCTIONS
+        // ========================================================================
         async function openBorrowingModal() {
             // Load tools for dropdown
             await fetchToolsForDropdown();
@@ -2064,7 +2130,6 @@
             }
 
             const id = document.getElementById('b_id').value;
-            const isEdit = id !== '';
             
             // Check if photo is taken
             const fotoPinjam = document.getElementById('b_foto_pinjam').value;
@@ -2080,12 +2145,14 @@
 
             const toolId = document.getElementById('b_tool_id').value;
             const toolName = document.getElementById('b_tool_id').selectedOptions[0]?.textContent || '';
+            // Clean tool name (remove the count)
+            const cleanToolName = toolName.replace(/\s*\(.*\)\s*$/, '').trim();
             
             const payload = {
                 action: 'add',
                 sheet: 'Borrowings',
                 id: new Date().getTime().toString(),
-                nama_tool: toolName,
+                nama_tool: cleanToolName,
                 nama_peminjam: document.getElementById('b_peminjam').value,
                 departemen: document.getElementById('b_departemen').value,
                 foto_pinjam: fotoPinjam,
@@ -2252,7 +2319,7 @@
             showConfirm("Apakah Anda yakin ingin menghapus data peminjaman ini?", async () => {
                 try {
                     const tbody = document.getElementById('borrowingsTableBody');
-                    tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
 
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',

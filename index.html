@@ -26,10 +26,10 @@
                     },
                     colors: {
                         brand: {
-                            blue: '#2b3a8c', // Biru IMI Logo
-                            darkblue: '#1e2968', // Hover Biru
-                            red: '#e41e26', // Merah IMI Logo
-                            darkred: '#b8171e', // Hover Merah
+                            blue: '#2b3a8c',
+                            darkblue: '#1e2968',
+                            red: '#e41e26',
+                            darkred: '#b8171e',
                         }
                     }
                 }
@@ -57,13 +57,29 @@
         
         /* Transisi halus untuk sidebar */
         .sidebar-transition { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Status Badge Styles */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            display: inline-block;
+        }
+        .status-success { background: #dcfce7; color: #166534; }
+        .status-warning { background: #fef3c7; color: #92400e; }
+        .status-danger { background: #fecaca; color: #991b1b; }
+        .status-info { background: #dbeafe; color: #1e40af; }
+        .status-default { background: #f1f5f9; color: #475569; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCdWiDlJDpUCMlOyKkObm6drUEG-hcDnn3IGlePaKBMj8-0-RB6u8sOK-wW9Bu2rSBVA/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVdZ5b6dMfmK6L7yj0J5h9K0H5CAfE_5-iRSgMuxLv32eObOoyvpkuFVaZ9-JTpG5YuA/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -115,8 +131,7 @@
     <!-- HALAMAN UTAMA (APP SHELL) -->
     <div id="mainApp" class="hidden min-h-screen bg-slate-50 flex">
         
-        <!-- SIDEBAR (Mobile Drawer & Desktop Fixed) -->
-        <!-- Overlay untuk Mobile -->
+        <!-- SIDEBAR -->
         <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
         
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-brand-blue text-white flex flex-col transform -translate-x-full md:translate-x-0 md:relative sidebar-transition shadow-2xl md:shadow-none">
@@ -130,7 +145,6 @@
                         <span class="text-xl font-extrabold tracking-tight block">Rnd <span class="text-brand-red">HUB</span></span>
                     </div>
                 </div>
-                <!-- Tombol tutup untuk mobile -->
                 <button onclick="toggleSidebar()" class="md:hidden text-blue-200 hover:text-white p-1">
                     <i class="ph-bold ph-x text-2xl"></i>
                 </button>
@@ -148,6 +162,11 @@
                 <button onclick="switchMenu('projects')" id="nav-projects" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
                     <i class="ph-duotone ph-folder-open text-xl opacity-70 group-hover:opacity-100 transition"></i>
                     <span class="font-semibold">Daftar Project</span>
+                </button>
+                
+                <button onclick="switchMenu('products')" id="nav-products" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
+                    <i class="ph-duotone ph-package text-xl opacity-70 group-hover:opacity-100 transition"></i>
+                    <span class="font-semibold">Products History</span>
                 </button>
             </div>
 
@@ -172,7 +191,7 @@
         <!-- MAIN CONTENT AREA -->
         <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
             
-            <!-- TOP APP BAR (Khusus Mobile/Desktop Ringan) -->
+            <!-- TOP APP BAR -->
             <header class="bg-white shadow-sm border-b border-slate-200 z-10 px-4 py-4 flex items-center justify-between md:px-8">
                 <div class="flex items-center gap-3">
                     <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-slate-800 p-1 -ml-1 rounded-lg hover:bg-slate-100 transition">
@@ -180,7 +199,6 @@
                     </button>
                     <h1 id="pageTitle" class="text-xl font-bold text-slate-800 tracking-tight">Dashboard</h1>
                 </div>
-                <!-- Teks kosong di kanan atas dihapus sesuai permintaan -->
             </header>
 
             <!-- KONTEN HALAMAN -->
@@ -197,12 +215,12 @@
                         <div>
                             <p class="text-slate-500 text-sm font-medium">Manajemen database pusat Interskala R&D.</p>
                         </div>
-                        <button onclick="openModal()" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                        <button onclick="openModal('project')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
                             <i class="ph-bold ph-plus text-base"></i> Tambah Project
                         </button>
                     </div>
 
-                    <!-- Table Container Modern Card -->
+                    <!-- Table Container -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse min-w-[1000px]">
@@ -219,9 +237,51 @@
                                     </tr>
                                 </thead>
                                 <tbody id="projectsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <!-- Initial Loading State -->
                                     <tr>
                                         <td colspan="8" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Products History -->
+                <div id="view-products" class="hidden max-w-[1400px] mx-auto">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <p class="text-slate-500 text-sm font-medium">Manajemen history produk yang telah diuji.</p>
+                        </div>
+                        <button onclick="openModal('product')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                            <i class="ph-bold ph-plus text-base"></i> Tambah Product
+                        </button>
+                    </div>
+
+                    <!-- Table Container -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[1200px]">
+                                <thead>
+                                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
+                                        <th class="p-4 w-16 text-center">No</th>
+                                        <th class="p-4">No SO/PO</th>
+                                        <th class="p-4">Nama Produk</th>
+                                        <th class="p-4">Customer</th>
+                                        <th class="p-4">Tanggal</th>
+                                        <th class="p-4">Link Video Test</th>
+                                        <th class="p-4">Status</th>
+                                        <th class="p-4">Keterangan</th>
+                                        <th class="p-4 w-24 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody" class="text-sm divide-y divide-slate-100">
+                                    <tr>
+                                        <td colspan="9" class="p-16 text-center">
                                             <div class="flex flex-col items-center justify-center gap-4">
                                                 <div class="loader"></div>
                                                 <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
@@ -238,7 +298,7 @@
         </div>
     </div>
 
-    <!-- Modal Tambah Project (Glassmorphism + Modern) -->
+    <!-- MODAL UNTUK PROJECT -->
     <div id="projectModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalContent">
             <!-- Header Modal -->
@@ -247,9 +307,9 @@
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
                         <i class="ph-duotone ph-file-plus text-xl text-white"></i>
                     </div>
-                    <h3 class="text-xl font-bold tracking-tight">Project Baru</h3>
+                    <h3 class="text-xl font-bold tracking-tight" id="modalTitle">Project Baru</h3>
                 </div>
-                <button onclick="closeModal()" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
+                <button onclick="closeModal('project')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
                     <i class="ph-bold ph-x text-xl"></i>
                 </button>
             </div>
@@ -293,8 +353,80 @@
             
             <!-- Footer Modal -->
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
-                <button onclick="closeModal()" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
-                <button onclick="submitProject()" id="btnSubmit" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
+                <button onclick="closeModal('project')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
+                <button onclick="submitProject()" id="btnSubmitProject" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
+                    <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL UNTUK PRODUCT -->
+    <div id="productModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalProductContent">
+            <!-- Header Modal -->
+            <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                        <i class="ph-duotone ph-package-plus text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Product Baru</h3>
+                </div>
+                <button onclick="closeModal('product')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
+                    <i class="ph-bold ph-x text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Body Modal -->
+            <div class="p-6 overflow-y-auto bg-slate-50/50">
+                <form id="addProductForm" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Produk <span class="text-brand-red">*</span></label>
+                        <input type="text" id="prod_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO <span class="text-brand-red">*</span></label>
+                        <input type="text" id="prod_sopo" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
+                        <input type="text" id="prod_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
+                        <input type="date" id="prod_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Link Video Test</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="ph-duotone ph-video-camera text-base text-slate-400"></i>
+                            </div>
+                            <input type="url" id="prod_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-brand-red">*</span></label>
+                        <select id="prod_status" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                            <option value="">Pilih Status</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Testing">Testing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Failed">Failed</option>
+                            <option value="On Hold">On Hold</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
+                        <textarea id="prod_keterangan" rows="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Footer Modal -->
+            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
+                <button onclick="closeModal('product')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
+                <button onclick="submitProduct()" id="btnSubmitProduct" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
                     <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
                 </button>
             </div>
@@ -307,7 +439,7 @@
             <div class="w-16 h-16 bg-red-50 text-brand-red rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
                 <i class="ph-duotone ph-trash text-[32px]"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Hapus Project?</h3>
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Hapus Data?</h3>
             <p id="confirmMessage" class="text-slate-500 text-sm mb-8 font-medium px-2">Data yang dihapus akan hilang dari Google Sheet dan tidak dapat dikembalikan.</p>
             <div class="flex justify-center gap-3">
                 <button id="btnCancelConfirm" class="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition">Batal</button>
@@ -334,7 +466,6 @@
             if (isSidebarOpen) {
                 sidebar.classList.remove('-translate-x-full');
                 overlay.classList.remove('hidden');
-                // Sedikit delay untuk efek transisi opacity
                 setTimeout(() => overlay.classList.add('opacity-100'), 10);
             } else {
                 sidebar.classList.add('-translate-x-full');
@@ -353,7 +484,6 @@
 
             msgContainer.innerText = message;
             
-            // Konfigurasi warna dan ikon berdasarkan tipe
             let bgClass = "bg-slate-800 border-slate-700";
             if (type === 'success') {
                 bgClass = "bg-emerald-600 border-emerald-500 shadow-emerald-600/20";
@@ -375,8 +505,11 @@
 
         // --- SISTEM CUSTOM CONFIRM ---
         let onConfirmCallback = null;
-        function showConfirm(message, callback) {
+        let confirmType = 'project'; // 'project' or 'product'
+        
+        function showConfirm(message, callback, type = 'project') {
             onConfirmCallback = callback;
+            confirmType = type;
             const confirmModal = document.getElementById('confirmModal');
             const confirmContent = document.getElementById('confirmContent');
             
@@ -408,7 +541,6 @@
             closeConfirm();
         });
 
-
         // --- SISTEM LOGIN SEDERHANA ---
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', (e) => {
@@ -426,14 +558,13 @@
                 }, 300);
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
-                // Animasi getar kecil pada form
                 loginForm.classList.add('animate-pulse');
                 setTimeout(() => loginForm.classList.remove('animate-pulse'), 500);
             }
         });
 
         function logout() {
-            if (isSidebarOpen) toggleSidebar(); // Tutup sidebar mobile saat logout
+            if (isSidebarOpen) toggleSidebar();
             
             document.getElementById('mainApp').classList.add('hidden');
             const loginPage = document.getElementById('loginPage');
@@ -447,57 +578,56 @@
 
         // --- SISTEM NAVIGASI MENU ---
         function switchMenu(menuName) {
-            // Tutup sidebar jika di mobile
             if(window.innerWidth < 768 && isSidebarOpen) {
                 toggleSidebar();
             }
 
-            // Sembunyikan semua view
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-projects').classList.add('hidden');
+            document.getElementById('view-products').classList.add('hidden');
             
-            // Reset state aktif pada tombol navigasi
-            const navButtons = ['nav-dashboard', 'nav-projects'];
+            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products'];
             navButtons.forEach(id => {
                 const btn = document.getElementById(id);
                 btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
                 btn.classList.add('text-blue-100');
             });
 
-            // Aktifkan view terpilih
             document.getElementById(`view-${menuName}`).classList.remove('hidden');
             
-            // Update tombol aktif
             const activeBtn = document.getElementById(`nav-${menuName}`);
             activeBtn.classList.add('bg-white/15', 'text-white', 'shadow-inner');
             activeBtn.classList.remove('text-blue-100');
 
-            // Update Judul Header
             const titles = {
                 'dashboard': 'Dashboard',
-                'projects': 'Daftar Project'
+                'projects': 'Daftar Project',
+                'products': 'Products History'
             };
             document.getElementById('pageTitle').innerText = titles[menuName];
 
-            // Fetch data jika masuk ke halaman projects
             if(menuName === 'projects') {
                 fetchProjects();
+            } else if(menuName === 'products') {
+                fetchProducts();
             }
         }
 
-        // --- SISTEM CRUD (GOOGLE APPS SCRIPT) ---
+        // ========================================================================
+        // --- SISTEM CRUD PROJECT (GOOGLE APPS SCRIPT) ---
+        // ========================================================================
         
-        // Ambil Data
+        // Ambil Data Project
         async function fetchProjects() {
             const tbody = document.getElementById('projectsTableBody');
             tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
             
             try {
-                const response = await fetch(APPS_SCRIPT_URL);
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Projects');
                 const result = await response.json();
                 
                 if (result.status === 'success') {
-                    renderTable(result.data);
+                    renderProjectsTable(result.data);
                 } else {
                     tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
                     showToast("Gagal memuat data: " + result.message, "error");
@@ -508,8 +638,8 @@
             }
         }
 
-        // Tampilkan Data ke Tabel
-        function renderTable(data) {
+        // Tampilkan Data Project ke Tabel
+        function renderProjectsTable(data) {
             const tbody = document.getElementById('projectsTableBody');
             tbody.innerHTML = '';
 
@@ -523,12 +653,13 @@
                     `<a href="${item['Link BOM/BOQ']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-arrow-square-out text-sm"></i> Buka</a>` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
 
-                // Format tanggal rapi
-                let tanggalText = item['Tanggal'];
+                let tanggalText = item['Tanggal'] || '-';
                 try {
-                    if (tanggalText) {
+                    if (tanggalText && tanggalText !== '-') {
                         const dateObj = new Date(tanggalText);
-                        tanggalText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        if (!isNaN(dateObj.getTime())) {
+                            tanggalText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        }
                     }
                 } catch(e) {}
 
@@ -539,9 +670,9 @@
                     <td class="p-4 font-extrabold text-slate-900">${item['Nama Project'] || '-'}</td>
                     <td class="p-4 text-slate-600 font-semibold">${item['No SO/PO'] || '-'}</td>
                     <td class="p-4 text-slate-600 font-medium">${item['Customer'] || '-'}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText || '-'}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText}</td>
                     <td class="p-4">${linkHTML}</td>
-                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan']}">${item['Keterangan'] || '-'}</td>
+                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan'] || ''}">${item['Keterangan'] || '-'}</td>
                     <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
                         <button onclick="deleteProject('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2.5 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
                             <i class="ph-duotone ph-trash text-base"></i>
@@ -552,7 +683,7 @@
             });
         }
 
-        // Tambah Data
+        // Tambah Data Project
         async function submitProject() {
             const form = document.getElementById('addProjectForm');
             if(!form.checkValidity()) {
@@ -560,13 +691,14 @@
                 return;
             }
 
-            const btnSubmit = document.getElementById('btnSubmit');
+            const btnSubmit = document.getElementById('btnSubmitProject');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
             btnSubmit.disabled = true;
 
             const payload = {
                 action: 'add',
+                sheet: 'Projects',
                 nama_project: document.getElementById('p_nama').value,
                 no_so: document.getElementById('p_sopo').value,
                 tanggal: document.getElementById('p_tanggal').value,
@@ -584,9 +716,9 @@
                 const result = await response.json();
                 
                 if (result.status === 'success') {
-                    closeModal();
+                    closeModal('project');
                     showToast("Project baru berhasil disimpan!", "success");
-                    fetchProjects(); // Refresh tabel
+                    fetchProjects();
                 } else {
                     showToast('Gagal menyimpan: ' + result.message, "error");
                 }
@@ -598,17 +730,16 @@
             }
         }
 
-        // Hapus Data
+        // Hapus Data Project
         function deleteProject(id) {
-            showConfirm("Apakah Anda yakin ingin menghapus data ini?", async () => {
+            showConfirm("Apakah Anda yakin ingin menghapus project ini?", async () => {
                 try {
-                    // Tampilkan loading baris
                     const tbody = document.getElementById('projectsTableBody');
                     tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
 
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
-                        body: JSON.stringify({ action: 'delete', id: id }),
+                        body: JSON.stringify({ action: 'delete', sheet: 'Projects', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
@@ -624,31 +755,225 @@
                     showToast('Terjadi kesalahan jaringan.', 'error');
                     fetchProjects();
                 }
+            }, 'project');
+        }
+
+        // ========================================================================
+        // --- SISTEM CRUD PRODUCT (GOOGLE APPS SCRIPT) ---
+        // ========================================================================
+        
+        // Ambil Data Product
+        async function fetchProducts() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Products');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    renderProductsTable(result.data);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        // Tampilkan Data Product ke Tabel
+        function renderProductsTable(data) {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada product terdaftar. Klik "Tambah Product".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const linkHTML = item['Link Video Test'] ? 
+                    `<a href="${item['Link Video Test']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-video-camera text-sm"></i> Tonton</a>` 
+                    : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
+
+                // Status badge
+                const status = item['Status'] || 'Pending';
+                let statusClass = 'status-default';
+                if (status === 'Completed' || status === 'Success') statusClass = 'status-success';
+                else if (status === 'In Progress') statusClass = 'status-warning';
+                else if (status === 'Failed') statusClass = 'status-danger';
+                else if (status === 'Testing') statusClass = 'status-info';
+
+                let tanggalText = item['Tanggal'] || '-';
+                try {
+                    if (tanggalText && tanggalText !== '-') {
+                        const dateObj = new Date(tanggalText);
+                        if (!isNaN(dateObj.getTime())) {
+                            tanggalText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        }
+                    }
+                } catch(e) {}
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 text-slate-600 font-semibold">${item['No SO/PO'] || '-'}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Produk'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Customer'] || '-'}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText}</td>
+                    <td class="p-4">${linkHTML}</td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${status}</span></td>
+                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan'] || ''}">${item['Keterangan'] || '-'}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <button onclick="deleteProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2.5 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                            <i class="ph-duotone ph-trash text-base"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
             });
         }
 
+        // Tambah Data Product
+        async function submitProduct() {
+            const form = document.getElementById('addProductForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmitProduct');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: 'add',
+                sheet: 'Products',
+                nama_produk: document.getElementById('prod_nama').value,
+                no_so: document.getElementById('prod_sopo').value,
+                customer: document.getElementById('prod_customer').value,
+                tanggal: document.getElementById('prod_tanggal').value,
+                link: document.getElementById('prod_link').value,
+                status: document.getElementById('prod_status').value,
+                keterangan: document.getElementById('prod_keterangan').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('product');
+                    showToast("Product baru berhasil disimpan!", "success");
+                    fetchProducts();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        // Hapus Data Product
+        function deleteProduct(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus product ini?", async () => {
+                try {
+                    const tbody = document.getElementById('productsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Products', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Product berhasil dihapus!", "success");
+                        fetchProducts();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchProducts();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchProducts();
+                }
+            }, 'product');
+        }
+
+        // ========================================================================
         // --- SISTEM MODAL ---
-        const modal = document.getElementById('projectModal');
-        const modalContent = document.getElementById('modalContent');
-
-        function openModal() {
-            document.getElementById('addProjectForm').reset();
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modalContent.classList.remove('scale-95');
-            }, 10);
+        // ========================================================================
+        
+        function openModal(type) {
+            if (type === 'project') {
+                document.getElementById('addProjectForm').reset();
+                const modal = document.getElementById('projectModal');
+                const modalContent = document.getElementById('modalContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else if (type === 'product') {
+                document.getElementById('addProductForm').reset();
+                const modal = document.getElementById('productModal');
+                const modalContent = document.getElementById('modalProductContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            }
         }
 
-        function closeModal() {
-            modal.classList.add('opacity-0');
-            modalContent.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
+        function closeModal(type) {
+            if (type === 'project') {
+                const modal = document.getElementById('projectModal');
+                const modalContent = document.getElementById('modalContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 300);
+            } else if (type === 'product') {
+                const modal = document.getElementById('productModal');
+                const modalContent = document.getElementById('modalProductContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 300);
+            }
         }
+
+        // ========================================================================
+        // --- INITIAL LOAD ---
+        // ========================================================================
+        
+        // Setup default date untuk modal
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('p_tanggal').value = today;
+            document.getElementById('prod_tanggal').value = today;
+        });
     </script>
+
 </body>
 </html>

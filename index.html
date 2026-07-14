@@ -3,25 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rnd HUB</title>
-    <!-- Tailwind CSS untuk styling responsif -->
+    <title>Rnd HUB - PT Interskala Mandiri Indonesia</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Phosphor Icons (Ikon Modern 2 Warna) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind Config untuk Warna Kustom berdasarkan Logo IMI -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#2b3a8c', // Biru IMI Logo
+                            darkblue: '#1e2968', // Hover Biru
+                            red: '#e41e26', // Merah IMI Logo
+                            darkred: '#b8171e', // Hover Merah
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* Animasi loading sederhana */
+        /* Animasi loading lingkaran */
         .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3b82f6;
+            border: 3px solid #f1f5f9;
+            border-top: 3px solid #2b3a8c;
             border-radius: 50%;
             width: 24px;
             height: 24px;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Transisi halus untuk sidebar */
+        .sidebar-transition { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
@@ -29,244 +67,319 @@
     </script>
 
     <!-- HALAMAN LOGIN -->
-    <div id="loginPage" class="min-h-screen flex items-center justify-center p-4 transition-opacity duration-300">
-        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-            <div class="text-center mb-8">
-                <div class="bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="cpu" class="w-8 h-8"></i>
+    <div id="loginPage" class="min-h-screen flex items-center justify-center p-4 bg-slate-100 relative overflow-hidden transition-opacity duration-300">
+        <!-- Dekorasi Background -->
+        <div class="absolute top-0 left-0 w-full h-1/2 bg-brand-blue rounded-b-[4rem] sm:rounded-b-[8rem]"></div>
+        
+        <div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl w-full max-w-md relative z-10">
+            <div class="text-center mb-10">
+                <!-- Logo Simulasi -->
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center shadow-lg shadow-brand-blue/30 transform rotate-3">
+                        <i class="ph-duotone ph-cpu text-[28px] text-white -rotate-3"></i>
+                    </div>
                 </div>
-                <h1 class="text-2xl font-bold text-slate-900">Rnd HUB</h1>
-                <p class="text-slate-500 text-sm mt-1">Sistem Manajemen Database R&D</p>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Rnd <span class="text-brand-red">HUB</span></h1>
+                <p class="text-slate-500 text-sm mt-1 font-medium">PT Interskala Mandiri Indonesia</p>
             </div>
-            <form id="loginForm" class="space-y-4">
+            
+            <form id="loginForm" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
-                    <input type="text" id="username" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Masukkan username" required>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ph-duotone ph-user text-xl text-slate-400"></i>
+                        </div>
+                        <input type="text" id="username" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition font-medium" placeholder="Masukkan username" required>
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                    <input type="password" id="password" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Masukkan password" required>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ph-duotone ph-lock-key text-xl text-slate-400"></i>
+                        </div>
+                        <input type="password" id="password" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition font-medium" placeholder="Masukkan password" required>
+                    </div>
                 </div>
-                <div id="loginError" class="text-red-500 text-sm hidden flex items-center gap-1">
-                    <i data-lucide="alert-circle" class="w-4 h-4"></i> Username atau password salah!
+                <div id="loginError" class="text-brand-red text-sm hidden flex items-center gap-1.5 font-medium bg-red-50 p-3 rounded-lg border border-red-100">
+                    <i class="ph-duotone ph-warning-circle text-base"></i> Username atau password salah!
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">
-                    Masuk
+                <button type="submit" class="w-full bg-brand-blue hover:bg-brand-darkblue text-white font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-brand-blue/20 mt-2">
+                    Masuk ke Sistem
                 </button>
-                <p class="text-xs text-center text-slate-400 mt-4">Gunakan username: <b>admin</b>, password: <b>admin</b> untuk uji coba.</p>
             </form>
         </div>
     </div>
 
-    <!-- HALAMAN UTAMA (DASHBOARD & PROJECTS) -->
-    <div id="mainApp" class="hidden min-h-screen flex flex-col md:flex-row">
+    <!-- HALAMAN UTAMA (APP SHELL) -->
+    <div id="mainApp" class="hidden min-h-screen bg-slate-50 flex">
         
-        <!-- Sidebar Navigation -->
-        <aside class="bg-slate-900 text-white w-full md:w-64 flex-shrink-0 flex flex-col justify-between">
-            <div>
-                <div class="p-6 flex items-center gap-3 border-b border-slate-800">
-                    <div class="bg-blue-500 p-1.5 rounded-lg text-white">
-                        <i data-lucide="cpu" class="w-5 h-5"></i>
+        <!-- SIDEBAR (Mobile Drawer & Desktop Fixed) -->
+        <!-- Overlay untuk Mobile -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
+        
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-brand-blue text-white flex flex-col transform -translate-x-full md:translate-x-0 md:relative sidebar-transition shadow-2xl md:shadow-none">
+            <!-- Sidebar Header -->
+            <div class="p-6 flex items-center justify-between border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white p-2 rounded-xl text-brand-blue shadow-sm">
+                        <i class="ph-duotone ph-cpu text-2xl"></i>
                     </div>
-                    <span class="text-xl font-bold tracking-wider">Rnd HUB</span>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight block">Rnd <span class="text-brand-red">HUB</span></span>
+                    </div>
                 </div>
-                <nav class="mt-4 flex md:flex-col gap-1 px-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0">
-                    <button onclick="switchMenu('dashboard')" id="nav-dashboard" class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-left transition text-slate-300 hover:bg-slate-800 hover:text-white shrink-0">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                        <span>Dashboard</span>
-                    </button>
-                    <button onclick="switchMenu('projects')" id="nav-projects" class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-left transition text-slate-300 hover:bg-slate-800 hover:text-white shrink-0">
-                        <i data-lucide="folder-kanban" class="w-5 h-5"></i>
-                        <span>Projects</span>
-                    </button>
-                </nav>
-            </div>
-            <div class="p-4 border-t border-slate-800 hidden md:block">
-                <button onclick="logout()" class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-left text-red-400 hover:bg-red-500/10 transition">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    <span>Keluar</span>
+                <!-- Tombol tutup untuk mobile -->
+                <button onclick="toggleSidebar()" class="md:hidden text-blue-200 hover:text-white p-1">
+                    <i class="ph-bold ph-x text-2xl"></i>
                 </button>
             </div>
-            <!-- Logout Button for Mobile inside navigation flex row -->
-            <div class="md:hidden px-4 pb-4">
-                <button onclick="logout()" class="flex items-center gap-2 px-4 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition text-sm">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
-                    <span>Keluar</span>
+
+            <!-- Navigation -->
+            <div class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                <div class="text-xs font-bold text-blue-300 uppercase tracking-wider mb-4 ml-2">Menu Utama</div>
+                
+                <button onclick="switchMenu('dashboard')" id="nav-dashboard" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
+                    <i class="ph-duotone ph-squares-four text-xl opacity-70 group-hover:opacity-100 transition"></i>
+                    <span class="font-semibold">Dashboard</span>
+                </button>
+                
+                <button onclick="switchMenu('projects')" id="nav-projects" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
+                    <i class="ph-duotone ph-folder-open text-xl opacity-70 group-hover:opacity-100 transition"></i>
+                    <span class="font-semibold">Daftar Project</span>
+                </button>
+            </div>
+
+            <!-- User Profile Bottom -->
+            <div class="p-4 border-t border-white/10 bg-black/10">
+                <div class="flex items-center gap-3 px-3 py-2 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center text-sm font-bold text-white shadow-inner">
+                        AD
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <div class="text-sm font-bold text-white truncate">Administrator</div>
+                        <div class="text-xs text-blue-200 truncate">R&D Department</div>
+                    </div>
+                </div>
+                <button onclick="logout()" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg text-center text-white bg-white/5 hover:bg-brand-red hover:text-white transition border border-white/10 hover:border-transparent font-medium text-sm">
+                    <i class="ph-duotone ph-sign-out text-base"></i>
+                    <span>Keluar Aplikasi</span>
                 </button>
             </div>
         </aside>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
             
-            <!-- View Dashboard -->
-            <div id="view-dashboard" class="hidden">
-                <h2 class="text-2xl font-bold text-slate-800 mb-6">Dashboard</h2>
-                <div class="bg-white p-12 rounded-xl shadow-sm border border-slate-200 text-center">
-                    <i data-lucide="construction" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
-                    <h3 class="text-lg font-medium text-slate-600">Dashboard Kosong</h3>
-                    <p class="text-slate-400 mt-2">Data statistik akan ditampilkan di sini pada tahap pengembangan selanjutnya.</p>
-                </div>
-            </div>
-
-            <!-- View Projects -->
-            <div id="view-projects" class="hidden">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800">Daftar Project</h2>
-                        <p class="text-slate-500 text-sm">Kelola semua daftar project R&D HUB dari database utama.</p>
-                    </div>
-                    <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition font-medium text-sm">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Tambah Project
+            <!-- TOP APP BAR (Khusus Mobile/Desktop Ringan) -->
+            <header class="bg-white shadow-sm border-b border-slate-200 z-10 px-4 py-4 flex items-center justify-between md:px-8">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-slate-800 p-1 -ml-1 rounded-lg hover:bg-slate-100 transition">
+                        <i class="ph-bold ph-list text-2xl"></i>
                     </button>
+                    <h1 id="pageTitle" class="text-xl font-bold text-slate-800 tracking-tight">Dashboard</h1>
+                </div>
+                <!-- Teks kosong di kanan atas dihapus sesuai permintaan -->
+            </header>
+
+            <!-- KONTEN HALAMAN -->
+            <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50">
+                
+                <!-- View Dashboard (KOSONG) -->
+                <div id="view-dashboard" class="hidden max-w-6xl mx-auto">
+                    <!-- Konten dashboard dikosongkan -->
                 </div>
 
-                <!-- Table Container -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[900px]">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm">
-                                    <th class="p-4 font-semibold w-16 text-center">No</th>
-                                    <th class="p-4 font-semibold">Nama Project</th>
-                                    <th class="p-4 font-semibold">No SO/PO</th>
-                                    <th class="p-4 font-semibold">Customer</th>
-                                    <th class="p-4 font-semibold">Tanggal</th>
-                                    <th class="p-4 font-semibold">Link BOM/BOQ</th>
-                                    <th class="p-4 font-semibold">Keterangan</th>
-                                    <th class="p-4 font-semibold w-24 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="projectsTableBody" class="text-sm divide-y divide-slate-100">
-                                <!-- Data akan dimuat di sini oleh JavaScript -->
-                                <tr>
-                                    <td colspan="8" class="p-8 text-center text-slate-500">
-                                        <div class="flex flex-col items-center justify-center gap-3">
-                                            <div class="loader"></div>
-                                            Memuat data...
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <!-- View Projects -->
+                <div id="view-projects" class="hidden max-w-[1400px] mx-auto">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <p class="text-slate-500 text-sm font-medium">Manajemen database pusat Interskala R&D.</p>
+                        </div>
+                        <button onclick="openModal()" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                            <i class="ph-bold ph-plus text-base"></i> Tambah Project
+                        </button>
+                    </div>
+
+                    <!-- Table Container Modern Card -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[1000px]">
+                                <thead>
+                                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
+                                        <th class="p-4 w-16 text-center">No</th>
+                                        <th class="p-4">Nama Project</th>
+                                        <th class="p-4">No SO/PO</th>
+                                        <th class="p-4">Customer</th>
+                                        <th class="p-4">Tanggal</th>
+                                        <th class="p-4">Link BOM/BOQ</th>
+                                        <th class="p-4">Keterangan</th>
+                                        <th class="p-4 w-24 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projectsTableBody" class="text-sm divide-y divide-slate-100">
+                                    <!-- Initial Loading State -->
+                                    <tr>
+                                        <td colspan="8" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </main>
+            </main>
+        </div>
     </div>
 
-    <!-- Modal Tambah Project -->
-    <div id="projectModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col transform scale-95 transition-transform duration-300" id="modalContent">
-            <div class="flex justify-between items-center p-6 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-slate-800">Tambah Project Baru</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+    <!-- Modal Tambah Project (Glassmorphism + Modern) -->
+    <div id="projectModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalContent">
+            <!-- Header Modal -->
+            <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                        <i class="ph-duotone ph-file-plus text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Project Baru</h3>
+                </div>
+                <button onclick="closeModal()" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
+                    <i class="ph-bold ph-x text-xl"></i>
                 </button>
             </div>
-            <div class="p-6 overflow-y-auto">
-                <form id="addProjectForm" class="space-y-4">
+            
+            <!-- Body Modal -->
+            <div class="p-6 overflow-y-auto bg-slate-50/50">
+                <form id="addProjectForm" class="space-y-5">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Project *</label>
-                        <input type="text" id="p_nama" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Project <span class="text-brand-red">*</span></label>
+                        <input type="text" id="p_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">No SO/PO</label>
-                            <input type="text" id="p_sopo" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO</label>
+                            <input type="text" id="p_sopo" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Tanggal *</label>
-                            <input type="date" id="p_tanggal" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
+                            <input type="date" id="p_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Customer *</label>
-                        <input type="text" id="p_customer" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
+                        <input type="text" id="p_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Link BOM/BOQ</label>
-                        <input type="url" id="p_link" placeholder="https://..." class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Link BOM/BOQ</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="ph-duotone ph-link text-base text-slate-400"></i>
+                            </div>
+                            <input type="url" id="p_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Keterangan</label>
-                        <textarea id="p_keterangan" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
+                        <textarea id="p_keterangan" rows="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea>
                     </div>
                 </form>
             </div>
-            <div class="p-6 border-t border-slate-100 flex justify-end gap-3 bg-slate-50 rounded-b-2xl">
-                <button onclick="closeModal()" class="px-4 py-2 text-slate-600 hover:bg-slate-200 font-medium rounded-lg transition">Batal</button>
-                <button onclick="submitProject()" id="btnSubmit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium rounded-lg transition flex items-center gap-2">
-                    Simpan
+            
+            <!-- Footer Modal -->
+            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
+                <button onclick="closeModal()" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
+                <button onclick="submitProject()" id="btnSubmit" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
+                    <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM CONFIRM MODAL (Menggantikan confirm() bawaan browser) -->
-    <div id="confirmModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 transform scale-95 transition-transform duration-300" id="confirmContent">
-            <div class="flex items-center gap-3 text-red-600 mb-4">
-                <div class="bg-red-100 p-2 rounded-full">
-                    <i data-lucide="alert-triangle" class="w-6 h-6"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-900">Konfirmasi Hapus</h3>
+    <!-- CUSTOM CONFIRM MODAL -->
+    <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center" id="confirmContent">
+            <div class="w-16 h-16 bg-red-50 text-brand-red rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <i class="ph-duotone ph-trash text-[32px]"></i>
             </div>
-            <p id="confirmMessage" class="text-slate-600 text-sm mb-6">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
-            <div class="flex justify-end gap-3">
-                <button id="btnCancelConfirm" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition text-sm">Batal</button>
-                <button id="btnExecuteConfirm" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition text-sm">Hapus</button>
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Hapus Project?</h3>
+            <p id="confirmMessage" class="text-slate-500 text-sm mb-8 font-medium px-2">Data yang dihapus akan hilang dari Google Sheet dan tidak dapat dikembalikan.</p>
+            <div class="flex justify-center gap-3">
+                <button id="btnCancelConfirm" class="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition">Batal</button>
+                <button id="btnExecuteConfirm" class="flex-1 bg-brand-red hover:bg-brand-darkred text-white px-4 py-3 rounded-xl font-bold transition shadow-lg shadow-brand-red/20">Ya, Hapus</button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM TOAST NOTIFICATION (Menggantikan alert() bawaan browser) -->
-    <div id="toastNotification" class="fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
-        <span id="toastIcon"></span>
-        <span id="toastMessage" class="text-sm font-medium">Notifikasi berhasil muncul!</span>
+    <!-- CUSTOM TOAST NOTIFICATION -->
+    <div id="toastNotification" class="fixed bottom-6 md:right-6 left-6 md:left-auto right-6 bg-slate-800 text-white p-4 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-[60] max-w-sm border border-slate-700">
+        <span id="toastIcon" class="flex-shrink-0"></span>
+        <span id="toastMessage" class="text-sm font-semibold leading-snug">Notifikasi!</span>
     </div>
 
     <!-- Script Logika Frontend -->
     <script>
-        // Initialize Icons
-        lucide.createIcons();
+        // --- SISTEM SIDEBAR MOBILE DRAWER ---
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        let isSidebarOpen = false;
 
-        // --- SISTEM TOAST (Menggantikan alert) ---
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            if (isSidebarOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                // Sedikit delay untuk efek transisi opacity
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        // --- SISTEM TOAST ---
+        let toastTimeout;
         function showToast(message, type = 'success') {
+            clearTimeout(toastTimeout);
             const toast = document.getElementById('toastNotification');
             const iconContainer = document.getElementById('toastIcon');
             const msgContainer = document.getElementById('toastMessage');
 
             msgContainer.innerText = message;
             
+            // Konfigurasi warna dan ikon berdasarkan tipe
+            let bgClass = "bg-slate-800 border-slate-700";
             if (type === 'success') {
-                toast.className = "fixed bottom-4 right-4 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 transform translate-y-0 opacity-100 transition-all duration-300 z-50";
-                iconContainer.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5"></i>`;
+                bgClass = "bg-emerald-600 border-emerald-500 shadow-emerald-600/20";
+                iconContainer.innerHTML = `<div class="bg-white/20 p-1.5 rounded-full"><i class="ph-bold ph-check text-base text-white"></i></div>`;
             } else if (type === 'error') {
-                toast.className = "fixed bottom-4 right-4 bg-red-600 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 transform translate-y-0 opacity-100 transition-all duration-300 z-50";
-                iconContainer.innerHTML = `<i data-lucide="alert-octagon" class="w-5 h-5"></i>`;
+                bgClass = "bg-brand-red border-red-500 shadow-brand-red/20";
+                iconContainer.innerHTML = `<div class="bg-white/20 p-1.5 rounded-full"><i class="ph-bold ph-warning text-base text-white"></i></div>`;
             } else {
-                toast.className = "fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 transform translate-y-0 opacity-100 transition-all duration-300 z-50";
-                iconContainer.innerHTML = `<i data-lucide="info" class="w-5 h-5"></i>`;
+                iconContainer.innerHTML = `<i class="ph-fill ph-info text-xl text-blue-400"></i>`;
             }
             
-            lucide.createIcons();
+            toast.className = `fixed bottom-6 left-6 right-6 md:left-auto md:right-6 text-white p-4 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-0 opacity-100 transition-all duration-300 z-[60] max-w-sm border ${bgClass}`;
 
-            // Sembunyikan setelah 3 detik
-            setTimeout(() => {
-                toast.className = "fixed bottom-4 right-4 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50";
-            }, 3000);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
         }
 
-        // --- SISTEM CUSTOM CONFIRM (Menggantikan confirm) ---
+        // --- SISTEM CUSTOM CONFIRM ---
         let onConfirmCallback = null;
         function showConfirm(message, callback) {
             onConfirmCallback = callback;
             const confirmModal = document.getElementById('confirmModal');
             const confirmContent = document.getElementById('confirmContent');
-            document.getElementById('confirmMessage').innerText = message;
-
+            
             confirmModal.classList.remove('hidden');
             confirmModal.classList.add('flex');
             setTimeout(() => {
@@ -304,38 +417,69 @@
             const pass = document.getElementById('password').value;
             
             if (user === 'admin' && pass === 'admin') {
-                document.getElementById('loginPage').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                switchMenu('dashboard');
-                showToast("Selamat datang di Rnd HUB!", "success");
+                document.getElementById('loginPage').classList.add('opacity-0');
+                setTimeout(() => {
+                    document.getElementById('loginPage').classList.add('hidden');
+                    document.getElementById('mainApp').classList.remove('hidden');
+                    switchMenu('dashboard');
+                    showToast("Login berhasil. Selamat datang!", "success");
+                }, 300);
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
+                // Animasi getar kecil pada form
+                loginForm.classList.add('animate-pulse');
+                setTimeout(() => loginForm.classList.remove('animate-pulse'), 500);
             }
         });
 
         function logout() {
+            if (isSidebarOpen) toggleSidebar(); // Tutup sidebar mobile saat logout
+            
             document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('loginPage').classList.remove('hidden');
+            const loginPage = document.getElementById('loginPage');
+            loginPage.classList.remove('hidden');
+            setTimeout(() => loginPage.classList.remove('opacity-0'), 10);
+            
             document.getElementById('loginForm').reset();
             document.getElementById('loginError').classList.add('hidden');
-            showToast("Anda telah keluar.", "info");
+            showToast("Anda telah keluar sistem.", "info");
         }
 
         // --- SISTEM NAVIGASI MENU ---
         function switchMenu(menuName) {
+            // Tutup sidebar jika di mobile
+            if(window.innerWidth < 768 && isSidebarOpen) {
+                toggleSidebar();
+            }
+
             // Sembunyikan semua view
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-projects').classList.add('hidden');
             
-            // Reset active state menu
-            document.getElementById('nav-dashboard').classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-blue-500');
-            document.getElementById('nav-projects').classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-blue-500');
+            // Reset state aktif pada tombol navigasi
+            const navButtons = ['nav-dashboard', 'nav-projects'];
+            navButtons.forEach(id => {
+                const btn = document.getElementById(id);
+                btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
+                btn.classList.add('text-blue-100');
+            });
 
-            // Tampilkan view yang dipilih
+            // Aktifkan view terpilih
             document.getElementById(`view-${menuName}`).classList.remove('hidden');
-            document.getElementById(`nav-${menuName}`).classList.add('bg-slate-800', 'text-white', 'border-l-4', 'border-blue-500');
+            
+            // Update tombol aktif
+            const activeBtn = document.getElementById(`nav-${menuName}`);
+            activeBtn.classList.add('bg-white/15', 'text-white', 'shadow-inner');
+            activeBtn.classList.remove('text-blue-100');
 
-            // Jika menu projects, fetch data
+            // Update Judul Header
+            const titles = {
+                'dashboard': 'Dashboard',
+                'projects': 'Daftar Project'
+            };
+            document.getElementById('pageTitle').innerText = titles[menuName];
+
+            // Fetch data jika masuk ke halaman projects
             if(menuName === 'projects') {
                 fetchProjects();
             }
@@ -343,20 +487,10 @@
 
         // --- SISTEM CRUD (GOOGLE APPS SCRIPT) ---
         
-        // Cek apakah URL Apps Script sudah diisi
-        function checkURL() {
-            if (APPS_SCRIPT_URL === "MASUKKAN_URL_WEB_APP_APPS_SCRIPT_ANDA_DI_SINI" || APPS_SCRIPT_URL === "") {
-                showToast("Konfigurasi URL Apps Script belum diisi di kode HTML.", "error");
-                return false;
-            }
-            return true;
-        }
-
         // Ambil Data
         async function fetchProjects() {
-            if (!checkURL()) return;
             const tbody = document.getElementById('projectsTableBody');
-            tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-3"><div class="loader"></div>Memuat data dari database...</div></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
             
             try {
                 const response = await fetch(APPS_SCRIPT_URL);
@@ -365,13 +499,12 @@
                 if (result.status === 'success') {
                     renderTable(result.data);
                 } else {
-                    tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-red-500">Error: ${result.message}</td></tr>`;
-                    showToast("Gagal mengambil data dari sheet: " + result.message, "error");
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
                 }
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-red-500">Gagal terhubung ke database. Pastikan deployment Apps Script Anda aktif dan publik.</td></tr>`;
-                showToast("Kesalahan jaringan atau CORS. Hubungi Admin.", "error");
-                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
             }
         }
 
@@ -381,16 +514,16 @@
             tbody.innerHTML = '';
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500">Belum ada project. Silakan tambah baru.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada project terdaftar. Klik "Tambah Project".</td></tr>`;
                 return;
             }
 
             data.forEach((item, index) => {
                 const linkHTML = item['Link BOM/BOQ'] ? 
-                    `<a href="${item['Link BOM/BOQ']}" target="_blank" class="text-blue-500 hover:underline inline-flex items-center gap-1 font-semibold"><i data-lucide="external-link" class="w-3.5 h-3.5"></i> Buka Link</a>` 
-                    : `<span class="text-slate-400">-</span>`;
+                    `<a href="${item['Link BOM/BOQ']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-arrow-square-out text-sm"></i> Buka</a>` 
+                    : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
 
-                // Format tanggal
+                // Format tanggal rapi
                 let tanggalText = item['Tanggal'];
                 try {
                     if (tanggalText) {
@@ -400,30 +533,27 @@
                 } catch(e) {}
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition";
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.innerHTML = `
-                    <td class="p-4 text-center text-slate-500 font-medium">${index + 1}</td>
-                    <td class="p-4 font-semibold text-slate-950">${item['Nama Project'] || '-'}</td>
-                    <td class="p-4 text-slate-600">${item['No SO/PO'] || '-'}</td>
-                    <td class="p-4 text-slate-700">${item['Customer'] || '-'}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-600">${tanggalText || '-'}</td>
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Project'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-semibold">${item['No SO/PO'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Customer'] || '-'}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText || '-'}</td>
                     <td class="p-4">${linkHTML}</td>
-                    <td class="p-4 max-w-xs truncate text-slate-600" title="${item['Keterangan']}">${item['Keterangan'] || '-'}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="deleteProject('${item['ID']}')" class="text-red-500 hover:bg-red-50 p-2 rounded-lg transition inline-flex items-center justify-center" title="Hapus Project">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan']}">${item['Keterangan'] || '-'}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <button onclick="deleteProject('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2.5 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                            <i class="ph-duotone ph-trash text-base"></i>
                         </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-            lucide.createIcons(); // Re-init icons for new DOM elements
         }
 
         // Tambah Data
         async function submitProject() {
-            if (!checkURL()) return;
-            
             const form = document.getElementById('addProjectForm');
             if(!form.checkValidity()) {
                 form.reportValidity();
@@ -431,8 +561,8 @@
             }
 
             const btnSubmit = document.getElementById('btnSubmit');
-            const originalText = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> Menyimpan...`;
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
             btnSubmit.disabled = true;
 
             const payload = {
@@ -455,27 +585,26 @@
                 
                 if (result.status === 'success') {
                     closeModal();
-                    showToast("Project baru berhasil ditambahkan!", "success");
+                    showToast("Project baru berhasil disimpan!", "success");
                     fetchProjects(); // Refresh tabel
                 } else {
                     showToast('Gagal menyimpan: ' + result.message, "error");
                 }
             } catch (error) {
-                showToast('Terjadi kesalahan koneksi atau CORS saat mengirim data.', "error");
-                console.error(error);
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
             } finally {
-                btnSubmit.innerHTML = originalText;
+                btnSubmit.innerHTML = originalHTML;
                 btnSubmit.disabled = false;
             }
         }
 
         // Hapus Data
         function deleteProject(id) {
-            showConfirm("Apakah Anda yakin ingin menghapus project ini dari database Google Sheet?", async () => {
+            showConfirm("Apakah Anda yakin ingin menghapus data ini?", async () => {
                 try {
-                    // Tampilkan loading di tabel
+                    // Tampilkan loading baris
                     const tbody = document.getElementById('projectsTableBody');
-                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-3"><div class="loader"></div>Menghapus data...</div></td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
 
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
@@ -485,15 +614,14 @@
                     const result = await response.json();
                     
                     if (result.status === 'success') {
-                        showToast("Project berhasil dihapus dari database!", "success");
-                        fetchProjects(); // Refresh tabel setelah hapus
+                        showToast("Project berhasil dihapus!", "success");
+                        fetchProjects();
                     } else {
                         showToast('Gagal menghapus: ' + result.message, 'error');
                         fetchProjects();
                     }
                 } catch (error) {
                     showToast('Terjadi kesalahan jaringan.', 'error');
-                    console.error(error);
                     fetchProjects();
                 }
             });

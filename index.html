@@ -93,36 +93,64 @@
         .condition-broken { background: #fecaca; color: #991b1b; }
         .condition-default { background: #f1f5f9; color: #475569; }
 
-        .camera-container {
+        /* CAMERA STYLES */
+        .camera-wrapper {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 480px;
             margin: 0 auto;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
             background: #0f172a;
+            aspect-ratio: 4/3;
         }
-        .camera-container video {
-            width: 100%;
-            display: block;
-            border-radius: 12px;
-        }
-        .camera-container canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .camera-wrapper video {
             width: 100%;
             height: 100%;
-            border-radius: 12px;
+            object-fit: cover;
+            display: block;
         }
-        .camera-overlay {
+        .camera-wrapper canvas {
+            display: none;
+        }
+        .camera-controls {
             position: absolute;
-            bottom: 16px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 12px;
             z-index: 10;
+        }
+        .camera-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.8);
+            z-index: 5;
+            flex-direction: column;
+            gap: 16px;
+            border-radius: 16px;
+        }
+        .camera-overlay .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .camera-overlay .text-white {
+            color: white;
+            font-weight: 500;
+        }
+        .camera-overlay.hidden {
+            display: none;
         }
 
         .photo-thumb {
@@ -142,13 +170,31 @@
             max-height: 80vh;
             border-radius: 12px;
         }
+
+        /* Camera flash effect */
+        .flash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 16px;
+            transition: opacity 0.1s;
+        }
+        .flash-overlay.active {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbo_LfQxDY2dV1Hyp55NLt93ts4bzAF_KJfwX4XdE13z-sYdmoabKPJMheaXzBCCj3zg/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywqgr4gZZKyOQYh-iM8yGDjgN1ZmYjOqTjc6V-ToRamgVRgMvJh-_hCbm2LRb8W4thxQ/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -456,7 +502,7 @@
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse min-w-[1200px]">
+                            <table class="w-full text-left border-collapse min-w-[1300px]">
                                 <thead>
                                     <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
                                         <th class="p-4 w-16 text-center">No</th>
@@ -762,20 +808,33 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Foto Pinjam <span class="text-brand-red">*</span></label>
-                        <div class="camera-container" id="cameraContainerPinjam">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Foto Pinjam <span class="text-brand-red">*</span></label>
+                        <div class="camera-wrapper" id="cameraWrapperPinjam">
+                            <div class="camera-overlay" id="cameraOverlayPinjam">
+                                <div class="spinner"></div>
+                                <span class="text-white text-sm">Mengaktifkan Kamera...</span>
+                            </div>
                             <video id="videoPinjam" autoplay playsinline></video>
-                            <canvas id="canvasPinjam" style="display: none;"></canvas>
-                            <div class="camera-overlay">
-                                <button type="button" onclick="capturePhoto('pinjam')" class="bg-brand-red hover:bg-brand-darkred text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow-lg shadow-brand-red/20 flex items-center gap-2">
+                            <canvas id="canvasPinjam"></canvas>
+                            <div class="flash-overlay" id="flashPinjam"></div>
+                            <div class="camera-controls">
+                                <button type="button" onclick="capturePhoto('pinjam')" class="bg-white hover:bg-slate-100 text-slate-800 px-6 py-3 rounded-full font-bold text-sm transition shadow-lg flex items-center gap-2">
                                     <i class="ph-bold ph-camera text-base"></i> Ambil Foto
                                 </button>
                             </div>
                         </div>
                         <input type="hidden" id="b_foto_pinjam" value="">
                         <div id="fotoPinjamPreview" class="mt-3 hidden">
-                            <p class="text-xs font-semibold text-slate-500 mb-1">Foto Pinjam:</p>
-                            <img id="pinjamPreviewImg" class="rounded-xl border border-slate-200 max-h-32 w-auto">
+                            <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                                <i class="ph-bold ph-check-circle text-emerald-500 text-xl"></i>
+                                <div>
+                                    <p class="text-xs font-semibold text-emerald-700">Foto berhasil diambil</p>
+                                    <img id="pinjamPreviewImg" class="rounded-lg border border-emerald-200 max-h-24 w-auto mt-1">
+                                </div>
+                                <button type="button" onclick="resetPhoto('pinjam')" class="ml-auto text-slate-400 hover:text-brand-red p-1">
+                                    <i class="ph-bold ph-x text-lg"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -828,20 +887,33 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Foto Kembali <span class="text-brand-red">*</span></label>
-                        <div class="camera-container" id="cameraContainerKembali">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Foto Kembali <span class="text-brand-red">*</span></label>
+                        <div class="camera-wrapper" id="cameraWrapperKembali">
+                            <div class="camera-overlay" id="cameraOverlayKembali">
+                                <div class="spinner"></div>
+                                <span class="text-white text-sm">Mengaktifkan Kamera...</span>
+                            </div>
                             <video id="videoKembali" autoplay playsinline></video>
-                            <canvas id="canvasKembali" style="display: none;"></canvas>
-                            <div class="camera-overlay">
-                                <button type="button" onclick="capturePhoto('kembali')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                            <canvas id="canvasKembali"></canvas>
+                            <div class="flash-overlay" id="flashKembali"></div>
+                            <div class="camera-controls">
+                                <button type="button" onclick="capturePhoto('kembali')" class="bg-white hover:bg-slate-100 text-slate-800 px-6 py-3 rounded-full font-bold text-sm transition shadow-lg flex items-center gap-2">
                                     <i class="ph-bold ph-camera text-base"></i> Ambil Foto Kembali
                                 </button>
                             </div>
                         </div>
                         <input type="hidden" id="r_foto_kembali" value="">
                         <div id="fotoKembaliPreview" class="mt-3 hidden">
-                            <p class="text-xs font-semibold text-slate-500 mb-1">Foto Kembali:</p>
-                            <img id="kembaliPreviewImg" class="rounded-xl border border-slate-200 max-h-32 w-auto">
+                            <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                                <i class="ph-bold ph-check-circle text-emerald-500 text-xl"></i>
+                                <div>
+                                    <p class="text-xs font-semibold text-emerald-700">Foto berhasil diambil</p>
+                                    <img id="kembaliPreviewImg" class="rounded-lg border border-emerald-200 max-h-24 w-auto mt-1">
+                                </div>
+                                <button type="button" onclick="resetPhoto('kembali')" class="ml-auto text-slate-400 hover:text-brand-red p-1">
+                                    <i class="ph-bold ph-x text-lg"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -905,6 +977,8 @@
         // Camera streams
         let streamPinjam = null;
         let streamKembali = null;
+        let cameraActivePinjam = false;
+        let cameraActiveKembali = false;
 
         // ========================================================================
         // SIDEBAR
@@ -1046,6 +1120,9 @@
 
         function logout() {
             if (isSidebarOpen) toggleSidebar();
+            // Stop all cameras
+            stopCamera(streamPinjam);
+            stopCamera(streamKembali);
             document.getElementById('mainApp').classList.add('hidden');
             const loginPage = document.getElementById('loginPage');
             loginPage.classList.remove('hidden');
@@ -1062,6 +1139,12 @@
             if(window.innerWidth < 768 && isSidebarOpen) {
                 toggleSidebar();
             }
+
+            // Stop cameras when switching menu
+            stopCamera(streamPinjam);
+            stopCamera(streamKembali);
+            streamPinjam = null;
+            streamKembali = null;
 
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-projects').classList.add('hidden');
@@ -1107,27 +1190,94 @@
         }
 
         // ========================================================================
-        // CAMERA FUNCTIONS
+        // CAMERA FUNCTIONS - DIPERBAIKI
         // ========================================================================
-        async function startCamera(containerId, videoId) {
+        async function startCamera(containerId, videoId, overlayId) {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'environment', width: { ideal: 640 } },
-                    audio: false 
-                });
+                // Cek dukungan browser
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showToast('Browser Anda tidak mendukung akses kamera.', 'error');
+                    return null;
+                }
+
                 const video = document.getElementById(videoId);
+                if (!video) {
+                    showToast('Elemen video tidak ditemukan.', 'error');
+                    return null;
+                }
+
+                // Tampilkan overlay loading
+                const overlay = document.getElementById(overlayId);
+                if (overlay) overlay.classList.remove('hidden');
+
+                // Minta akses kamera
+                const constraints = { 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false 
+                };
+
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Set stream ke video
                 video.srcObject = stream;
                 await video.play();
+
+                // Sembunyikan overlay setelah video mulai
+                if (overlay) overlay.classList.add('hidden');
+
                 return stream;
             } catch (err) {
-                showToast('Gagal mengakses kamera. Pastikan izin kamera diberikan.', 'error');
+                console.error('Camera error:', err);
+                const overlay = document.getElementById(overlayId);
+                if (overlay) {
+                    overlay.innerHTML = `
+                        <div class="text-center">
+                            <i class="ph-fill ph-camera-slash text-5xl text-white/60 mb-3"></i>
+                            <p class="text-white text-sm font-medium">Gagal mengakses kamera</p>
+                            <p class="text-white/60 text-xs mt-1">${err.message || 'Izin kamera ditolak'}</p>
+                            <button onclick="closeModal('borrowing')" class="mt-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                Tutup
+                            </button>
+                        </div>
+                    `;
+                    overlay.classList.remove('hidden');
+                }
+                showToast('Gagal mengakses kamera: ' + (err.message || 'Izin ditolak'), 'error');
                 return null;
             }
         }
 
         function stopCamera(stream) {
             if (stream) {
-                stream.getTracks().forEach(track => track.stop());
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+            }
+        }
+
+        function flashEffect(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.add('active');
+                setTimeout(() => {
+                    element.classList.remove('active');
+                }, 200);
+            }
+        }
+
+        function resetPhoto(type) {
+            if (type === 'pinjam') {
+                document.getElementById('b_foto_pinjam').value = '';
+                document.getElementById('fotoPinjamPreview').classList.add('hidden');
+                document.getElementById('pinjamPreviewImg').src = '';
+            } else {
+                document.getElementById('r_foto_kembali').value = '';
+                document.getElementById('fotoKembaliPreview').classList.add('hidden');
+                document.getElementById('kembaliPreviewImg').src = '';
             }
         }
 
@@ -1137,22 +1287,30 @@
             const previewId = type === 'pinjam' ? 'pinjamPreviewImg' : 'kembaliPreviewImg';
             const previewContainerId = type === 'pinjam' ? 'fotoPinjamPreview' : 'fotoKembaliPreview';
             const hiddenInputId = type === 'pinjam' ? 'b_foto_pinjam' : 'r_foto_kembali';
+            const flashId = type === 'pinjam' ? 'flashPinjam' : 'flashKembali';
 
             const video = document.getElementById(videoId);
             const canvas = document.getElementById(canvasId);
-            const context = canvas.getContext('2d');
+            
+            if (!video || !canvas) {
+                showToast('Error: Elemen video atau canvas tidak ditemukan', 'error');
+                return;
+            }
 
-            // Set canvas size to match video
+            // Flash effect
+            flashEffect(flashId);
+
+            // Set canvas size
             canvas.width = video.videoWidth || 640;
             canvas.height = video.videoHeight || 480;
             
-            // Draw video frame to canvas
+            const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Convert to base64
-            const imageData = canvas.toDataURL('image/jpeg', 0.85);
+            // Convert to base64 (compress for storage)
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
             
-            // Set hidden input value
+            // Set hidden input
             document.getElementById(hiddenInputId).value = imageData;
             
             // Show preview
@@ -1164,7 +1322,7 @@
         }
 
         // ========================================================================
-        // CRUD PROJECT
+        // CRUD PROJECT (sama seperti sebelumnya - dipersingkat)
         // ========================================================================
         async function fetchProjects() {
             const tbody = document.getElementById('projectsTableBody');
@@ -1190,17 +1348,14 @@
         function renderProjectsTable(data) {
             const tbody = document.getElementById('projectsTableBody');
             tbody.innerHTML = '';
-
             if (data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada project terdaftar. Klik "Tambah Project".</td></tr>`;
                 return;
             }
-
             data.forEach((item, index) => {
                 const linkHTML = item['Link BOM/BOQ'] ? 
                     `<a href="${item['Link BOM/BOQ']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-arrow-square-out text-sm"></i> Buka</a>` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
-
                 let tanggalText = item['Tanggal'] || '-';
                 try {
                     if (tanggalText && tanggalText !== '-') {
@@ -1210,7 +1365,6 @@
                         }
                     }
                 } catch(e) {}
-
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
@@ -1239,7 +1393,6 @@
 
         function editProject(id) {
             let data = projectsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
-            
             if (!data) {
                 const rows = document.querySelectorAll('#projectsTableBody tr');
                 for (let row of rows) {
@@ -1261,7 +1414,6 @@
                     }
                 }
             }
-            
             if (data) {
                 document.getElementById('p_id').value = id;
                 document.getElementById('p_nama').value = data['Nama Project'] || '';
@@ -1270,10 +1422,8 @@
                 document.getElementById('p_customer').value = data['Customer'] || '';
                 document.getElementById('p_link').value = data['Link BOM/BOQ'] || '';
                 document.getElementById('p_keterangan').value = data['Keterangan'] || '';
-                
                 document.getElementById('projectModalTitle').textContent = 'Edit Project';
                 document.getElementById('projectBtnText').textContent = 'Update';
-                
                 openModal('project');
             } else {
                 showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
@@ -1287,15 +1437,12 @@
                 form.reportValidity();
                 return;
             }
-
             const id = document.getElementById('p_id').value;
             const isEdit = id !== '';
-            
             const btnSubmit = document.getElementById('btnSubmitProject');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
             btnSubmit.disabled = true;
-
             const payload = {
                 action: isEdit ? 'update' : 'add',
                 sheet: 'Projects',
@@ -1307,7 +1454,6 @@
                 link: document.getElementById('p_link').value,
                 keterangan: document.getElementById('p_keterangan').value
             };
-
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -1315,7 +1461,6 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     closeModal('project');
                     showToast(isEdit ? "Project berhasil diupdate!" : "Project baru berhasil disimpan!", "success");
@@ -1336,14 +1481,12 @@
                 try {
                     const tbody = document.getElementById('projectsTableBody');
                     tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'delete', sheet: 'Projects', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
-                    
                     if (result.status === 'success') {
                         showToast("Project berhasil dihapus!", "success");
                         fetchProjects();
@@ -1359,16 +1502,14 @@
         }
 
         // ========================================================================
-        // CRUD PRODUCT
+        // CRUD PRODUCT (disederhanakan)
         // ========================================================================
         async function fetchProducts() {
             const tbody = document.getElementById('productsTableBody');
             tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
-            
             try {
                 const response = await fetch(APPS_SCRIPT_URL + '?sheet=Products');
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     productsData = result.data;
                     renderProductsTable(productsData);
@@ -1385,24 +1526,20 @@
         function renderProductsTable(data) {
             const tbody = document.getElementById('productsTableBody');
             tbody.innerHTML = '';
-
             if (data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada product terdaftar. Klik "Tambah Product".</td></tr>`;
                 return;
             }
-
             data.forEach((item, index) => {
                 const linkHTML = item['Link Video Test'] ? 
                     `<a href="${item['Link Video Test']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-video-camera text-sm"></i> Tonton</a>` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
-
                 const status = item['Status'] || 'Pending';
                 let statusClass = 'status-default';
                 if (status === 'Completed' || status === 'Success') statusClass = 'status-success';
                 else if (status === 'In Progress') statusClass = 'status-warning';
                 else if (status === 'Failed') statusClass = 'status-danger';
                 else if (status === 'Testing') statusClass = 'status-info';
-
                 let tanggalText = item['Tanggal'] || '-';
                 try {
                     if (tanggalText && tanggalText !== '-') {
@@ -1412,7 +1549,6 @@
                         }
                     }
                 } catch(e) {}
-
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
@@ -1442,7 +1578,6 @@
 
         function editProduct(id) {
             let data = productsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
-            
             if (!data) {
                 const rows = document.querySelectorAll('#productsTableBody tr');
                 for (let row of rows) {
@@ -1465,7 +1600,6 @@
                     }
                 }
             }
-            
             if (data) {
                 document.getElementById('prod_id').value = id;
                 document.getElementById('prod_nama').value = data['Nama Produk'] || '';
@@ -1475,10 +1609,8 @@
                 document.getElementById('prod_link').value = data['Link Video Test'] || '';
                 document.getElementById('prod_status').value = data['Status'] || '';
                 document.getElementById('prod_keterangan').value = data['Keterangan'] || '';
-                
                 document.getElementById('productModalTitle').textContent = 'Edit Product';
                 document.getElementById('productBtnText').textContent = 'Update';
-                
                 openModal('product');
             } else {
                 showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
@@ -1492,15 +1624,12 @@
                 form.reportValidity();
                 return;
             }
-
             const id = document.getElementById('prod_id').value;
             const isEdit = id !== '';
-            
             const btnSubmit = document.getElementById('btnSubmitProduct');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
             btnSubmit.disabled = true;
-
             const payload = {
                 action: isEdit ? 'update' : 'add',
                 sheet: 'Products',
@@ -1513,7 +1642,6 @@
                 status: document.getElementById('prod_status').value,
                 keterangan: document.getElementById('prod_keterangan').value
             };
-
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -1521,7 +1649,6 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     closeModal('product');
                     showToast(isEdit ? "Product berhasil diupdate!" : "Product baru berhasil disimpan!", "success");
@@ -1542,14 +1669,12 @@
                 try {
                     const tbody = document.getElementById('productsTableBody');
                     tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'delete', sheet: 'Products', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
-                    
                     if (result.status === 'success') {
                         showToast("Product berhasil dihapus!", "success");
                         fetchProducts();
@@ -1565,16 +1690,14 @@
         }
 
         // ========================================================================
-        // CRUD SPAREPART
+        // CRUD SPAREPART (disederhanakan)
         // ========================================================================
         async function fetchSpareparts() {
             const tbody = document.getElementById('sparepartsTableBody');
             tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
-            
             try {
                 const response = await fetch(APPS_SCRIPT_URL + '?sheet=Spareparts');
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     sparepartsData = result.data;
                     renderSparepartsTable(sparepartsData);
@@ -1591,12 +1714,10 @@
         function renderSparepartsTable(data) {
             const tbody = document.getElementById('sparepartsTableBody');
             tbody.innerHTML = '';
-
             if (data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada sparepart terdaftar. Klik "Tambah Sparepart".</td></tr>`;
                 return;
             }
-
             data.forEach((item, index) => {
                 const stok = parseInt(item['Stok']) || 0;
                 let stockClass = 'stock-empty';
@@ -1604,7 +1725,6 @@
                 if (stok > 50) { stockClass = 'stock-high'; stockLabel = 'Tersedia'; }
                 else if (stok > 10) { stockClass = 'stock-medium'; stockLabel = 'Sedang'; }
                 else if (stok > 0) { stockClass = 'stock-low'; stockLabel = 'Menipis'; }
-
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
@@ -1634,7 +1754,6 @@
 
         function editSparepart(id) {
             let data = sparepartsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
-            
             if (!data) {
                 const rows = document.querySelectorAll('#sparepartsTableBody tr');
                 for (let row of rows) {
@@ -1645,7 +1764,6 @@
                             const stockText = cells[3]?.textContent || '0';
                             const stokMatch = stockText.match(/(\d+)/);
                             const stok = stokMatch ? parseInt(stokMatch[1]) : 0;
-                            
                             data = {
                                 'ID': id,
                                 'Nama Sparepart': cells[1]?.textContent || '',
@@ -1658,17 +1776,14 @@
                     }
                 }
             }
-            
             if (data) {
                 document.getElementById('s_id').value = id;
                 document.getElementById('s_nama').value = data['Nama Sparepart'] || '';
                 document.getElementById('s_spesifikasi').value = data['Spesifikasi'] || '';
                 document.getElementById('s_stok').value = data['Stok'] || 0;
                 document.getElementById('s_lokasi').value = data['Lokasi Penyimpanan'] || '';
-                
                 document.getElementById('sparepartModalTitle').textContent = 'Edit Sparepart';
                 document.getElementById('sparepartBtnText').textContent = 'Update';
-                
                 openModal('sparepart');
             } else {
                 showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
@@ -1682,15 +1797,12 @@
                 form.reportValidity();
                 return;
             }
-
             const id = document.getElementById('s_id').value;
             const isEdit = id !== '';
-            
             const btnSubmit = document.getElementById('btnSubmitSparepart');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
             btnSubmit.disabled = true;
-
             const payload = {
                 action: isEdit ? 'update' : 'add',
                 sheet: 'Spareparts',
@@ -1700,7 +1812,6 @@
                 stok: document.getElementById('s_stok').value,
                 lokasi: document.getElementById('s_lokasi').value
             };
-
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -1708,7 +1819,6 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     closeModal('sparepart');
                     showToast(isEdit ? "Sparepart berhasil diupdate!" : "Sparepart baru berhasil disimpan!", "success");
@@ -1729,14 +1839,12 @@
                 try {
                     const tbody = document.getElementById('sparepartsTableBody');
                     tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'delete', sheet: 'Spareparts', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
-                    
                     if (result.status === 'success') {
                         showToast("Sparepart berhasil dihapus!", "success");
                         fetchSpareparts();
@@ -1757,11 +1865,9 @@
         async function fetchTools() {
             const tbody = document.getElementById('toolsTableBody');
             tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
-            
             try {
                 const response = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     toolsData = result.data;
                     renderToolsTable(toolsData);
@@ -1778,19 +1884,16 @@
         function renderToolsTable(data) {
             const tbody = document.getElementById('toolsTableBody');
             tbody.innerHTML = '';
-
             if (data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada tool terdaftar. Klik "Tambah Tool".</td></tr>`;
                 return;
             }
-
             data.forEach((item, index) => {
                 const kondisi = (item['Kondisi'] || 'Unknown').trim();
                 let conditionClass = 'condition-default';
                 if (kondisi === 'Baik') conditionClass = 'condition-good';
                 else if (kondisi === 'Sedang') conditionClass = 'condition-worn';
                 else if (kondisi === 'Rusak') conditionClass = 'condition-broken';
-
                 const statusRaw = (item['Status'] || 'Unknown').trim();
                 const statusMap = {
                     'Tersedia': { class: 'status-success', label: 'Tersedia' },
@@ -1798,10 +1901,8 @@
                     'Perbaikan': { class: 'status-info', label: 'Perbaikan' },
                     'Rusak': { class: 'status-danger', label: 'Rusak' }
                 };
-                
                 const statusInfo = statusMap[statusRaw];
                 let statusClass, statusDisplay;
-                
                 if (statusInfo) {
                     statusClass = statusInfo.class;
                     statusDisplay = statusInfo.label;
@@ -1809,7 +1910,6 @@
                     statusClass = 'status-default';
                     statusDisplay = statusRaw || 'Unknown';
                 }
-
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
@@ -1836,7 +1936,6 @@
 
         function editTool(id) {
             let data = toolsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
-            
             if (!data) {
                 const rows = document.querySelectorAll('#toolsTableBody tr');
                 for (let row of rows) {
@@ -1856,17 +1955,14 @@
                     }
                 }
             }
-            
             if (data) {
                 document.getElementById('t_id').value = id;
                 document.getElementById('t_nama').value = data['Nama Tool'] || '';
                 document.getElementById('t_jumlah').value = data['Jumlah'] || 0;
                 document.getElementById('t_kondisi').value = data['Kondisi'] || '';
                 document.getElementById('t_status').value = data['Status'] || '';
-                
                 document.getElementById('toolModalTitle').textContent = 'Edit Tool';
                 document.getElementById('toolBtnText').textContent = 'Update';
-                
                 openModal('tool');
             } else {
                 showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
@@ -1880,15 +1976,12 @@
                 form.reportValidity();
                 return;
             }
-
             const id = document.getElementById('t_id').value;
             const isEdit = id !== '';
-            
             const btnSubmit = document.getElementById('btnSubmitTool');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
             btnSubmit.disabled = true;
-
             const payload = {
                 action: isEdit ? 'update' : 'add',
                 sheet: 'Tools',
@@ -1898,7 +1991,6 @@
                 kondisi: document.getElementById('t_kondisi').value,
                 status: document.getElementById('t_status').value
             };
-
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -1906,7 +1998,6 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     closeModal('tool');
                     showToast(isEdit ? "Tool berhasil diupdate!" : "Tool baru berhasil disimpan!", "success");
@@ -1927,14 +2018,12 @@
                 try {
                     const tbody = document.getElementById('toolsTableBody');
                     tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'delete', sheet: 'Tools', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
-                    
                     if (result.status === 'success') {
                         showToast("Tool berhasil dihapus!", "success");
                         fetchTools();
@@ -1955,11 +2044,9 @@
         async function fetchBorrowings() {
             const tbody = document.getElementById('borrowingsTableBody');
             tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
-            
             try {
                 const response = await fetch(APPS_SCRIPT_URL + '?sheet=Borrowings');
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     borrowingsData = result.data;
                     renderBorrowingsTable(borrowingsData);
@@ -1976,17 +2063,14 @@
         function renderBorrowingsTable(data) {
             const tbody = document.getElementById('borrowingsTableBody');
             tbody.innerHTML = '';
-
             if (data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada peminjaman. Klik "Pinjam Tool".</td></tr>`;
                 return;
             }
-
             data.forEach((item, index) => {
                 const status = (item['Status'] || 'Dipinjam').trim();
                 let statusClass = 'status-warning';
                 let statusDisplay = 'Dipinjam';
-                
                 if (status === 'Selesai' || status === 'Kembali') {
                     statusClass = 'status-success';
                     statusDisplay = 'Selesai';
@@ -1997,10 +2081,8 @@
                     statusClass = 'status-default';
                     statusDisplay = status;
                 }
-
                 let tglPinjam = item['Tanggal Pinjam'] || '-';
                 let tglKembali = item['Tanggal Kembali'] || '-';
-                
                 try {
                     if (tglPinjam && tglPinjam !== '-') {
                         const dateObj = new Date(tglPinjam);
@@ -2009,7 +2091,6 @@
                         }
                     }
                 } catch(e) {}
-                
                 try {
                     if (tglKembali && tglKembali !== '-') {
                         const dateObj = new Date(tglKembali);
@@ -2018,19 +2099,14 @@
                         }
                     }
                 } catch(e) {}
-
-                // Foto Pinjam
                 const fotoPinjam = item['Foto Pinjam'] || '';
                 const fotoPinjamHTML = fotoPinjam ? 
                     `<img src="${fotoPinjam}" class="photo-thumb" onclick="openPhotoModal('${fotoPinjam}')" title="Klik untuk perbesar">` : 
                     `<span class="text-slate-300 text-xs">-</span>`;
-
-                // Foto Kembali
                 const fotoKembali = item['Foto Kembali'] || '';
                 const fotoKembaliHTML = fotoKembali ? 
                     `<img src="${fotoKembali}" class="photo-thumb" onclick="openPhotoModal('${fotoKembali}')" title="Klik untuk perbesar">` : 
                     `<span class="text-slate-300 text-xs">-</span>`;
-
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
@@ -2067,6 +2143,10 @@
         // BORROWING FUNCTIONS
         // ========================================================================
         async function openBorrowingModal() {
+            // Stop previous camera if any
+            stopCamera(streamPinjam);
+            streamPinjam = null;
+            
             // Load tools for dropdown
             await fetchToolsForDropdown();
             
@@ -2080,39 +2160,111 @@
             document.getElementById('b_departemen').value = '';
             document.getElementById('b_foto_pinjam').value = '';
             document.getElementById('fotoPinjamPreview').classList.add('hidden');
+            document.getElementById('pinjamPreviewImg').src = '';
             document.getElementById('borrowingModalTitle').textContent = 'Pinjam Tool';
             document.getElementById('borrowingBtnText').textContent = 'Pinjam';
             
-            // Start camera
-            streamPinjam = await startCamera('cameraContainerPinjam', 'videoPinjam');
+            // Reset camera overlay
+            const overlay = document.getElementById('cameraOverlayPinjam');
+            overlay.innerHTML = `
+                <div class="spinner"></div>
+                <span class="text-white text-sm">Mengaktifkan Kamera...</span>
+            `;
+            overlay.classList.remove('hidden');
             
+            // Open modal first
             openModal('borrowing');
+            
+            // Start camera after modal is visible
+            setTimeout(async () => {
+                streamPinjam = await startCamera('cameraWrapperPinjam', 'videoPinjam', 'cameraOverlayPinjam');
+                if (!streamPinjam) {
+                    // If camera fails, show retry option
+                    const overlayRetry = document.getElementById('cameraOverlayPinjam');
+                    overlayRetry.innerHTML = `
+                        <div class="text-center">
+                            <i class="ph-fill ph-camera-slash text-5xl text-white/60 mb-3"></i>
+                            <p class="text-white text-sm font-medium">Gagal mengakses kamera</p>
+                            <p class="text-white/60 text-xs mt-1">Pastikan izin kamera diberikan</p>
+                            <button onclick="retryCamera('pinjam')" class="mt-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                <i class="ph-bold ph-rotate-clockwise mr-1"></i> Coba Lagi
+                            </button>
+                            <button onclick="closeModal('borrowing')" class="mt-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                Tutup
+                            </button>
+                        </div>
+                    `;
+                    overlayRetry.classList.remove('hidden');
+                }
+            }, 500);
+        }
+
+        async function retryCamera(type) {
+            if (type === 'pinjam') {
+                const overlay = document.getElementById('cameraOverlayPinjam');
+                overlay.innerHTML = `
+                    <div class="spinner"></div>
+                    <span class="text-white text-sm">Mengaktifkan Kamera...</span>
+                `;
+                overlay.classList.remove('hidden');
+                stopCamera(streamPinjam);
+                streamPinjam = null;
+                streamPinjam = await startCamera('cameraWrapperPinjam', 'videoPinjam', 'cameraOverlayPinjam');
+                if (!streamPinjam) {
+                    overlay.innerHTML = `
+                        <div class="text-center">
+                            <i class="ph-fill ph-camera-slash text-5xl text-white/60 mb-3"></i>
+                            <p class="text-white text-sm font-medium">Masih gagal mengakses kamera</p>
+                            <p class="text-white/60 text-xs mt-1">Coba gunakan browser lain atau periksa izin</p>
+                            <button onclick="closeModal('borrowing')" class="mt-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                Tutup
+                            </button>
+                        </div>
+                    `;
+                }
+            } else {
+                const overlay = document.getElementById('cameraOverlayKembali');
+                overlay.innerHTML = `
+                    <div class="spinner"></div>
+                    <span class="text-white text-sm">Mengaktifkan Kamera...</span>
+                `;
+                overlay.classList.remove('hidden');
+                stopCamera(streamKembali);
+                streamKembali = null;
+                streamKembali = await startCamera('cameraWrapperKembali', 'videoKembali', 'cameraOverlayKembali');
+                if (!streamKembali) {
+                    overlay.innerHTML = `
+                        <div class="text-center">
+                            <i class="ph-fill ph-camera-slash text-5xl text-white/60 mb-3"></i>
+                            <p class="text-white text-sm font-medium">Masih gagal mengakses kamera</p>
+                            <p class="text-white/60 text-xs mt-1">Coba gunakan browser lain atau periksa izin</p>
+                            <button onclick="closeModal('return')" class="mt-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                Tutup
+                            </button>
+                        </div>
+                    `;
+                }
+            }
         }
 
         async function fetchToolsForDropdown() {
             const select = document.getElementById('b_tool_id');
             select.innerHTML = '<option value="">-- Pilih Tool --</option>';
-            
             try {
-                // Fetch tools from database
                 const response = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
                 const result = await response.json();
-                
                 if (result.status === 'success') {
                     const tools = result.data;
-                    // Filter only available tools
                     const availableTools = tools.filter(t => {
                         const status = (t['Status'] || '').trim();
                         return status === 'Tersedia';
                     });
-                    
                     availableTools.forEach(tool => {
                         const option = document.createElement('option');
                         option.value = tool['ID'];
                         option.textContent = `${tool['Nama Tool']} (${tool['Jumlah']} pcs)`;
                         select.appendChild(option);
                     });
-                    
                     if (availableTools.length === 0) {
                         select.innerHTML = '<option value="">-- Tidak ada tool tersedia --</option>';
                     }
@@ -2128,16 +2280,11 @@
                 form.reportValidity();
                 return;
             }
-
-            const id = document.getElementById('b_id').value;
-            
-            // Check if photo is taken
             const fotoPinjam = document.getElementById('b_foto_pinjam').value;
             if (!fotoPinjam) {
                 showToast('Harap ambil foto pinjam terlebih dahulu!', 'error');
                 return;
             }
-            
             const btnSubmit = document.getElementById('btnSubmitBorrowing');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
@@ -2145,7 +2292,6 @@
 
             const toolId = document.getElementById('b_tool_id').value;
             const toolName = document.getElementById('b_tool_id').selectedOptions[0]?.textContent || '';
-            // Clean tool name (remove the count)
             const cleanToolName = toolName.replace(/\s*\(.*\)\s*$/, '').trim();
             
             const payload = {
@@ -2163,22 +2309,18 @@
             };
 
             try {
-                // 1. Save borrowing record
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload),
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
                 const result = await response.json();
-                
                 if (result.status === 'success') {
-                    // 2. Update tool status to "Dipinjam"
                     await updateToolStatus(toolId, 'Dipinjam');
-                    
                     closeModal('borrowing');
                     showToast("Peminjaman berhasil disimpan!", "success");
                     fetchBorrowings();
-                    fetchTools(); // Refresh tools list
+                    fetchTools();
                 } else {
                     showToast('Gagal menyimpan: ' + result.message, "error");
                 }
@@ -2187,7 +2329,6 @@
             } finally {
                 btnSubmit.innerHTML = originalHTML;
                 btnSubmit.disabled = false;
-                // Stop camera
                 stopCamera(streamPinjam);
                 streamPinjam = null;
             }
@@ -2195,13 +2336,11 @@
 
         async function updateToolStatus(toolId, newStatus) {
             try {
-                // Find the tool in toolsData
                 const tool = toolsData.find(t => t['ID'] && t['ID'].toString() === toolId.toString());
                 if (!tool) {
                     console.error('Tool not found:', toolId);
                     return;
                 }
-                
                 const payload = {
                     action: 'update',
                     sheet: 'Tools',
@@ -2211,7 +2350,6 @@
                     kondisi: tool['Kondisi'] || 'Baik',
                     status: newStatus
                 };
-                
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload),
@@ -2223,34 +2361,59 @@
         }
 
         // ========================================================================
-        // RETURN FUNCTION
+        // RETURN FUNCTIONS
         // ========================================================================
         async function openReturnModal(borrowingId) {
-            // Find borrowing data
+            stopCamera(streamKembali);
+            streamKembali = null;
+            
             const borrowing = borrowingsData.find(b => b['ID'] && b['ID'].toString() === borrowingId.toString());
             if (!borrowing) {
                 showToast('Data peminjaman tidak ditemukan', 'error');
                 return;
             }
             
-            // Set data
             document.getElementById('r_id').value = borrowingId;
             document.getElementById('r_tool_id').value = borrowing['Tool ID'] || '';
             document.getElementById('r_nama_tool').textContent = borrowing['Nama Tool'] || '-';
             document.getElementById('r_nama_peminjam').textContent = borrowing['Nama Peminjam'] || '-';
             
-            // Set return date to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('r_tanggal_kembali').value = today;
             
-            // Reset photo
             document.getElementById('r_foto_kembali').value = '';
             document.getElementById('fotoKembaliPreview').classList.add('hidden');
+            document.getElementById('kembaliPreviewImg').src = '';
             
-            // Start camera
-            streamKembali = await startCamera('cameraContainerKembali', 'videoKembali');
+            const overlay = document.getElementById('cameraOverlayKembali');
+            overlay.innerHTML = `
+                <div class="spinner"></div>
+                <span class="text-white text-sm">Mengaktifkan Kamera...</span>
+            `;
+            overlay.classList.remove('hidden');
             
             openModal('return');
+            
+            setTimeout(async () => {
+                streamKembali = await startCamera('cameraWrapperKembali', 'videoKembali', 'cameraOverlayKembali');
+                if (!streamKembali) {
+                    const overlayRetry = document.getElementById('cameraOverlayKembali');
+                    overlayRetry.innerHTML = `
+                        <div class="text-center">
+                            <i class="ph-fill ph-camera-slash text-5xl text-white/60 mb-3"></i>
+                            <p class="text-white text-sm font-medium">Gagal mengakses kamera</p>
+                            <p class="text-white/60 text-xs mt-1">Pastikan izin kamera diberikan</p>
+                            <button onclick="retryCamera('kembali')" class="mt-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                <i class="ph-bold ph-rotate-clockwise mr-1"></i> Coba Lagi
+                            </button>
+                            <button onclick="closeModal('return')" class="mt-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                Tutup
+                            </button>
+                        </div>
+                    `;
+                    overlayRetry.classList.remove('hidden');
+                }
+            }, 500);
         }
 
         async function submitReturn() {
@@ -2259,23 +2422,18 @@
                 form.reportValidity();
                 return;
             }
-
             const id = document.getElementById('r_id').value;
-            
-            // Check if photo is taken
             const fotoKembali = document.getElementById('r_foto_kembali').value;
             if (!fotoKembali) {
                 showToast('Harap ambil foto kembali terlebih dahulu!', 'error');
                 return;
             }
-            
             const btnSubmit = document.getElementById('btnSubmitReturn');
             const originalHTML = btnSubmit.innerHTML;
             btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Memproses...</span>`;
             btnSubmit.disabled = true;
 
             try {
-                // 1. Update borrowing record
                 const payload = {
                     action: 'update',
                     sheet: 'Borrowings',
@@ -2284,23 +2442,19 @@
                     status: 'Selesai',
                     foto_kembali: fotoKembali
                 };
-                
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload),
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
                 const result = await response.json();
-                
                 if (result.status === 'success') {
-                    // 2. Update tool status back to "Tersedia"
                     const toolId = document.getElementById('r_tool_id').value;
                     await updateToolStatus(toolId, 'Tersedia');
-                    
                     closeModal('return');
                     showToast("Pengembalian berhasil!", "success");
                     fetchBorrowings();
-                    fetchTools(); // Refresh tools list
+                    fetchTools();
                 } else {
                     showToast('Gagal menyimpan: ' + result.message, "error");
                 }
@@ -2309,7 +2463,6 @@
             } finally {
                 btnSubmit.innerHTML = originalHTML;
                 btnSubmit.disabled = false;
-                // Stop camera
                 stopCamera(streamKembali);
                 streamKembali = null;
             }
@@ -2320,14 +2473,12 @@
                 try {
                     const tbody = document.getElementById('borrowingsTableBody');
                     tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'delete', sheet: 'Borrowings', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
-                    
                     if (result.status === 'success') {
                         showToast("Data peminjaman berhasil dihapus!", "success");
                         fetchBorrowings();
@@ -2343,159 +2494,115 @@
         }
 
         // ========================================================================
-        // MODAL
+        // MODAL FUNCTIONS
         // ========================================================================
         function openModal(type) {
-            if (type === 'project') {
-                const modal = document.getElementById('projectModal');
-                const modalContent = document.getElementById('modalContent');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            } else if (type === 'product') {
-                const modal = document.getElementById('productModal');
-                const modalContent = document.getElementById('modalProductContent');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            } else if (type === 'sparepart') {
-                const modal = document.getElementById('sparepartModal');
-                const modalContent = document.getElementById('modalSparepartContent');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            } else if (type === 'tool') {
-                const modal = document.getElementById('toolModal');
-                const modalContent = document.getElementById('modalToolContent');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            } else if (type === 'borrowing') {
-                const modal = document.getElementById('borrowingModal');
-                const modalContent = document.getElementById('modalBorrowingContent');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            } else if (type === 'return') {
-                const modal = document.getElementById('returnModal');
-                const modalContent = document.getElementById('modalReturnContent');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            }
+            const modalMap = {
+                'project': { modal: 'projectModal', content: 'modalContent' },
+                'product': { modal: 'productModal', content: 'modalProductContent' },
+                'sparepart': { modal: 'sparepartModal', content: 'modalSparepartContent' },
+                'tool': { modal: 'toolModal', content: 'modalToolContent' },
+                'borrowing': { modal: 'borrowingModal', content: 'modalBorrowingContent' },
+                'return': { modal: 'returnModal', content: 'modalReturnContent' }
+            };
+            
+            const config = modalMap[type];
+            if (!config) return;
+            
+            const modal = document.getElementById(config.modal);
+            const content = document.getElementById(config.content);
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
         }
 
         function closeModal(type) {
-            if (type === 'project') {
-                const modal = document.getElementById('projectModal');
-                const modalContent = document.getElementById('modalContent');
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.getElementById('p_id').value = '';
-                    document.getElementById('projectModalTitle').textContent = 'Project Baru';
-                    document.getElementById('projectBtnText').textContent = 'Simpan';
-                    document.getElementById('addProjectForm').reset();
-                    const today = new Date().toISOString().split('T')[0];
-                    document.getElementById('p_tanggal').value = today;
-                }, 300);
-            } else if (type === 'product') {
-                const modal = document.getElementById('productModal');
-                const modalContent = document.getElementById('modalProductContent');
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.getElementById('prod_id').value = '';
-                    document.getElementById('productModalTitle').textContent = 'Product Baru';
-                    document.getElementById('productBtnText').textContent = 'Simpan';
-                    document.getElementById('addProductForm').reset();
-                    const today = new Date().toISOString().split('T')[0];
-                    document.getElementById('prod_tanggal').value = today;
-                }, 300);
-            } else if (type === 'sparepart') {
-                const modal = document.getElementById('sparepartModal');
-                const modalContent = document.getElementById('modalSparepartContent');
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.getElementById('s_id').value = '';
-                    document.getElementById('sparepartModalTitle').textContent = 'Sparepart Baru';
-                    document.getElementById('sparepartBtnText').textContent = 'Simpan';
-                    document.getElementById('addSparepartForm').reset();
-                }, 300);
-            } else if (type === 'tool') {
-                const modal = document.getElementById('toolModal');
-                const modalContent = document.getElementById('modalToolContent');
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.getElementById('t_id').value = '';
-                    document.getElementById('toolModalTitle').textContent = 'Tool Baru';
-                    document.getElementById('toolBtnText').textContent = 'Simpan';
-                    document.getElementById('addToolForm').reset();
-                }, 300);
-            } else if (type === 'borrowing') {
-                const modal = document.getElementById('borrowingModal');
-                const modalContent = document.getElementById('modalBorrowingContent');
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.getElementById('b_id').value = '';
-                    document.getElementById('borrowingModalTitle').textContent = 'Pinjam Tool';
-                    document.getElementById('borrowingBtnText').textContent = 'Pinjam';
-                    document.getElementById('addBorrowingForm').reset();
-                    document.getElementById('b_foto_pinjam').value = '';
-                    document.getElementById('fotoPinjamPreview').classList.add('hidden');
-                    // Stop camera
-                    stopCamera(streamPinjam);
-                    streamPinjam = null;
-                }, 300);
-            } else if (type === 'return') {
-                const modal = document.getElementById('returnModal');
-                const modalContent = document.getElementById('modalReturnContent');
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.getElementById('r_id').value = '';
-                    document.getElementById('r_tool_id').value = '';
-                    document.getElementById('r_foto_kembali').value = '';
-                    document.getElementById('fotoKembaliPreview').classList.add('hidden');
-                    document.getElementById('returnForm').reset();
-                    // Stop camera
-                    stopCamera(streamKembali);
-                    streamKembali = null;
-                }, 300);
-            }
+            const modalMap = {
+                'project': { modal: 'projectModal', content: 'modalContent', reset: resetProjectForm },
+                'product': { modal: 'productModal', content: 'modalProductContent', reset: resetProductForm },
+                'sparepart': { modal: 'sparepartModal', content: 'modalSparepartContent', reset: resetSparepartForm },
+                'tool': { modal: 'toolModal', content: 'modalToolContent', reset: resetToolForm },
+                'borrowing': { modal: 'borrowingModal', content: 'modalBorrowingContent', reset: resetBorrowingForm },
+                'return': { modal: 'returnModal', content: 'modalReturnContent', reset: resetReturnForm }
+            };
+            
+            const config = modalMap[type];
+            if (!config) return;
+            
+            const modal = document.getElementById(config.modal);
+            const content = document.getElementById(config.content);
+            
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                if (config.reset) config.reset();
+            }, 300);
+        }
+
+        function resetProjectForm() {
+            document.getElementById('p_id').value = '';
+            document.getElementById('projectModalTitle').textContent = 'Project Baru';
+            document.getElementById('projectBtnText').textContent = 'Simpan';
+            document.getElementById('addProjectForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('p_tanggal').value = today;
+        }
+
+        function resetProductForm() {
+            document.getElementById('prod_id').value = '';
+            document.getElementById('productModalTitle').textContent = 'Product Baru';
+            document.getElementById('productBtnText').textContent = 'Simpan';
+            document.getElementById('addProductForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('prod_tanggal').value = today;
+        }
+
+        function resetSparepartForm() {
+            document.getElementById('s_id').value = '';
+            document.getElementById('sparepartModalTitle').textContent = 'Sparepart Baru';
+            document.getElementById('sparepartBtnText').textContent = 'Simpan';
+            document.getElementById('addSparepartForm').reset();
+        }
+
+        function resetToolForm() {
+            document.getElementById('t_id').value = '';
+            document.getElementById('toolModalTitle').textContent = 'Tool Baru';
+            document.getElementById('toolBtnText').textContent = 'Simpan';
+            document.getElementById('addToolForm').reset();
+        }
+
+        function resetBorrowingForm() {
+            document.getElementById('b_id').value = '';
+            document.getElementById('borrowingModalTitle').textContent = 'Pinjam Tool';
+            document.getElementById('borrowingBtnText').textContent = 'Pinjam';
+            document.getElementById('addBorrowingForm').reset();
+            document.getElementById('b_foto_pinjam').value = '';
+            document.getElementById('fotoPinjamPreview').classList.add('hidden');
+            document.getElementById('pinjamPreviewImg').src = '';
+            stopCamera(streamPinjam);
+            streamPinjam = null;
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('b_tanggal_pinjam').value = today;
+        }
+
+        function resetReturnForm() {
+            document.getElementById('r_id').value = '';
+            document.getElementById('r_tool_id').value = '';
+            document.getElementById('r_foto_kembali').value = '';
+            document.getElementById('fotoKembaliPreview').classList.add('hidden');
+            document.getElementById('kembaliPreviewImg').src = '';
+            document.getElementById('returnForm').reset();
+            stopCamera(streamKembali);
+            streamKembali = null;
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('r_tanggal_kembali').value = today;
         }
 
         // ========================================================================
@@ -2509,7 +2616,7 @@
             document.getElementById('r_tanggal_kembali').value = today;
         });
 
-        // Override openModal for borrowing to load tools first
+        // Override openModal for borrowing
         const originalOpenModal = openModal;
         openModal = function(type) {
             if (type === 'borrowing') {

@@ -11,11 +11,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#2b3a8c',
+                            darkblue: '#1e2968',
+                            red: '#e41e26',
+                            darkred: '#b8171e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         .loader {
             border: 3px solid #f1f5f9;
@@ -72,21 +92,6 @@
         .condition-worn { background: #fef3c7; color: #92400e; }
         .condition-broken { background: #fecaca; color: #991b1b; }
         .condition-default { background: #f1f5f9; color: #475569; }
-
-        /* Custom Colors */
-        .bg-brand-blue { background-color: #2b3a8c; }
-        .bg-brand-darkblue { background-color: #1e2968; }
-        .bg-brand-red { background-color: #e41e26; }
-        .bg-brand-darkred { background-color: #b8171e; }
-        .text-brand-blue { color: #2b3a8c; }
-        .text-brand-red { color: #e41e26; }
-        .border-brand-blue { border-color: #2b3a8c; }
-        .hover\:bg-brand-darkblue:hover { background-color: #1e2968; }
-        .hover\:bg-brand-darkred:hover { background-color: #b8171e; }
-        .hover\:text-brand-blue:hover { color: #2b3a8c; }
-        .hover\:text-brand-red:hover { color: #e41e26; }
-        .shadow-brand-blue\/20 { box-shadow: 0 4px 14px rgba(43, 58, 140, 0.2); }
-        .shadow-brand-red\/20 { box-shadow: 0 4px 14px rgba(228, 30, 38, 0.2); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
@@ -103,7 +108,7 @@
         <div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl w-full max-w-md relative z-10">
             <div class="text-center mb-10">
                 <div class="flex items-center justify-center gap-2 mb-4">
-                    <div class="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center shadow-lg shadow-brand-blue/20 transform rotate-3">
+                    <div class="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center shadow-lg shadow-brand-blue/30 transform rotate-3">
                         <i class="ph-duotone ph-cpu text-[28px] text-white -rotate-3"></i>
                     </div>
                 </div>
@@ -220,13 +225,7 @@
 
             <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50">
                 
-                <div id="view-dashboard" class="hidden max-w-6xl mx-auto">
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-center">
-                        <i class="ph-duotone ph-cpu text-6xl text-brand-blue opacity-50"></i>
-                        <h2 class="text-2xl font-bold text-slate-700 mt-4">Selamat Datang di Rnd HUB</h2>
-                        <p class="text-slate-500 mt-2">Sistem Manajemen R&D PT Interskala Mandiri Indonesia</p>
-                    </div>
-                </div>
+                <div id="view-dashboard" class="hidden max-w-6xl mx-auto"></div>
 
                 <!-- View Projects -->
                 <div id="view-projects" class="hidden max-w-[1400px] mx-auto">
@@ -649,17 +648,13 @@
     </div>
 
     <script>
-        // ========================================================================
         // --- VARIABEL GLOBAL ---
-        // ========================================================================
         let projectsData = [];
         let productsData = [];
         let sparepartsData = [];
         let toolsData = [];
 
-        // ========================================================================
         // --- SIDEBAR ---
-        // ========================================================================
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
         let isSidebarOpen = false;
@@ -677,9 +672,7 @@
             }
         }
 
-        // ========================================================================
         // --- TOAST ---
-        // ========================================================================
         let toastTimeout;
         function showToast(message, type = 'success') {
             clearTimeout(toastTimeout);
@@ -708,9 +701,7 @@
             }, 3500);
         }
 
-        // ========================================================================
         // --- CONFIRM ---
-        // ========================================================================
         let onConfirmCallback = null;
         
         function showConfirm(message, callback) {
@@ -747,9 +738,7 @@
             closeConfirm();
         });
 
-        // ========================================================================
         // --- LOGIN ---
-        // ========================================================================
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -782,9 +771,7 @@
             showToast("Anda telah keluar sistem.", "info");
         }
 
-        // ========================================================================
         // --- NAVIGASI ---
-        // ========================================================================
         function switchMenu(menuName) {
             if(window.innerWidth < 768 && isSidebarOpen) {
                 toggleSidebar();
@@ -1421,7 +1408,7 @@
         }
 
         // ========================================================================
-        // --- CRUD TOOLS (FIXED - Status & Kondisi sudah diperbaiki) ---
+        // --- CRUD TOOLS (FIXED) ---
         // ========================================================================
         
         async function fetchTools() {
@@ -1455,34 +1442,44 @@
             }
 
             data.forEach((item, index) => {
-                // Ambil nilai dengan trim untuk menghilangkan spasi
-                const kondisi = String(item['Kondisi'] || 'Unknown').trim();
-                const status = String(item['Status'] || 'Unknown').trim();
-                const namaTool = String(item['Nama Tool'] || '-').trim();
-                const jumlah = parseInt(item['Jumlah']) || 0;
-
-                // Kondisi badge
+                const kondisi = (item['Kondisi'] || 'Unknown').trim();
                 let conditionClass = 'condition-default';
                 if (kondisi === 'Baik') conditionClass = 'condition-good';
                 else if (kondisi === 'Sedang') conditionClass = 'condition-worn';
                 else if (kondisi === 'Rusak') conditionClass = 'condition-broken';
 
-                // Status badge
-                let statusClass = 'status-default';
-                if (status === 'Tersedia') statusClass = 'status-success';
-                else if (status === 'Dipinjam') statusClass = 'status-warning';
-                else if (status === 'Perbaikan') statusClass = 'status-info';
-                else if (status === 'Rusak') statusClass = 'status-danger';
+                // PERBAIKAN: Gunakan trim() untuk membersihkan spasi
+                const statusRaw = (item['Status'] || 'Unknown').trim();
+                
+                // Mapping status dengan class dan label yang benar
+                const statusMap = {
+                    'Tersedia': { class: 'status-success', label: 'Tersedia' },
+                    'Dipinjam': { class: 'status-warning', label: 'Dipinjam' },
+                    'Perbaikan': { class: 'status-info', label: 'Perbaikan' },
+                    'Rusak': { class: 'status-danger', label: 'Rusak' }
+                };
+                
+                // Cari status di mapping, jika tidak ada gunakan default
+                const statusInfo = statusMap[statusRaw];
+                let statusClass, statusDisplay;
+                
+                if (statusInfo) {
+                    statusClass = statusInfo.class;
+                    statusDisplay = statusInfo.label;
+                } else {
+                    statusClass = 'status-default';
+                    statusDisplay = statusRaw || 'Unknown';
+                }
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
                 tr.innerHTML = `
                     <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
-                    <td class="p-4 font-extrabold text-slate-900">${namaTool}</td>
-                    <td class="p-4 text-slate-600 font-semibold">${jumlah}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Tool'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-semibold">${item['Jumlah'] || 0}</td>
                     <td class="p-4"><span class="condition-badge ${conditionClass}">${kondisi}</span></td>
-                    <td class="p-4"><span class="status-badge ${statusClass}">${status}</span></td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${statusDisplay}</span></td>
                     <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
                         <div class="flex items-center justify-center gap-1">
                             <button onclick="editTool('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
@@ -1717,9 +1714,7 @@
             }
         }
 
-        // ========================================================================
         // --- INIT ---
-        // ========================================================================
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('p_tanggal').value = today;

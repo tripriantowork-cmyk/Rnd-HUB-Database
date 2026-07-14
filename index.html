@@ -63,7 +63,7 @@
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKxKw7sBTPVqOOv1xhBVhDCpBb-X8TJKjKg3Ziuyy7w1az5_126PGgFgEcf8AXF58fqg/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCdWiDlJDpUCMlOyKkObm6drUEG-hcDnn3IGlePaKBMj8-0-RB6u8sOK-wW9Bu2rSBVA/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -148,11 +148,6 @@
                 <button onclick="switchMenu('projects')" id="nav-projects" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
                     <i class="ph-duotone ph-folder-open text-xl opacity-70 group-hover:opacity-100 transition"></i>
                     <span class="font-semibold">Daftar Project</span>
-                </button>
-                
-                <button onclick="switchMenu('products-history')" id="nav-products-history" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
-                    <i class="ph-duotone ph-clock-counter-clockwise text-xl opacity-70 group-hover:opacity-100 transition"></i>
-                    <span class="font-semibold">Products History</span>
                 </button>
             </div>
 
@@ -239,50 +234,6 @@
                     </div>
                 </div>
 
-                <!-- View Products History -->
-                <div id="view-products-history" class="hidden max-w-[1400px] mx-auto">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <p class="text-slate-500 text-sm font-medium">Manajemen data histori produk dan testing.</p>
-                        </div>
-                        <button onclick="openProductHistoryModal()" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
-                            <i class="ph-bold ph-plus text-base"></i> Tambah Histori
-                        </button>
-                    </div>
-
-                    <!-- Table Container Modern Card -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse min-w-[1000px]">
-                                <thead>
-                                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
-                                        <th class="p-4 w-16 text-center">No</th>
-                                        <th class="p-4">No SO/PO</th>
-                                        <th class="p-4">Nama Produk</th>
-                                        <th class="p-4">Customer</th>
-                                        <th class="p-4">Tanggal</th>
-                                        <th class="p-4">Link Video Test</th>
-                                        <th class="p-4">Status</th>
-                                        <th class="p-4">Keterangan</th>
-                                        <th class="p-4 w-24 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productsHistoryTableBody" class="text-sm divide-y divide-slate-100">
-                                    <!-- Initial Loading State -->
-                                    <tr>
-                                        <td colspan="9" class="p-16 text-center">
-                                            <div class="flex flex-col items-center justify-center gap-4">
-                                                <div class="loader"></div>
-                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
             </main>
         </div>
     </div>
@@ -344,78 +295,6 @@
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal()" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitProject()" id="btnSubmit" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
-                    <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Tambah Products History (Glassmorphism + Modern) -->
-    <div id="productHistoryModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalHistoryContent">
-            <!-- Header Modal -->
-            <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
-                        <i class="ph-duotone ph-package text-xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Histori Produk Baru</h3>
-                </div>
-                <button onclick="closeProductHistoryModal()" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
-                    <i class="ph-bold ph-x text-xl"></i>
-                </button>
-            </div>
-            
-            <!-- Body Modal -->
-            <div class="p-6 overflow-y-auto bg-slate-50/50">
-                <form id="addProductHistoryForm" class="space-y-5">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO <span class="text-brand-red">*</span></label>
-                            <input type="text" id="ph_sopo" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
-                            <input type="date" id="ph_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Produk <span class="text-brand-red">*</span></label>
-                        <input type="text" id="ph_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
-                        <input type="text" id="ph_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Link Video Test</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="ph-duotone ph-video-camera text-base text-slate-400"></i>
-                            </div>
-                            <input type="url" id="ph_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-brand-red">*</span></label>
-                        <select id="ph_status" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
-                            <option value="" disabled selected>Pilih Status</option>
-                            <option value="Passed">Passed</option>
-                            <option value="Failed">Failed</option>
-                            <option value="On Progress">On Progress</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
-                        <textarea id="ph_keterangan" rows="2" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Footer Modal -->
-            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
-                <button onclick="closeProductHistoryModal()" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
-                <button onclick="submitProductHistory()" id="btnSubmitHistory" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
                     <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
                 </button>
             </div>
@@ -576,16 +455,13 @@
             // Sembunyikan semua view
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-projects').classList.add('hidden');
-            document.getElementById('view-products-history').classList.add('hidden');
             
             // Reset state aktif pada tombol navigasi
-            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products-history'];
+            const navButtons = ['nav-dashboard', 'nav-projects'];
             navButtons.forEach(id => {
                 const btn = document.getElementById(id);
-                if(btn) {
-                    btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
-                    btn.classList.add('text-blue-100');
-                }
+                btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
+                btn.classList.add('text-blue-100');
             });
 
             // Aktifkan view terpilih
@@ -593,24 +469,19 @@
             
             // Update tombol aktif
             const activeBtn = document.getElementById(`nav-${menuName}`);
-            if(activeBtn) {
-                activeBtn.classList.add('bg-white/15', 'text-white', 'shadow-inner');
-                activeBtn.classList.remove('text-blue-100');
-            }
+            activeBtn.classList.add('bg-white/15', 'text-white', 'shadow-inner');
+            activeBtn.classList.remove('text-blue-100');
 
             // Update Judul Header
             const titles = {
                 'dashboard': 'Dashboard',
-                'projects': 'Daftar Project',
-                'products-history': 'Products History'
+                'projects': 'Daftar Project'
             };
             document.getElementById('pageTitle').innerText = titles[menuName];
 
-            // Fetch data jika masuk ke halaman tertentu
+            // Fetch data jika masuk ke halaman projects
             if(menuName === 'projects') {
                 fetchProjects();
-            } else if (menuName === 'products-history') {
-                fetchProductsHistory();
             }
         }
 
@@ -622,8 +493,7 @@
             tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
             
             try {
-                // Menambahkan parameter sheet=Projects untuk membedakan dengan Products History
-                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Projects');
+                const response = await fetch(APPS_SCRIPT_URL);
                 const result = await response.json();
                 
                 if (result.status === 'success') {
@@ -681,7 +551,8 @@
                 tbody.appendChild(tr);
             });
         }
-        // Tambah Data Project
+
+        // Tambah Data
         async function submitProject() {
             const form = document.getElementById('addProjectForm');
             if(!form.checkValidity()) {
@@ -696,10 +567,38 @@
 
             const payload = {
                 action: 'add',
-                sheet: 'Projects', // Tambahan properti sheet
                 nama_project: document.getElementById('p_nama').value,
                 no_so: document.getElementById('p_sopo').value,
-        // Hapus Data Project
+                tanggal: document.getElementById('p_tanggal').value,
+                customer: document.getElementById('p_customer').value,
+                link: document.getElementById('p_link').value,
+                keterangan: document.getElementById('p_keterangan').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal();
+                    showToast("Project baru berhasil disimpan!", "success");
+                    fetchProjects(); // Refresh tabel
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        // Hapus Data
         function deleteProject(id) {
             showConfirm("Apakah Anda yakin ingin menghapus data ini?", async () => {
                 try {
@@ -709,7 +608,7 @@
 
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
-                        body: JSON.stringify({ action: 'delete', sheet: 'Projects', id: id }),
+                        body: JSON.stringify({ action: 'delete', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
                     const result = await response.json();
@@ -727,159 +626,6 @@
                 }
             });
         }
-
-        // ==========================================
-        // SISTEM CRUD PRODUCTS HISTORY
-        // ==========================================
-        
-        async function fetchProductsHistory() {
-            const tbody = document.getElementById('productsHistoryTableBody');
-            tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
-            
-            try {
-                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Products History');
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    renderProductsHistoryTable(result.data);
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
-                    showToast("Gagal memuat data: " + result.message, "error");
-                }
-            } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
-                showToast("Kesalahan jaringan.", "error");
-            }
-        }
-
-        function renderProductsHistoryTable(data) {
-            const tbody = document.getElementById('productsHistoryTableBody');
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada histori terdaftar. Klik "Tambah Histori".</td></tr>`;
-                return;
-            }
-
-            data.forEach((item, index) => {
-                const linkHTML = item['Link Video Test'] ? 
-                    `<a href="${item['Link Video Test']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-play-circle text-sm"></i> Tonton</a>` 
-                    : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
-
-                // Format tanggal rapi
-                let tanggalText = item['Tanggal'];
-                try {
-                    if (tanggalText) {
-                        const dateObj = new Date(tanggalText);
-                        tanggalText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
-                    }
-                } catch(e) {}
-
-                // Badge Status
-                let statusBadge = `<span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold border border-slate-200">${item['Status'] || '-'}</span>`;
-                if(item['Status'] === 'Passed') {
-                    statusBadge = `<span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold border border-emerald-200 inline-flex items-center gap-1"><i class="ph-bold ph-check"></i> Passed</span>`;
-                } else if(item['Status'] === 'Failed') {
-                    statusBadge = `<span class="bg-red-50 text-brand-red px-3 py-1 rounded-full text-xs font-bold border border-red-200 inline-flex items-center gap-1"><i class="ph-bold ph-x"></i> Failed</span>`;
-                } else if(item['Status'] === 'On Progress') {
-                    statusBadge = `<span class="bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-xs font-bold border border-amber-200 inline-flex items-center gap-1"><i class="ph-bold ph-spinner animate-spin"></i> Process</span>`;
-                }
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition duration-200 group";
-                tr.innerHTML = `
-                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
-                    <td class="p-4 font-semibold text-slate-700">${item['No SO/PO'] || '-'}</td>
-                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Produk'] || '-'}</td>
-                    <td class="p-4 text-slate-600 font-medium">${item['Customer'] || '-'}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText || '-'}</td>
-                    <td class="p-4">${linkHTML}</td>
-                    <td class="p-4">${statusBadge}</td>
-                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan']}">${item['Keterangan'] || '-'}</td>
-                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
-                        <button onclick="deleteProductHistory('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2.5 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
-                            <i class="ph-duotone ph-trash text-base"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        async function submitProductHistory() {
-            const form = document.getElementById('addProductHistoryForm');
-            if(!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const btnSubmit = document.getElementById('btnSubmitHistory');
-            const originalHTML = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
-            btnSubmit.disabled = true;
-
-            const payload = {
-                action: 'add',
-                sheet: 'Products History', // Kirim ke sheet Products History
-                no_so: document.getElementById('ph_sopo').value,
-                nama_produk: document.getElementById('ph_nama').value,
-                customer: document.getElementById('ph_customer').value,
-                tanggal: document.getElementById('ph_tanggal').value,
-                link: document.getElementById('ph_link').value,
-                status: document.getElementById('ph_status').value,
-                keterangan: document.getElementById('ph_keterangan').value
-            };
-
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    closeProductHistoryModal();
-                    showToast("Histori Produk berhasil disimpan!", "success");
-                    fetchProductsHistory(); // Refresh tabel
-                } else {
-                    showToast('Gagal menyimpan: ' + result.message, "error");
-                }
-            } catch (error) {
-                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
-            } finally {
-                btnSubmit.innerHTML = originalHTML;
-                btnSubmit.disabled = false;
-            }
-        }
-
-        function deleteProductHistory(id) {
-            showConfirm("Apakah Anda yakin ingin menghapus histori ini?", async () => {
-                try {
-                    const tbody = document.getElementById('productsHistoryTableBody');
-                    tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
-                    const response = await fetch(APPS_SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: 'delete', sheet: 'Products History', id: id }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        showToast("Histori berhasil dihapus!", "success");
-                        fetchProductsHistory();
-                    } else {
-                        showToast('Gagal menghapus: ' + result.message, 'error');
-                        fetchProductsHistory();
-                    }
-                } catch (error) {
-                    showToast('Terjadi kesalahan jaringan.', 'error');
-                    fetchProductsHistory();
-                }
-            });
-        }
-
 
         // --- SISTEM MODAL ---
         const modal = document.getElementById('projectModal');
@@ -901,29 +647,6 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-            }, 300);
-        }
-
-        // Modal Products History
-        const modalHistory = document.getElementById('productHistoryModal');
-        const modalHistoryContent = document.getElementById('modalHistoryContent');
-
-        function openProductHistoryModal() {
-            document.getElementById('addProductHistoryForm').reset();
-            modalHistory.classList.remove('hidden');
-            modalHistory.classList.add('flex');
-            setTimeout(() => {
-                modalHistory.classList.remove('opacity-0');
-                modalHistoryContent.classList.remove('scale-95');
-            }, 10);
-        }
-
-        function closeProductHistoryModal() {
-            modalHistory.classList.add('opacity-0');
-            modalHistoryContent.classList.add('scale-95');
-            setTimeout(() => {
-                modalHistory.classList.add('hidden');
-                modalHistory.classList.remove('flex');
             }, 300);
         }
     </script>

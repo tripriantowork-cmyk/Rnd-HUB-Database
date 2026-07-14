@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rnd HUB - PT Interskala Mandiri Indonesia</title>
     
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <script>
@@ -89,30 +93,13 @@
         .condition-broken { background: #fecaca; color: #991b1b; }
         .condition-default { background: #f1f5f9; color: #475569; }
 
-        .photo-thumb {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid #e2e8f0;
-            cursor: pointer;
-        }
-        .photo-thumb:hover {
-            border-color: #2b3a8c;
-        }
-        
-        .photo-modal-img {
-            max-width: 90vw;
-            max-height: 80vh;
-            border-radius: 12px;
-        }
-
+        /* Camera Styles */
         .camera-box {
             position: relative;
             width: 100%;
-            max-width: 480px;
+            max-width: 400px;
             margin: 0 auto;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
             background: #0f172a;
             aspect-ratio: 4/3;
@@ -128,28 +115,21 @@
         }
         .camera-box .btn-capture {
             position: absolute;
-            bottom: 20px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
             background: white;
             border: none;
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-        .camera-box .btn-capture:hover {
-            transform: translateX(-50%) scale(1.05);
-        }
-        .camera-box .btn-capture:active {
-            transform: translateX(-50%) scale(0.95);
         }
         .camera-box .btn-capture .inner {
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: #e41e26;
             margin: 6px auto;
@@ -163,17 +143,11 @@
             background: rgba(0,0,0,0.6);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 12px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .camera-box .btn-close-camera:hover {
-            background: rgba(0,0,0,0.8);
         }
         .camera-box .camera-placeholder {
             position: absolute;
@@ -188,15 +162,15 @@
             background: #0f172a;
             color: white;
             z-index: 5;
-            border-radius: 16px;
-            gap: 12px;
+            border-radius: 12px;
+            gap: 8px;
         }
         .camera-box .camera-placeholder i {
-            font-size: 48px;
+            font-size: 40px;
             color: #475569;
         }
         .camera-box .camera-placeholder p {
-            font-size: 14px;
+            font-size: 13px;
             color: #94a3b8;
         }
         .camera-box .camera-placeholder.hidden {
@@ -212,21 +186,39 @@
             opacity: 0;
             pointer-events: none;
             z-index: 15;
-            border-radius: 16px;
+            border-radius: 12px;
             transition: opacity 0.15s;
         }
         .camera-box .flash-overlay.active {
             opacity: 0.7;
         }
+
+        .photo-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+        }
+        .photo-thumb:hover {
+            border-color: #2b3a8c;
+        }
+        .photo-modal-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
 
+    <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3UTzKLYmVVmM8YL89Unj6fjZ9HCYLZgQbvywvKjFye8c-gH1LL7I4jrAUgslyQ2XT7w/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZeZOKKfal5rEUUYM_J0xl05m19N54sScO1ykUE0NrV7MGIo9g60pmHuOsN2imKflZSA/exec";
     </script>
 
-    <!-- LOGIN PAGE -->
+    <!-- HALAMAN LOGIN -->
     <div id="loginPage" class="min-h-screen flex items-center justify-center p-4 bg-slate-100 relative overflow-hidden transition-opacity duration-300">
         <div class="absolute top-0 left-0 w-full h-1/2 bg-brand-blue rounded-b-[4rem] sm:rounded-b-[8rem]"></div>
         
@@ -270,7 +262,7 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
+    <!-- HALAMAN UTAMA -->
     <div id="mainApp" class="hidden min-h-screen bg-slate-50 flex">
         
         <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
@@ -355,13 +347,7 @@
 
             <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50">
                 
-                <div id="view-dashboard" class="hidden max-w-6xl mx-auto">
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-center">
-                        <i class="ph-fill ph-cpu text-6xl text-brand-blue mb-4"></i>
-                        <h2 class="text-2xl font-bold text-slate-800">Selamat Datang di Rnd HUB</h2>
-                        <p class="text-slate-500 mt-2">Sistem Manajemen R&D PT Interskala Mandiri Indonesia</p>
-                    </div>
-                </div>
+                <div id="view-dashboard" class="hidden max-w-6xl mx-auto"></div>
 
                 <!-- View Projects -->
                 <div id="view-projects" class="hidden max-w-[1400px] mx-auto">
@@ -373,6 +359,7 @@
                             <i class="ph-bold ph-plus text-base"></i> Tambah Project
                         </button>
                     </div>
+
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse min-w-[1000px]">
@@ -389,7 +376,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="projectsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span></div></td></tr>
+                                    <tr>
+                                        <td colspan="8" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -406,6 +400,7 @@
                             <i class="ph-bold ph-plus text-base"></i> Tambah Product
                         </button>
                     </div>
+
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse min-w-[1200px]">
@@ -423,7 +418,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="productsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr><td colspan="9" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span></div></td></tr>
+                                    <tr>
+                                        <td colspan="9" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -440,6 +442,7 @@
                             <i class="ph-bold ph-plus text-base"></i> Tambah Sparepart
                         </button>
                     </div>
+
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse min-w-[900px]">
@@ -454,7 +457,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sparepartsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span></div></td></tr>
+                                    <tr>
+                                        <td colspan="6" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -471,6 +481,7 @@
                             <i class="ph-bold ph-plus text-base"></i> Tambah Tool
                         </button>
                     </div>
+
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse min-w-[900px]">
@@ -485,7 +496,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="toolsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span></div></td></tr>
+                                    <tr>
+                                        <td colspan="6" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -521,7 +539,14 @@
                                     </tr>
                                 </thead>
                                 <tbody id="borrowingsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr><td colspan="10" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span></div></td></tr>
+                                    <tr>
+                                        <td colspan="10" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -532,11 +557,9 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
     <!-- MODAL PROJECT -->
-    <!-- ============================================================ -->
     <div id="projectModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalContent">
             <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
@@ -548,26 +571,44 @@
                     <i class="ph-bold ph-x text-xl"></i>
                 </button>
             </div>
+            
             <div class="p-6 overflow-y-auto bg-slate-50/50">
                 <form id="addProjectForm" class="space-y-5">
                     <input type="hidden" id="p_id" value="">
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Project <span class="text-brand-red">*</span></label>
-                    <input type="text" id="p_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div><label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO</label>
-                        <input type="text" id="p_sopo" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                        <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
-                        <input type="date" id="p_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700"></div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Project <span class="text-brand-red">*</span></label>
+                        <input type="text" id="p_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
                     </div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
-                    <input type="text" id="p_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Link BOM/BOQ</label>
-                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="ph-duotone ph-link text-base text-slate-400"></i></div>
-                    <input type="url" id="p_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
-                    <textarea id="p_keterangan" rows="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO</label>
+                            <input type="text" id="p_sopo" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
+                            <input type="date" id="p_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
+                        <input type="text" id="p_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Link BOM/BOQ</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="ph-duotone ph-link text-base text-slate-400"></i>
+                            </div>
+                            <input type="url" id="p_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
+                        <textarea id="p_keterangan" rows="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea>
+                    </div>
                 </form>
             </div>
+            
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal('project')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitProject()" id="btnSubmitProject" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
@@ -579,7 +620,7 @@
 
     <!-- MODAL PRODUCT -->
     <div id="productModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalProductContent">
             <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
@@ -591,33 +632,53 @@
                     <i class="ph-bold ph-x text-xl"></i>
                 </button>
             </div>
+            
             <div class="p-6 overflow-y-auto bg-slate-50/50">
                 <form id="addProductForm" class="space-y-5">
                     <input type="hidden" id="prod_id" value="">
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Produk <span class="text-brand-red">*</span></label>
-                    <input type="text" id="prod_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO <span class="text-brand-red">*</span></label>
-                    <input type="text" id="prod_sopo" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
-                    <input type="text" id="prod_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
-                    <input type="date" id="prod_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Link Video Test</label>
-                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="ph-duotone ph-video-camera text-base text-slate-400"></i></div>
-                    <input type="url" id="prod_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-brand-red">*</span></label>
-                    <select id="prod_status" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                        <option value="">Pilih Status</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Testing">Testing</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Failed">Failed</option>
-                        <option value="On Hold">On Hold</option>
-                    </select></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
-                    <textarea id="prod_keterangan" rows="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea></div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Produk <span class="text-brand-red">*</span></label>
+                        <input type="text" id="prod_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">No SO/PO <span class="text-brand-red">*</span></label>
+                        <input type="text" id="prod_sopo" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Customer <span class="text-brand-red">*</span></label>
+                        <input type="text" id="prod_customer" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal <span class="text-brand-red">*</span></label>
+                        <input type="date" id="prod_tanggal" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Link Video Test</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="ph-duotone ph-video-camera text-base text-slate-400"></i>
+                            </div>
+                            <input type="url" id="prod_link" placeholder="https://..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-brand-red">*</span></label>
+                        <select id="prod_status" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                            <option value="">Pilih Status</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Testing">Testing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Failed">Failed</option>
+                            <option value="On Hold">On Hold</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Keterangan</label>
+                        <textarea id="prod_keterangan" rows="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></textarea>
+                    </div>
                 </form>
             </div>
+            
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal('product')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitProduct()" id="btnSubmitProduct" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
@@ -629,7 +690,7 @@
 
     <!-- MODAL SPAREPART -->
     <div id="sparepartModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalSparepartContent">
             <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
@@ -641,19 +702,29 @@
                     <i class="ph-bold ph-x text-xl"></i>
                 </button>
             </div>
+            
             <div class="p-6 overflow-y-auto bg-slate-50/50">
                 <form id="addSparepartForm" class="space-y-5">
                     <input type="hidden" id="s_id" value="">
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Sparepart <span class="text-brand-red">*</span></label>
-                    <input type="text" id="s_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Spesifikasi</label>
-                    <textarea id="s_spesifikasi" rows="2" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Detail spesifikasi sparepart..."></textarea></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Stok <span class="text-brand-red">*</span></label>
-                    <input type="number" id="s_stok" required min="0" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Lokasi Penyimpanan <span class="text-brand-red">*</span></label>
-                    <input type="text" id="s_lokasi" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Contoh: Rak A-1, Gudang 2"></div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Sparepart <span class="text-brand-red">*</span></label>
+                        <input type="text" id="s_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Spesifikasi</label>
+                        <textarea id="s_spesifikasi" rows="2" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Detail spesifikasi sparepart..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Stok <span class="text-brand-red">*</span></label>
+                        <input type="number" id="s_stok" required min="0" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Lokasi Penyimpanan <span class="text-brand-red">*</span></label>
+                        <input type="text" id="s_lokasi" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Contoh: Rak A-1, Gudang 2">
+                    </div>
                 </form>
             </div>
+            
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal('sparepart')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitSparepart()" id="btnSubmitSparepart" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
@@ -665,7 +736,7 @@
 
     <!-- MODAL TOOL -->
     <div id="toolModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalToolContent">
             <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
@@ -677,30 +748,40 @@
                     <i class="ph-bold ph-x text-xl"></i>
                 </button>
             </div>
+            
             <div class="p-6 overflow-y-auto bg-slate-50/50">
                 <form id="addToolForm" class="space-y-5">
                     <input type="hidden" id="t_id" value="">
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Tool <span class="text-brand-red">*</span></label>
-                    <input type="text" id="t_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Jumlah <span class="text-brand-red">*</span></label>
-                    <input type="number" id="t_jumlah" required min="0" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium"></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Kondisi <span class="text-brand-red">*</span></label>
-                    <select id="t_kondisi" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                        <option value="">Pilih Kondisi</option>
-                        <option value="Baik">Baik</option>
-                        <option value="Sedang">Sedang</option>
-                        <option value="Rusak">Rusak</option>
-                    </select></div>
-                    <div><label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-brand-red">*</span></label>
-                    <select id="t_status" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                        <option value="">Pilih Status</option>
-                        <option value="Tersedia">Tersedia</option>
-                        <option value="Dipinjam">Dipinjam</option>
-                        <option value="Perbaikan">Perbaikan</option>
-                        <option value="Rusak">Rusak</option>
-                    </select></div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Tool <span class="text-brand-red">*</span></label>
+                        <input type="text" id="t_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Jumlah <span class="text-brand-red">*</span></label>
+                        <input type="number" id="t_jumlah" required min="0" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Kondisi <span class="text-brand-red">*</span></label>
+                        <select id="t_kondisi" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                            <option value="">Pilih Kondisi</option>
+                            <option value="Baik">Baik</option>
+                            <option value="Sedang">Sedang</option>
+                            <option value="Rusak">Rusak</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Status <span class="text-brand-red">*</span></label>
+                        <select id="t_status" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                            <option value="">Pilih Status</option>
+                            <option value="Tersedia">Tersedia</option>
+                            <option value="Dipinjam">Dipinjam</option>
+                            <option value="Perbaikan">Perbaikan</option>
+                            <option value="Rusak">Rusak</option>
+                        </select>
+                    </div>
                 </form>
             </div>
+            
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal('tool')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitTool()" id="btnSubmitTool" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
@@ -710,9 +791,7 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
     <!-- MODAL BORROWING -->
-    <!-- ============================================================ -->
     <div id="borrowingModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalBorrowingContent">
             <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
@@ -727,9 +806,10 @@
                 </button>
             </div>
             
-            <div class="p-6 overflow-y-auto bg-slate-50/50 flex-1">
-                <form id="addBorrowingForm" class="space-y-4">
+            <div class="p-6 overflow-y-auto bg-slate-50/50">
+                <form id="addBorrowingForm" class="space-y-5">
                     <input type="hidden" id="b_id" value="">
+                    <input type="hidden" id="b_status_borrowing" value="Dipinjam">
                     
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1.5">Pilih Tool <span class="text-brand-red">*</span></label>
@@ -749,12 +829,6 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Pinjam <span class="text-brand-red">*</span></label>
-                        <input type="date" id="b_tanggal_pinjam" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
-                    </div>
-
-                    <!-- AREA FOTO -->
-                    <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Foto Pinjam <span class="text-brand-red">*</span></label>
                         
                         <button type="button" id="btnOpenCamera" class="w-full bg-brand-blue hover:bg-brand-darkblue text-white py-3 rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20">
@@ -765,15 +839,12 @@
                             <video id="videoPreview" autoplay playsinline></video>
                             <canvas id="canvasPreview"></canvas>
                             <div class="flash-overlay" id="flashOverlay"></div>
-                            
                             <button type="button" id="btnCapture" class="btn-capture">
                                 <div class="inner"></div>
                             </button>
-                            
                             <button type="button" id="btnCloseCamera" class="btn-close-camera">
                                 <i class="ph-bold ph-x"></i> Tutup
                             </button>
-                            
                             <div class="camera-placeholder" id="cameraPlaceholder">
                                 <i class="ph-fill ph-camera-slash"></i>
                                 <p>Kamera belum aktif</p>
@@ -795,6 +866,11 @@
                         </div>
                         <input type="hidden" id="b_foto_pinjam" value="">
                     </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Pinjam <span class="text-brand-red">*</span></label>
+                        <input type="date" id="b_tanggal_pinjam" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
+                    </div>
                 </form>
             </div>
             
@@ -807,9 +883,7 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
     <!-- MODAL RETURN -->
-    <!-- ============================================================ -->
     <div id="returnModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalReturnContent">
             <div class="bg-emerald-600 p-6 text-white flex justify-between items-center">
@@ -825,9 +899,10 @@
             </div>
             
             <div class="p-6 overflow-y-auto bg-slate-50/50">
-                <form id="returnForm" class="space-y-4">
+                <form id="returnForm" class="space-y-5">
                     <input type="hidden" id="r_id" value="">
                     <input type="hidden" id="r_tool_id" value="">
+                    <input type="hidden" id="r_status_return" value="Selesai">
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -851,15 +926,12 @@
                             <video id="videoPreviewReturn" autoplay playsinline></video>
                             <canvas id="canvasPreviewReturn"></canvas>
                             <div class="flash-overlay" id="flashOverlayReturn"></div>
-                            
                             <button type="button" id="btnCaptureReturn" class="btn-capture">
                                 <div class="inner"></div>
                             </button>
-                            
                             <button type="button" id="btnCloseCameraReturn" class="btn-close-camera">
                                 <i class="ph-bold ph-x"></i> Tutup
                             </button>
-                            
                             <div class="camera-placeholder" id="cameraPlaceholderReturn">
                                 <i class="ph-fill ph-camera-slash"></i>
                                 <p>Kamera belum aktif</p>
@@ -939,15 +1011,19 @@
         let toolsData = [];
         let borrowingsData = [];
 
+        // Camera
         let currentStream = null;
 
         // ========================================================================
         // SIDEBAR
         // ========================================================================
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        let isSidebarOpen = false;
+
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar.classList.contains('-translate-x-full')) {
+            isSidebarOpen = !isSidebarOpen;
+            if (isSidebarOpen) {
                 sidebar.classList.remove('-translate-x-full');
                 overlay.classList.remove('hidden');
                 setTimeout(() => overlay.classList.add('opacity-100'), 10);
@@ -996,42 +1072,36 @@
         
         function showConfirm(message, callback) {
             onConfirmCallback = callback;
-            const modal = document.getElementById('confirmModal');
-            const content = document.getElementById('confirmContent');
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmContent = document.getElementById('confirmContent');
             document.getElementById('confirmMessage').textContent = message;
             
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            confirmModal.classList.remove('hidden');
+            confirmModal.classList.add('flex');
             setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
+                confirmModal.classList.remove('opacity-0');
+                confirmContent.classList.remove('scale-95');
             }, 10);
         }
 
-        document.getElementById('btnCancelConfirm').addEventListener('click', () => {
-            const modal = document.getElementById('confirmModal');
-            const content = document.getElementById('confirmContent');
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
+        function closeConfirm() {
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmContent = document.getElementById('confirmContent');
+            confirmModal.classList.add('opacity-0');
+            confirmContent.classList.add('scale-95');
             setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
+                confirmModal.classList.add('hidden');
+                confirmModal.classList.remove('flex');
                 onConfirmCallback = null;
             }, 300);
-        });
+        }
+
+        document.getElementById('btnCancelConfirm').addEventListener('click', closeConfirm);
         document.getElementById('btnExecuteConfirm').addEventListener('click', () => {
             if (typeof onConfirmCallback === 'function') {
                 onConfirmCallback();
             }
-            const modal = document.getElementById('confirmModal');
-            const content = document.getElementById('confirmContent');
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                onConfirmCallback = null;
-            }, 300);
+            closeConfirm();
         });
 
         // ========================================================================
@@ -1039,10 +1109,13 @@
         // ========================================================================
         function openPhotoModal(src) {
             const modal = document.getElementById('photoModal');
-            document.getElementById('photoModalImg').src = src;
+            const img = document.getElementById('photoModalImg');
+            img.src = src;
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
         }
 
         function closePhotoModal() {
@@ -1058,7 +1131,8 @@
         // ========================================================================
         // LOGIN
         // ========================================================================
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
@@ -1073,16 +1147,18 @@
                 }, 300);
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
-                document.getElementById('loginForm').classList.add('animate-pulse');
-                setTimeout(() => document.getElementById('loginForm').classList.remove('animate-pulse'), 500);
+                loginForm.classList.add('animate-pulse');
+                setTimeout(() => loginForm.classList.remove('animate-pulse'), 500);
             }
         });
 
         function logout() {
+            if (isSidebarOpen) toggleSidebar();
             stopCamera();
             document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('loginPage').classList.remove('hidden');
-            setTimeout(() => document.getElementById('loginPage').classList.remove('opacity-0'), 10);
+            const loginPage = document.getElementById('loginPage');
+            loginPage.classList.remove('hidden');
+            setTimeout(() => loginPage.classList.remove('opacity-0'), 10);
             document.getElementById('loginForm').reset();
             document.getElementById('loginError').classList.add('hidden');
             showToast("Anda telah keluar sistem.", "info");
@@ -1092,29 +1168,31 @@
         // NAVIGASI
         // ========================================================================
         function switchMenu(menuName) {
+            if(window.innerWidth < 768 && isSidebarOpen) {
+                toggleSidebar();
+            }
+
             stopCamera();
+
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-projects').classList.add('hidden');
+            document.getElementById('view-products').classList.add('hidden');
+            document.getElementById('view-spareparts').classList.add('hidden');
+            document.getElementById('view-tools').classList.add('hidden');
+            document.getElementById('view-borrowings').classList.add('hidden');
             
-            const views = ['dashboard', 'projects', 'products', 'spareparts', 'tools', 'borrowings'];
-            views.forEach(v => {
-                document.getElementById(`view-${v}`).classList.add('hidden');
-            });
-            
-            const navs = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts', 'nav-tools', 'nav-borrowings'];
-            navs.forEach(id => {
+            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts', 'nav-tools', 'nav-borrowings'];
+            navButtons.forEach(id => {
                 const btn = document.getElementById(id);
-                if (btn) {
-                    btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
-                    btn.classList.add('text-blue-100');
-                }
+                btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
+                btn.classList.add('text-blue-100');
             });
 
             document.getElementById(`view-${menuName}`).classList.remove('hidden');
             
             const activeBtn = document.getElementById(`nav-${menuName}`);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-white/15', 'text-white', 'shadow-inner');
-                activeBtn.classList.remove('text-blue-100');
-            }
+            activeBtn.classList.add('bg-white/15', 'text-white', 'shadow-inner');
+            activeBtn.classList.remove('text-blue-100');
 
             const titles = {
                 'dashboard': 'Dashboard',
@@ -1124,697 +1202,19 @@
                 'tools': 'Tools',
                 'borrowings': 'Peminjaman Tool'
             };
-            document.getElementById('pageTitle').innerText = titles[menuName] || 'Dashboard';
+            document.getElementById('pageTitle').innerText = titles[menuName];
 
-            if(menuName === 'projects') fetchProjects();
-            else if(menuName === 'products') fetchProducts();
-            else if(menuName === 'spareparts') fetchSpareparts();
-            else if(menuName === 'tools') fetchTools();
-            else if(menuName === 'borrowings') fetchBorrowings();
-        }
-
-        // ========================================================================
-        // CRUD PROJECTS
-        // ========================================================================
-        async function fetchProjects() {
-            const tbody = document.getElementById('projectsTableBody');
-            tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="loader"></div></td></tr>`;
-            try {
-                const res = await fetch(APPS_SCRIPT_URL + '?sheet=Projects');
-                const result = await res.json();
-                if (result.status === 'success') {
-                    projectsData = result.data;
-                    renderProjectsTable(projectsData);
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-red-500">${result.message}</td></tr>`;
-                }
-            } catch(e) { 
-                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-red-500">Gagal koneksi</td></tr>`;
+            if(menuName === 'projects') {
+                fetchProjects();
+            } else if(menuName === 'products') {
+                fetchProducts();
+            } else if(menuName === 'spareparts') {
+                fetchSpareparts();
+            } else if(menuName === 'tools') {
+                fetchTools();
+            } else if(menuName === 'borrowings') {
+                fetchBorrowings();
             }
-        }
-
-        function renderProjectsTable(data) {
-            const tbody = document.getElementById('projectsTableBody');
-            tbody.innerHTML = '';
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-400">Belum ada project</td></tr>`;
-                return;
-            }
-            data.forEach((item, i) => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-4 text-center">${i+1}</td>
-                    <td class="p-4 font-bold">${item['Nama Project'] || '-'}</td>
-                    <td class="p-4">${item['No SO/PO'] || '-'}</td>
-                    <td class="p-4">${item['Customer'] || '-'}</td>
-                    <td class="p-4">${item['Tanggal'] || '-'}</td>
-                    <td class="p-4">${item['Link BOM/BOQ'] ? `<a href="${item['Link BOM/BOQ']}" target="_blank" class="text-brand-blue hover:underline">Link</a>` : '-'}</td>
-                    <td class="p-4">${item['Keterangan'] || '-'}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="editProject('${item['ID']}')" class="text-slate-400 hover:text-brand-blue p-1"><i class="ph-duotone ph-pencil-simple"></i></button>
-                        <button onclick="deleteProject('${item['ID']}')" class="text-slate-400 hover:text-brand-red p-1"><i class="ph-duotone ph-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function editProject(id) {
-            const data = projectsData.find(item => item['ID'] == id);
-            if (!data) return showToast('Data tidak ditemukan', 'error');
-            document.getElementById('p_id').value = id;
-            document.getElementById('p_nama').value = data['Nama Project'] || '';
-            document.getElementById('p_sopo').value = data['No SO/PO'] || '';
-            document.getElementById('p_tanggal').value = data['Tanggal'] || '';
-            document.getElementById('p_customer').value = data['Customer'] || '';
-            document.getElementById('p_link').value = data['Link BOM/BOQ'] || '';
-            document.getElementById('p_keterangan').value = data['Keterangan'] || '';
-            document.getElementById('projectModalTitle').textContent = 'Edit Project';
-            document.getElementById('projectBtnText').textContent = 'Update';
-            openModal('project');
-        }
-
-        async function submitProject() {
-            const form = document.getElementById('addProjectForm');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-            const id = document.getElementById('p_id').value;
-            const isEdit = id !== '';
-            const btn = document.getElementById('btnSubmitProject');
-            const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div>`;
-            btn.disabled = true;
-            
-            const payload = {
-                action: isEdit ? 'update' : 'add',
-                sheet: 'Projects',
-                id: id || new Date().getTime().toString(),
-                nama_project: document.getElementById('p_nama').value,
-                no_so: document.getElementById('p_sopo').value,
-                tanggal: document.getElementById('p_tanggal').value,
-                customer: document.getElementById('p_customer').value,
-                link: document.getElementById('p_link').value,
-                keterangan: document.getElementById('p_keterangan').value
-            };
-            try {
-                const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    closeModal('project');
-                    showToast(isEdit ? "Project diupdate!" : "Project disimpan!", "success");
-                    fetchProjects();
-                } else {
-                    showToast('Gagal: ' + result.message, 'error');
-                }
-            } catch(e) { showToast('Error koneksi', 'error'); }
-            finally { btn.innerHTML = orig; btn.disabled = false; }
-        }
-
-        function deleteProject(id) {
-            showConfirm('Hapus project ini?', async () => {
-                try {
-                    await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', sheet: 'Projects', id: id }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                    showToast('Project dihapus!', 'success');
-                    fetchProjects();
-                } catch(e) { showToast('Error', 'error'); }
-            });
-        }
-
-        // ========================================================================
-        // CRUD PRODUCTS
-        // ========================================================================
-        async function fetchProducts() {
-            const tbody = document.getElementById('productsTableBody');
-            tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center"><div class="loader"></div></td></tr>`;
-            try {
-                const res = await fetch(APPS_SCRIPT_URL + '?sheet=Products');
-                const result = await res.json();
-                if (result.status === 'success') {
-                    productsData = result.data;
-                    renderProductsTable(productsData);
-                }
-            } catch(e) { }
-        }
-
-        function renderProductsTable(data) {
-            const tbody = document.getElementById('productsTableBody');
-            tbody.innerHTML = '';
-            if (data.length === 0) { tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-400">Belum ada product</td></tr>`; return; }
-            data.forEach((item, i) => {
-                const status = item['Status'] || 'Pending';
-                let sc = 'status-default';
-                if (status === 'Completed') sc = 'status-success';
-                else if (status === 'In Progress') sc = 'status-warning';
-                else if (status === 'Failed') sc = 'status-danger';
-                else if (status === 'Testing') sc = 'status-info';
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-4 text-center">${i+1}</td>
-                    <td class="p-4">${item['No SO/PO'] || '-'}</td>
-                    <td class="p-4 font-bold">${item['Nama Produk'] || '-'}</td>
-                    <td class="p-4">${item['Customer'] || '-'}</td>
-                    <td class="p-4">${item['Tanggal'] || '-'}</td>
-                    <td class="p-4">${item['Link Video Test'] ? `<a href="${item['Link Video Test']}" target="_blank" class="text-brand-blue hover:underline">Video</a>` : '-'}</td>
-                    <td class="p-4"><span class="status-badge ${sc}">${status}</span></td>
-                    <td class="p-4">${item['Keterangan'] || '-'}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="editProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-blue p-1"><i class="ph-duotone ph-pencil-simple"></i></button>
-                        <button onclick="deleteProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-red p-1"><i class="ph-duotone ph-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function editProduct(id) {
-            const data = productsData.find(item => item['ID'] == id);
-            if (!data) return;
-            document.getElementById('prod_id').value = id;
-            document.getElementById('prod_nama').value = data['Nama Produk'] || '';
-            document.getElementById('prod_sopo').value = data['No SO/PO'] || '';
-            document.getElementById('prod_customer').value = data['Customer'] || '';
-            document.getElementById('prod_tanggal').value = data['Tanggal'] || '';
-            document.getElementById('prod_link').value = data['Link Video Test'] || '';
-            document.getElementById('prod_status').value = data['Status'] || '';
-            document.getElementById('prod_keterangan').value = data['Keterangan'] || '';
-            document.getElementById('productModalTitle').textContent = 'Edit Product';
-            document.getElementById('productBtnText').textContent = 'Update';
-            openModal('product');
-        }
-
-        async function submitProduct() {
-            const form = document.getElementById('addProductForm');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-            const id = document.getElementById('prod_id').value;
-            const isEdit = id !== '';
-            const btn = document.getElementById('btnSubmitProduct');
-            const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div>`;
-            btn.disabled = true;
-            const payload = {
-                action: isEdit ? 'update' : 'add',
-                sheet: 'Products',
-                id: id || new Date().getTime().toString(),
-                nama_produk: document.getElementById('prod_nama').value,
-                no_so: document.getElementById('prod_sopo').value,
-                customer: document.getElementById('prod_customer').value,
-                tanggal: document.getElementById('prod_tanggal').value,
-                link: document.getElementById('prod_link').value,
-                status: document.getElementById('prod_status').value,
-                keterangan: document.getElementById('prod_keterangan').value
-            };
-            try {
-                const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    closeModal('product');
-                    showToast(isEdit ? "Product diupdate!" : "Product disimpan!", "success");
-                    fetchProducts();
-                } else {
-                    showToast('Gagal: ' + result.message, 'error');
-                }
-            } catch(e) { showToast('Error koneksi', 'error'); }
-            finally { btn.innerHTML = orig; btn.disabled = false; }
-        }
-
-        function deleteProduct(id) {
-            showConfirm('Hapus product ini?', async () => {
-                try {
-                    await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', sheet: 'Products', id: id }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                    showToast('Product dihapus!', 'success');
-                    fetchProducts();
-                } catch(e) { showToast('Error', 'error'); }
-            });
-        }
-
-        // ========================================================================
-        // CRUD SPAREPARTS
-        // ========================================================================
-        async function fetchSpareparts() {
-            const tbody = document.getElementById('sparepartsTableBody');
-            tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="loader"></div></td></tr>`;
-            try {
-                const res = await fetch(APPS_SCRIPT_URL + '?sheet=Spareparts');
-                const result = await res.json();
-                if (result.status === 'success') {
-                    sparepartsData = result.data;
-                    renderSparepartsTable(sparepartsData);
-                }
-            } catch(e) { }
-        }
-
-        function renderSparepartsTable(data) {
-            const tbody = document.getElementById('sparepartsTableBody');
-            tbody.innerHTML = '';
-            if (data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400">Belum ada sparepart</td></tr>`; return; }
-            data.forEach((item, i) => {
-                const stok = parseInt(item['Stok']) || 0;
-                let sc = 'stock-empty', label = 'Habis';
-                if (stok > 50) { sc = 'stock-high'; label = 'Tersedia'; }
-                else if (stok > 10) { sc = 'stock-medium'; label = 'Sedang'; }
-                else if (stok > 0) { sc = 'stock-low'; label = 'Menipis'; }
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-4 text-center">${i+1}</td>
-                    <td class="p-4 font-bold">${item['Nama Sparepart'] || '-'}</td>
-                    <td class="p-4">${item['Spesifikasi'] || '-'}</td>
-                    <td class="p-4"><span class="stock-badge ${sc}">${stok} pcs (${label})</span></td>
-                    <td class="p-4">${item['Lokasi Penyimpanan'] || '-'}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="editSparepart('${item['ID']}')" class="text-slate-400 hover:text-brand-blue p-1"><i class="ph-duotone ph-pencil-simple"></i></button>
-                        <button onclick="deleteSparepart('${item['ID']}')" class="text-slate-400 hover:text-brand-red p-1"><i class="ph-duotone ph-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function editSparepart(id) {
-            const data = sparepartsData.find(item => item['ID'] == id);
-            if (!data) return;
-            document.getElementById('s_id').value = id;
-            document.getElementById('s_nama').value = data['Nama Sparepart'] || '';
-            document.getElementById('s_spesifikasi').value = data['Spesifikasi'] || '';
-            document.getElementById('s_stok').value = data['Stok'] || 0;
-            document.getElementById('s_lokasi').value = data['Lokasi Penyimpanan'] || '';
-            document.getElementById('sparepartModalTitle').textContent = 'Edit Sparepart';
-            document.getElementById('sparepartBtnText').textContent = 'Update';
-            openModal('sparepart');
-        }
-
-        async function submitSparepart() {
-            const form = document.getElementById('addSparepartForm');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-            const id = document.getElementById('s_id').value;
-            const isEdit = id !== '';
-            const btn = document.getElementById('btnSubmitSparepart');
-            const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div>`;
-            btn.disabled = true;
-            const payload = {
-                action: isEdit ? 'update' : 'add',
-                sheet: 'Spareparts',
-                id: id || new Date().getTime().toString(),
-                nama_sparepart: document.getElementById('s_nama').value,
-                spesifikasi: document.getElementById('s_spesifikasi').value,
-                stok: document.getElementById('s_stok').value,
-                lokasi: document.getElementById('s_lokasi').value
-            };
-            try {
-                const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    closeModal('sparepart');
-                    showToast(isEdit ? "Sparepart diupdate!" : "Sparepart disimpan!", "success");
-                    fetchSpareparts();
-                } else {
-                    showToast('Gagal: ' + result.message, 'error');
-                }
-            } catch(e) { showToast('Error koneksi', 'error'); }
-            finally { btn.innerHTML = orig; btn.disabled = false; }
-        }
-
-        function deleteSparepart(id) {
-            showConfirm('Hapus sparepart ini?', async () => {
-                try {
-                    await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', sheet: 'Spareparts', id: id }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                    showToast('Sparepart dihapus!', 'success');
-                    fetchSpareparts();
-                } catch(e) { showToast('Error', 'error'); }
-            });
-        }
-
-        // ========================================================================
-        // CRUD TOOLS
-        // ========================================================================
-        async function fetchTools() {
-            const tbody = document.getElementById('toolsTableBody');
-            tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="loader"></div></td></tr>`;
-            try {
-                const res = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
-                const result = await res.json();
-                if (result.status === 'success') {
-                    toolsData = result.data;
-                    renderToolsTable(toolsData);
-                }
-            } catch(e) { }
-        }
-
-        function renderToolsTable(data) {
-            const tbody = document.getElementById('toolsTableBody');
-            tbody.innerHTML = '';
-            if (data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400">Belum ada tool</td></tr>`; return; }
-            data.forEach((item, i) => {
-                const kondisi = (item['Kondisi'] || 'Unknown').trim();
-                let cc = 'condition-default';
-                if (kondisi === 'Baik') cc = 'condition-good';
-                else if (kondisi === 'Sedang') cc = 'condition-worn';
-                else if (kondisi === 'Rusak') cc = 'condition-broken';
-
-                const statusRaw = (item['Status'] || 'Unknown').trim();
-                const map = {
-                    'Tersedia': { c: 'status-success', l: 'Tersedia' },
-                    'Dipinjam': { c: 'status-warning', l: 'Dipinjam' },
-                    'Perbaikan': { c: 'status-info', l: 'Perbaikan' },
-                    'Rusak': { c: 'status-danger', l: 'Rusak' }
-                };
-                const info = map[statusRaw] || { c: 'status-default', l: statusRaw || 'Unknown' };
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-4 text-center">${i+1}</td>
-                    <td class="p-4 font-bold">${item['Nama Tool'] || '-'}</td>
-                    <td class="p-4">${item['Jumlah'] || 0}</td>
-                    <td class="p-4"><span class="condition-badge ${cc}">${kondisi}</span></td>
-                    <td class="p-4"><span class="status-badge ${info.c}">${info.l}</span></td>
-                    <td class="p-4 text-center">
-                        <button onclick="editTool('${item['ID']}')" class="text-slate-400 hover:text-brand-blue p-1"><i class="ph-duotone ph-pencil-simple"></i></button>
-                        <button onclick="deleteTool('${item['ID']}')" class="text-slate-400 hover:text-brand-red p-1"><i class="ph-duotone ph-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function editTool(id) {
-            const data = toolsData.find(item => item['ID'] == id);
-            if (!data) return;
-            document.getElementById('t_id').value = id;
-            document.getElementById('t_nama').value = data['Nama Tool'] || '';
-            document.getElementById('t_jumlah').value = data['Jumlah'] || 0;
-            document.getElementById('t_kondisi').value = data['Kondisi'] || '';
-            document.getElementById('t_status').value = data['Status'] || '';
-            document.getElementById('toolModalTitle').textContent = 'Edit Tool';
-            document.getElementById('toolBtnText').textContent = 'Update';
-            openModal('tool');
-        }
-
-        async function submitTool() {
-            const form = document.getElementById('addToolForm');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-            const id = document.getElementById('t_id').value;
-            const isEdit = id !== '';
-            const btn = document.getElementById('btnSubmitTool');
-            const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div>`;
-            btn.disabled = true;
-            const payload = {
-                action: isEdit ? 'update' : 'add',
-                sheet: 'Tools',
-                id: id || new Date().getTime().toString(),
-                nama_tool: document.getElementById('t_nama').value.trim(),
-                jumlah: document.getElementById('t_jumlah').value,
-                kondisi: document.getElementById('t_kondisi').value,
-                status: document.getElementById('t_status').value
-            };
-            try {
-                const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    closeModal('tool');
-                    showToast(isEdit ? "Tool diupdate!" : "Tool disimpan!", "success");
-                    fetchTools();
-                } else {
-                    showToast('Gagal: ' + result.message, 'error');
-                }
-            } catch(e) { showToast('Error koneksi', 'error'); }
-            finally { btn.innerHTML = orig; btn.disabled = false; }
-        }
-
-        function deleteTool(id) {
-            showConfirm('Hapus tool ini?', async () => {
-                try {
-                    await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', sheet: 'Tools', id: id }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                    showToast('Tool dihapus!', 'success');
-                    fetchTools();
-                } catch(e) { showToast('Error', 'error'); }
-            });
-        }
-
-        // ========================================================================
-        // CRUD BORROWINGS
-        // ========================================================================
-        async function fetchBorrowings() {
-            const tbody = document.getElementById('borrowingsTableBody');
-            tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center"><div class="loader"></div></td></tr>`;
-            try {
-                const res = await fetch(APPS_SCRIPT_URL + '?sheet=Borrowings');
-                const result = await res.json();
-                if (result.status === 'success') {
-                    borrowingsData = result.data;
-                    renderBorrowingsTable(borrowingsData);
-                }
-            } catch(e) { }
-        }
-
-        function renderBorrowingsTable(data) {
-            const tbody = document.getElementById('borrowingsTableBody');
-            tbody.innerHTML = '';
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-400">Belum ada peminjaman</td></tr>`;
-                return;
-            }
-            data.forEach((item, i) => {
-                const status = (item['Status'] || 'Dipinjam').trim();
-                let sc = 'status-warning', sd = 'Dipinjam';
-                if (status === 'Selesai' || status === 'Kembali') { sc = 'status-success'; sd = 'Selesai'; }
-                else if (status === 'Dipinjam') { sc = 'status-warning'; sd = 'Dipinjam'; }
-                else { sc = 'status-default'; sd = status; }
-
-                const fotoPinjam = item['Foto Pinjam'] || '';
-                const fotoPinjamHTML = fotoPinjam ? `<img src="${fotoPinjam}" class="photo-thumb" onclick="openPhotoModal('${fotoPinjam}')">` : '-';
-                const fotoKembali = item['Foto Kembali'] || '';
-                const fotoKembaliHTML = fotoKembali ? `<img src="${fotoKembali}" class="photo-thumb" onclick="openPhotoModal('${fotoKembali}')">` : '-';
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-4 text-center">${i+1}</td>
-                    <td class="p-4 font-bold">${item['Nama Tool'] || '-'}</td>
-                    <td class="p-4">${item['Nama Peminjam'] || '-'}</td>
-                    <td class="p-4">${item['Departemen'] || '-'}</td>
-                    <td class="p-4 text-center">${fotoPinjamHTML}</td>
-                    <td class="p-4">${item['Tanggal Pinjam'] || '-'}</td>
-                    <td class="p-4">${item['Tanggal Kembali'] || '-'}</td>
-                    <td class="p-4"><span class="status-badge ${sc}">${sd}</span></td>
-                    <td class="p-4 text-center">${fotoKembaliHTML}</td>
-                    <td class="p-4 text-center">
-                        ${status === 'Dipinjam' ? `<button onclick="openReturnModal('${item['ID']}')" class="text-emerald-600 hover:text-emerald-700 p-1"><i class="ph-duotone ph-arrow-counter-clockwise text-base"></i></button>` : `<span class="text-xs text-slate-400">Selesai</span>`}
-                        <button onclick="deleteBorrowing('${item['ID']}')" class="text-slate-400 hover:text-brand-red p-1"><i class="ph-duotone ph-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function deleteBorrowing(id) {
-            showConfirm('Hapus data peminjaman ini?', async () => {
-                try {
-                    await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', sheet: 'Borrowings', id: id }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                    showToast('Data dihapus!', 'success');
-                    fetchBorrowings();
-                } catch(e) { showToast('Error', 'error'); }
-            });
-        }
-
-        // ========================================================================
-        // BORROWING FUNCTIONS
-        // ========================================================================
-        async function openBorrowingModal() {
-            // Reset form
-            document.getElementById('b_id').value = '';
-            document.getElementById('b_peminjam').value = '';
-            document.getElementById('b_departemen').value = '';
-            document.getElementById('b_foto_pinjam').value = '';
-            document.getElementById('fotoPreview').classList.add('hidden');
-            document.getElementById('previewImg').src = '';
-            
-            // Sembunyikan camera
-            document.getElementById('cameraBox').classList.add('hidden');
-            document.getElementById('cameraPlaceholder').classList.remove('hidden');
-            stopCamera();
-            
-            // Set tanggal
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('b_tanggal_pinjam').value = today;
-            
-            // Load tools dropdown - HANYA SEKALI, jangan double
-            const select = document.getElementById('b_tool_id');
-            select.innerHTML = '<option value="">-- Pilih Tool --</option>';
-            select.disabled = true;
-            
-            try {
-                const res = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
-                const result = await res.json();
-                if (result.status === 'success') {
-                    const tools = result.data.filter(t => (t['Status'] || '').trim() === 'Tersedia');
-                    tools.forEach(tool => {
-                        const opt = document.createElement('option');
-                        opt.value = tool['ID'];
-                        opt.textContent = `${tool['Nama Tool']} (${tool['Jumlah']} pcs)`;
-                        select.appendChild(opt);
-                    });
-                    if (tools.length === 0) {
-                        select.innerHTML = '<option value="">-- Tidak ada tool tersedia --</option>';
-                    }
-                }
-            } catch(e) { showToast('Gagal load tools', 'error'); }
-            finally { select.disabled = false; }
-            
-            // Buka modal
-            const modal = document.getElementById('borrowingModal');
-            const content = document.getElementById('modalBorrowingContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
-        }
-
-        async function submitBorrowing() {
-            const form = document.getElementById('addBorrowingForm');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-            
-            const fotoPinjam = document.getElementById('b_foto_pinjam').value;
-            if (!fotoPinjam) {
-                showToast('Harap ambil foto pinjam!', 'error');
-                return;
-            }
-
-            const btn = document.getElementById('btnSubmitBorrowing');
-            const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div>`;
-            btn.disabled = true;
-
-            const toolId = document.getElementById('b_tool_id').value;
-            const toolName = document.getElementById('b_tool_id').selectedOptions[0]?.textContent || '';
-            const cleanName = toolName.replace(/\s*\(.*\)\s*$/, '').trim();
-
-            const payload = {
-                action: 'add',
-                sheet: 'Borrowings',
-                id: new Date().getTime().toString(),
-                nama_tool: cleanName,
-                nama_peminjam: document.getElementById('b_peminjam').value,
-                departemen: document.getElementById('b_departemen').value,
-                foto_pinjam: fotoPinjam,
-                tanggal_pinjam: document.getElementById('b_tanggal_pinjam').value,
-                tanggal_kembali: '',
-                status: 'Dipinjam',
-                foto_kembali: ''
-            };
-
-            try {
-                const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    // Update tool status
-                    await updateToolStatus(toolId, 'Dipinjam');
-                    closeModal('borrowing');
-                    showToast('Peminjaman berhasil!', 'success');
-                    fetchBorrowings();
-                    fetchTools();
-                } else {
-                    showToast('Gagal: ' + result.message, 'error');
-                }
-            } catch(e) { showToast('Error koneksi', 'error'); }
-            finally { btn.innerHTML = orig; btn.disabled = false; }
-        }
-
-        async function updateToolStatus(toolId, newStatus) {
-            try {
-                const tool = toolsData.find(t => t['ID'] == toolId);
-                if (!tool) return;
-                const payload = {
-                    action: 'update',
-                    sheet: 'Tools',
-                    id: toolId,
-                    nama_tool: tool['Nama Tool'] || '',
-                    jumlah: tool['Jumlah'] || 0,
-                    kondisi: tool['Kondisi'] || 'Baik',
-                    status: newStatus
-                };
-                await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-            } catch(e) { console.error(e); }
-        }
-
-        // ========================================================================
-        // RETURN FUNCTIONS
-        // ========================================================================
-        async function openReturnModal(borrowingId) {
-            const borrowing = borrowingsData.find(b => b['ID'] == borrowingId);
-            if (!borrowing) { showToast('Data tidak ditemukan', 'error'); return; }
-
-            document.getElementById('r_id').value = borrowingId;
-            document.getElementById('r_tool_id').value = borrowing['Tool ID'] || '';
-            document.getElementById('r_nama_tool').textContent = borrowing['Nama Tool'] || '-';
-            document.getElementById('r_nama_peminjam').textContent = borrowing['Nama Peminjam'] || '-';
-            
-            document.getElementById('r_foto_kembali').value = '';
-            document.getElementById('fotoPreviewReturn').classList.add('hidden');
-            document.getElementById('previewImgReturn').src = '';
-            document.getElementById('cameraBoxReturn').classList.add('hidden');
-            document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-            stopCamera();
-
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('r_tanggal_kembali').value = today;
-
-            const modal = document.getElementById('returnModal');
-            const content = document.getElementById('modalReturnContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
-        }
-
-        async function submitReturn() {
-            const form = document.getElementById('returnForm');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
-            
-            const fotoKembali = document.getElementById('r_foto_kembali').value;
-            if (!fotoKembali) {
-                showToast('Harap ambil foto kembali!', 'error');
-                return;
-            }
-
-            const btn = document.getElementById('btnSubmitReturn');
-            const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div>`;
-            btn.disabled = true;
-
-            const id = document.getElementById('r_id').value;
-            const toolId = document.getElementById('r_tool_id').value;
-
-            try {
-                const payload = {
-                    action: 'update',
-                    sheet: 'Borrowings',
-                    id: id,
-                    tanggal_kembali: document.getElementById('r_tanggal_kembali').value,
-                    status: 'Selesai',
-                    foto_kembali: fotoKembali
-                };
-
-                const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if (result.status === 'success') {
-                    await updateToolStatus(toolId, 'Tersedia');
-                    closeModal('return');
-                    showToast('Pengembalian berhasil!', 'success');
-                    fetchBorrowings();
-                    fetchTools();
-                } else {
-                    showToast('Gagal: ' + result.message, 'error');
-                }
-            } catch(e) { showToast('Error koneksi', 'error'); }
-            finally { btn.innerHTML = orig; btn.disabled = false; }
         }
 
         // ========================================================================
@@ -1825,6 +1225,7 @@
                 currentStream.getTracks().forEach(track => track.stop());
                 currentStream = null;
             }
+            // Sembunyikan semua camera box
             document.getElementById('cameraBox').classList.add('hidden');
             document.getElementById('cameraBoxReturn').classList.add('hidden');
             document.getElementById('cameraPlaceholder').classList.remove('hidden');
@@ -1855,9 +1256,9 @@
                 if (err.name === 'NotAllowedError') {
                     showToast('Izin kamera ditolak. Berikan izin di browser.', 'error');
                 } else if (err.name === 'NotFoundError') {
-                    showToast('Tidak ada kamera terdeteksi.', 'error');
+                    showToast('Tidak ada kamera yang terdeteksi.', 'error');
                 } else {
-                    showToast('Gagal akses kamera: ' + err.message, 'error');
+                    showToast('Gagal mengakses kamera: ' + err.message, 'error');
                 }
                 return false;
             }
@@ -1870,16 +1271,18 @@
             const previewContainerId = type === 'pinjam' ? 'fotoPreview' : 'fotoPreviewReturn';
             const hiddenInputId = type === 'pinjam' ? 'b_foto_pinjam' : 'r_foto_kembali';
             const flashId = type === 'pinjam' ? 'flashOverlay' : 'flashOverlayReturn';
+            const cameraBoxId = type === 'pinjam' ? 'cameraBox' : 'cameraBoxReturn';
+            const placeholderId = type === 'pinjam' ? 'cameraPlaceholder' : 'cameraPlaceholderReturn';
 
             const video = document.getElementById(videoId);
             const canvas = document.getElementById(canvasId);
 
             if (!video || !video.videoWidth) {
-                showToast('Kamera belum siap.', 'error');
+                showToast('Kamera belum siap. Tunggu sebentar.', 'error');
                 return;
             }
 
-            // Flash
+            // Flash effect
             const flash = document.getElementById(flashId);
             flash.classList.add('active');
             setTimeout(() => flash.classList.remove('active'), 200);
@@ -1891,22 +1294,15 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             const imageData = canvas.toDataURL('image/jpeg', 0.85);
-            document.getElementById(hiddenInputId).value = imageData;
             
+            document.getElementById(hiddenInputId).value = imageData;
             document.getElementById(previewId).src = imageData;
             document.getElementById(previewContainerId).classList.remove('hidden');
             
-            // Tutup kamera otomatis
-            setTimeout(() => {
-                if (type === 'pinjam') {
-                    document.getElementById('cameraBox').classList.add('hidden');
-                    document.getElementById('cameraPlaceholder').classList.remove('hidden');
-                } else {
-                    document.getElementById('cameraBoxReturn').classList.add('hidden');
-                    document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-                }
-                stopCamera();
-            }, 500);
+            // Tutup kamera
+            document.getElementById(cameraBoxId).classList.add('hidden');
+            document.getElementById(placeholderId).classList.remove('hidden');
+            stopCamera();
             
             showToast('Foto berhasil diambil!', 'success');
         }
@@ -1924,27 +1320,1193 @@
         }
 
         // ========================================================================
+        // CRUD PROJECT
+        // ========================================================================
+        async function fetchProjects() {
+            const tbody = document.getElementById('projectsTableBody');
+            tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Projects');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    projectsData = result.data;
+                    renderProjectsTable(projectsData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderProjectsTable(data) {
+            const tbody = document.getElementById('projectsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada project terdaftar. Klik "Tambah Project".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const linkHTML = item['Link BOM/BOQ'] ? 
+                    `<a href="${item['Link BOM/BOQ']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-arrow-square-out text-sm"></i> Buka</a>` 
+                    : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
+
+                let tanggalText = item['Tanggal'] || '-';
+                try {
+                    if (tanggalText && tanggalText !== '-') {
+                        const dateObj = new Date(tanggalText);
+                        if (!isNaN(dateObj.getTime())) {
+                            tanggalText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        }
+                    }
+                } catch(e) {}
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Project'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-semibold">${item['No SO/PO'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Customer'] || '-'}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText}</td>
+                    <td class="p-4">${linkHTML}</td>
+                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan'] || ''}">${item['Keterangan'] || '-'}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editProject('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteProject('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editProject(id) {
+            let data = projectsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            if (!data) {
+                const rows = document.querySelectorAll('#projectsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 7) {
+                            data = {
+                                'ID': id,
+                                'Nama Project': cells[1]?.textContent || '',
+                                'No SO/PO': cells[2]?.textContent || '',
+                                'Customer': cells[3]?.textContent || '',
+                                'Tanggal': cells[4]?.textContent || '',
+                                'Link BOM/BOQ': '',
+                                'Keterangan': cells[6]?.textContent || ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (data) {
+                document.getElementById('p_id').value = id;
+                document.getElementById('p_nama').value = data['Nama Project'] || '';
+                document.getElementById('p_sopo').value = data['No SO/PO'] || '';
+                document.getElementById('p_tanggal').value = data['Tanggal'] || '';
+                document.getElementById('p_customer').value = data['Customer'] || '';
+                document.getElementById('p_link').value = data['Link BOM/BOQ'] || '';
+                document.getElementById('p_keterangan').value = data['Keterangan'] || '';
+                
+                document.getElementById('projectModalTitle').textContent = 'Edit Project';
+                document.getElementById('projectBtnText').textContent = 'Update';
+                
+                openModal('project');
+            } else {
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchProjects();
+            }
+        }
+
+        async function submitProject() {
+            const form = document.getElementById('addProjectForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const id = document.getElementById('p_id').value;
+            const isEdit = id !== '';
+            
+            const btnSubmit = document.getElementById('btnSubmitProject');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: isEdit ? 'update' : 'add',
+                sheet: 'Projects',
+                id: id,
+                nama_project: document.getElementById('p_nama').value,
+                no_so: document.getElementById('p_sopo').value,
+                tanggal: document.getElementById('p_tanggal').value,
+                customer: document.getElementById('p_customer').value,
+                link: document.getElementById('p_link').value,
+                keterangan: document.getElementById('p_keterangan').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('project');
+                    showToast(isEdit ? "Project berhasil diupdate!" : "Project baru berhasil disimpan!", "success");
+                    fetchProjects();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function deleteProject(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus project ini?", async () => {
+                try {
+                    const tbody = document.getElementById('projectsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Projects', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Project berhasil dihapus!", "success");
+                        fetchProjects();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchProjects();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchProjects();
+                }
+            });
+        }
+
+        // ========================================================================
+        // CRUD PRODUCT
+        // ========================================================================
+        async function fetchProducts() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Products');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    productsData = result.data;
+                    renderProductsTable(productsData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderProductsTable(data) {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada product terdaftar. Klik "Tambah Product".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const linkHTML = item['Link Video Test'] ? 
+                    `<a href="${item['Link Video Test']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-video-camera text-sm"></i> Tonton</a>` 
+                    : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
+
+                const status = item['Status'] || 'Pending';
+                let statusClass = 'status-default';
+                if (status === 'Completed' || status === 'Success') statusClass = 'status-success';
+                else if (status === 'In Progress') statusClass = 'status-warning';
+                else if (status === 'Failed') statusClass = 'status-danger';
+                else if (status === 'Testing') statusClass = 'status-info';
+
+                let tanggalText = item['Tanggal'] || '-';
+                try {
+                    if (tanggalText && tanggalText !== '-') {
+                        const dateObj = new Date(tanggalText);
+                        if (!isNaN(dateObj.getTime())) {
+                            tanggalText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        }
+                    }
+                } catch(e) {}
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 text-slate-600 font-semibold">${item['No SO/PO'] || '-'}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Produk'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Customer'] || '-'}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tanggalText}</td>
+                    <td class="p-4">${linkHTML}</td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${status}</span></td>
+                    <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan'] || ''}">${item['Keterangan'] || '-'}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editProduct(id) {
+            let data = productsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            if (!data) {
+                const rows = document.querySelectorAll('#productsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 8) {
+                            data = {
+                                'ID': id,
+                                'No SO/PO': cells[1]?.textContent || '',
+                                'Nama Produk': cells[2]?.textContent || '',
+                                'Customer': cells[3]?.textContent || '',
+                                'Tanggal': cells[4]?.textContent || '',
+                                'Link Video Test': '',
+                                'Status': cells[6]?.textContent || '',
+                                'Keterangan': cells[7]?.textContent || ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (data) {
+                document.getElementById('prod_id').value = id;
+                document.getElementById('prod_nama').value = data['Nama Produk'] || '';
+                document.getElementById('prod_sopo').value = data['No SO/PO'] || '';
+                document.getElementById('prod_customer').value = data['Customer'] || '';
+                document.getElementById('prod_tanggal').value = data['Tanggal'] || '';
+                document.getElementById('prod_link').value = data['Link Video Test'] || '';
+                document.getElementById('prod_status').value = data['Status'] || '';
+                document.getElementById('prod_keterangan').value = data['Keterangan'] || '';
+                
+                document.getElementById('productModalTitle').textContent = 'Edit Product';
+                document.getElementById('productBtnText').textContent = 'Update';
+                
+                openModal('product');
+            } else {
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchProducts();
+            }
+        }
+
+        async function submitProduct() {
+            const form = document.getElementById('addProductForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const id = document.getElementById('prod_id').value;
+            const isEdit = id !== '';
+            
+            const btnSubmit = document.getElementById('btnSubmitProduct');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: isEdit ? 'update' : 'add',
+                sheet: 'Products',
+                id: id,
+                nama_produk: document.getElementById('prod_nama').value,
+                no_so: document.getElementById('prod_sopo').value,
+                customer: document.getElementById('prod_customer').value,
+                tanggal: document.getElementById('prod_tanggal').value,
+                link: document.getElementById('prod_link').value,
+                status: document.getElementById('prod_status').value,
+                keterangan: document.getElementById('prod_keterangan').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('product');
+                    showToast(isEdit ? "Product berhasil diupdate!" : "Product baru berhasil disimpan!", "success");
+                    fetchProducts();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function deleteProduct(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus product ini?", async () => {
+                try {
+                    const tbody = document.getElementById('productsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Products', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Product berhasil dihapus!", "success");
+                        fetchProducts();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchProducts();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchProducts();
+                }
+            });
+        }
+
+        // ========================================================================
+        // CRUD SPAREPART
+        // ========================================================================
+        async function fetchSpareparts() {
+            const tbody = document.getElementById('sparepartsTableBody');
+            tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Spareparts');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    sparepartsData = result.data;
+                    renderSparepartsTable(sparepartsData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderSparepartsTable(data) {
+            const tbody = document.getElementById('sparepartsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada sparepart terdaftar. Klik "Tambah Sparepart".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const stok = parseInt(item['Stok']) || 0;
+                let stockClass = 'stock-empty';
+                let stockLabel = 'Habis';
+                if (stok > 50) { stockClass = 'stock-high'; stockLabel = 'Tersedia'; }
+                else if (stok > 10) { stockClass = 'stock-medium'; stockLabel = 'Sedang'; }
+                else if (stok > 0) { stockClass = 'stock-low'; stockLabel = 'Menipis'; }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Sparepart'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium max-w-xs truncate" title="${item['Spesifikasi'] || ''}">${item['Spesifikasi'] || '-'}</td>
+                    <td class="p-4">
+                        <span class="stock-badge ${stockClass}">${stok} pcs</span>
+                        <span class="text-xs text-slate-400 ml-1">(${stockLabel})</span>
+                    </td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Lokasi Penyimpanan'] || '-'}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editSparepart('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteSparepart('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editSparepart(id) {
+            let data = sparepartsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            if (!data) {
+                const rows = document.querySelectorAll('#sparepartsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 5) {
+                            const stockText = cells[3]?.textContent || '0';
+                            const stokMatch = stockText.match(/(\d+)/);
+                            const stok = stokMatch ? parseInt(stokMatch[1]) : 0;
+                            
+                            data = {
+                                'ID': id,
+                                'Nama Sparepart': cells[1]?.textContent || '',
+                                'Spesifikasi': cells[2]?.textContent || '',
+                                'Stok': stok,
+                                'Lokasi Penyimpanan': cells[4]?.textContent || ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (data) {
+                document.getElementById('s_id').value = id;
+                document.getElementById('s_nama').value = data['Nama Sparepart'] || '';
+                document.getElementById('s_spesifikasi').value = data['Spesifikasi'] || '';
+                document.getElementById('s_stok').value = data['Stok'] || 0;
+                document.getElementById('s_lokasi').value = data['Lokasi Penyimpanan'] || '';
+                
+                document.getElementById('sparepartModalTitle').textContent = 'Edit Sparepart';
+                document.getElementById('sparepartBtnText').textContent = 'Update';
+                
+                openModal('sparepart');
+            } else {
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchSpareparts();
+            }
+        }
+
+        async function submitSparepart() {
+            const form = document.getElementById('addSparepartForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const id = document.getElementById('s_id').value;
+            const isEdit = id !== '';
+            
+            const btnSubmit = document.getElementById('btnSubmitSparepart');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: isEdit ? 'update' : 'add',
+                sheet: 'Spareparts',
+                id: id,
+                nama_sparepart: document.getElementById('s_nama').value,
+                spesifikasi: document.getElementById('s_spesifikasi').value,
+                stok: document.getElementById('s_stok').value,
+                lokasi: document.getElementById('s_lokasi').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('sparepart');
+                    showToast(isEdit ? "Sparepart berhasil diupdate!" : "Sparepart baru berhasil disimpan!", "success");
+                    fetchSpareparts();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function deleteSparepart(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus sparepart ini?", async () => {
+                try {
+                    const tbody = document.getElementById('sparepartsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Spareparts', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Sparepart berhasil dihapus!", "success");
+                        fetchSpareparts();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchSpareparts();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchSpareparts();
+                }
+            });
+        }
+
+        // ========================================================================
+        // CRUD TOOLS
+        // ========================================================================
+        async function fetchTools() {
+            const tbody = document.getElementById('toolsTableBody');
+            tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    toolsData = result.data;
+                    renderToolsTable(toolsData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderToolsTable(data) {
+            const tbody = document.getElementById('toolsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada tool terdaftar. Klik "Tambah Tool".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const kondisi = (item['Kondisi'] || 'Unknown').trim();
+                let conditionClass = 'condition-default';
+                if (kondisi === 'Baik') conditionClass = 'condition-good';
+                else if (kondisi === 'Sedang') conditionClass = 'condition-worn';
+                else if (kondisi === 'Rusak') conditionClass = 'condition-broken';
+
+                const statusRaw = (item['Status'] || 'Unknown').trim();
+                const statusMap = {
+                    'Tersedia': { class: 'status-success', label: 'Tersedia' },
+                    'Dipinjam': { class: 'status-warning', label: 'Dipinjam' },
+                    'Perbaikan': { class: 'status-info', label: 'Perbaikan' },
+                    'Rusak': { class: 'status-danger', label: 'Rusak' }
+                };
+                
+                const statusInfo = statusMap[statusRaw];
+                let statusClass, statusDisplay;
+                
+                if (statusInfo) {
+                    statusClass = statusInfo.class;
+                    statusDisplay = statusInfo.label;
+                } else {
+                    statusClass = 'status-default';
+                    statusDisplay = statusRaw || 'Unknown';
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Tool'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-semibold">${item['Jumlah'] || 0}</td>
+                    <td class="p-4"><span class="condition-badge ${conditionClass}">${kondisi}</span></td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${statusDisplay}</span></td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editTool('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteTool('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editTool(id) {
+            let data = toolsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            if (!data) {
+                const rows = document.querySelectorAll('#toolsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 5) {
+                            data = {
+                                'ID': id,
+                                'Nama Tool': cells[1]?.textContent || '',
+                                'Jumlah': parseInt(cells[2]?.textContent) || 0,
+                                'Kondisi': (cells[3]?.textContent || '').trim(),
+                                'Status': (cells[4]?.textContent || '').trim()
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (data) {
+                document.getElementById('t_id').value = id;
+                document.getElementById('t_nama').value = data['Nama Tool'] || '';
+                document.getElementById('t_jumlah').value = data['Jumlah'] || 0;
+                document.getElementById('t_kondisi').value = data['Kondisi'] || '';
+                document.getElementById('t_status').value = data['Status'] || '';
+                
+                document.getElementById('toolModalTitle').textContent = 'Edit Tool';
+                document.getElementById('toolBtnText').textContent = 'Update';
+                
+                openModal('tool');
+            } else {
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchTools();
+            }
+        }
+
+        async function submitTool() {
+            const form = document.getElementById('addToolForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const id = document.getElementById('t_id').value;
+            const isEdit = id !== '';
+            
+            const btnSubmit = document.getElementById('btnSubmitTool');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: isEdit ? 'update' : 'add',
+                sheet: 'Tools',
+                id: id,
+                nama_tool: document.getElementById('t_nama').value.trim(),
+                jumlah: document.getElementById('t_jumlah').value,
+                kondisi: document.getElementById('t_kondisi').value,
+                status: document.getElementById('t_status').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('tool');
+                    showToast(isEdit ? "Tool berhasil diupdate!" : "Tool baru berhasil disimpan!", "success");
+                    fetchTools();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function deleteTool(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus tool ini?", async () => {
+                try {
+                    const tbody = document.getElementById('toolsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Tools', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Tool berhasil dihapus!", "success");
+                        fetchTools();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchTools();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchTools();
+                }
+            });
+        }
+
+        // ========================================================================
+        // CRUD BORROWINGS
+        // ========================================================================
+        let borrowingsData = [];
+
+        async function fetchBorrowings() {
+            const tbody = document.getElementById('borrowingsTableBody');
+            tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Borrowings');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    borrowingsData = result.data;
+                    renderBorrowingsTable(borrowingsData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderBorrowingsTable(data) {
+            const tbody = document.getElementById('borrowingsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada peminjaman. Klik "Pinjam Tool".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const status = (item['Status'] || 'Dipinjam').trim();
+                let statusClass = 'status-warning';
+                let statusDisplay = 'Dipinjam';
+                
+                if (status === 'Selesai' || status === 'Kembali') {
+                    statusClass = 'status-success';
+                    statusDisplay = 'Selesai';
+                } else if (status === 'Dipinjam') {
+                    statusClass = 'status-warning';
+                    statusDisplay = 'Dipinjam';
+                } else {
+                    statusClass = 'status-default';
+                    statusDisplay = status;
+                }
+
+                let tglPinjam = item['Tanggal Pinjam'] || '-';
+                let tglKembali = item['Tanggal Kembali'] || '-';
+                
+                try {
+                    if (tglPinjam && tglPinjam !== '-') {
+                        const dateObj = new Date(tglPinjam);
+                        if (!isNaN(dateObj.getTime())) {
+                            tglPinjam = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        }
+                    }
+                } catch(e) {}
+                
+                try {
+                    if (tglKembali && tglKembali !== '-') {
+                        const dateObj = new Date(tglKembali);
+                        if (!isNaN(dateObj.getTime())) {
+                            tglKembali = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+                        }
+                    }
+                } catch(e) {}
+
+                const fotoPinjam = item['Foto Pinjam'] || '';
+                const fotoPinjamHTML = fotoPinjam ? 
+                    `<img src="${fotoPinjam}" class="photo-thumb" onclick="openPhotoModal('${fotoPinjam}')" title="Klik untuk perbesar">` : 
+                    `<span class="text-slate-300 text-xs">-</span>`;
+
+                const fotoKembali = item['Foto Kembali'] || '';
+                const fotoKembaliHTML = fotoKembali ? 
+                    `<img src="${fotoKembali}" class="photo-thumb" onclick="openPhotoModal('${fotoKembali}')" title="Klik untuk perbesar">` : 
+                    `<span class="text-slate-300 text-xs">-</span>`;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Tool'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Nama Peminjam'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Departemen'] || '-'}</td>
+                    <td class="p-4 text-center">${fotoPinjamHTML}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tglPinjam}</td>
+                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tglKembali}</td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${statusDisplay}</span></td>
+                    <td class="p-4 text-center">${fotoKembaliHTML}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            ${status === 'Dipinjam' ? `
+                                <button onclick="openReturnModal('${item['ID']}')" class="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Kembalikan Tool">
+                                    <i class="ph-duotone ph-arrow-counter-clockwise text-base"></i>
+                                </button>
+                            ` : `
+                                <span class="text-xs text-slate-400 font-semibold">Selesai</span>
+                            `}
+                            <button onclick="deleteBorrowing('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ========================================================================
+        // BORROWING FUNCTIONS
+        // ========================================================================
+        async function openBorrowingModal() {
+            // Reset form
+            document.getElementById('b_id').value = '';
+            document.getElementById('b_peminjam').value = '';
+            document.getElementById('b_departemen').value = '';
+            document.getElementById('b_foto_pinjam').value = '';
+            document.getElementById('fotoPreview').classList.add('hidden');
+            document.getElementById('previewImg').src = '';
+            document.getElementById('cameraBox').classList.add('hidden');
+            document.getElementById('cameraPlaceholder').classList.remove('hidden');
+            stopCamera();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('b_tanggal_pinjam').value = today;
+            
+            await fetchToolsForDropdown();
+            
+            const modal = document.getElementById('borrowingModal');
+            const content = document.getElementById('modalBorrowingContent');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        async function fetchToolsForDropdown() {
+            const select = document.getElementById('b_tool_id');
+            select.innerHTML = '<option value="">-- Pilih Tool --</option>';
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const tools = result.data;
+                    const availableTools = tools.filter(t => {
+                        const status = (t['Status'] || '').trim();
+                        return status === 'Tersedia';
+                    });
+                    
+                    availableTools.forEach(tool => {
+                        const option = document.createElement('option');
+                        option.value = tool['ID'];
+                        option.textContent = `${tool['Nama Tool']} (${tool['Jumlah']} pcs)`;
+                        select.appendChild(option);
+                    });
+                    
+                    if (availableTools.length === 0) {
+                        select.innerHTML = '<option value="">-- Tidak ada tool tersedia --</option>';
+                    }
+                }
+            } catch (error) {
+                showToast('Gagal memuat daftar tool', 'error');
+            }
+        }
+
+        async function submitBorrowing() {
+            const form = document.getElementById('addBorrowingForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const fotoPinjam = document.getElementById('b_foto_pinjam').value;
+            if (!fotoPinjam) {
+                showToast('Harap ambil foto pinjam terlebih dahulu!', 'error');
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmitBorrowing');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
+            btnSubmit.disabled = true;
+
+            const toolId = document.getElementById('b_tool_id').value;
+            const toolName = document.getElementById('b_tool_id').selectedOptions[0]?.textContent || '';
+            const cleanToolName = toolName.replace(/\s*\(.*\)\s*$/, '').trim();
+
+            const payload = {
+                action: 'add',
+                sheet: 'Borrowings',
+                id: new Date().getTime().toString(),
+                nama_tool: cleanToolName,
+                nama_peminjam: document.getElementById('b_peminjam').value,
+                departemen: document.getElementById('b_departemen').value,
+                foto_pinjam: fotoPinjam,
+                tanggal_pinjam: document.getElementById('b_tanggal_pinjam').value,
+                tanggal_kembali: '',
+                status: 'Dipinjam',
+                foto_kembali: ''
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    await updateToolStatus(toolId, 'Dipinjam');
+                    closeModal('borrowing');
+                    showToast("Peminjaman berhasil disimpan!", "success");
+                    fetchBorrowings();
+                    fetchTools();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+                stopCamera();
+            }
+        }
+
+        async function updateToolStatus(toolId, newStatus) {
+            try {
+                const tool = toolsData.find(t => t['ID'] && t['ID'].toString() === toolId.toString());
+                if (!tool) return;
+                
+                const payload = {
+                    action: 'update',
+                    sheet: 'Tools',
+                    id: toolId,
+                    nama_tool: tool['Nama Tool'] || '',
+                    jumlah: tool['Jumlah'] || 0,
+                    kondisi: tool['Kondisi'] || 'Baik',
+                    status: newStatus
+                };
+                
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+            } catch (error) {
+                console.error('Error updating tool status:', error);
+            }
+        }
+
+        // ========================================================================
+        // RETURN FUNCTIONS
+        // ========================================================================
+        async function openReturnModal(borrowingId) {
+            const borrowing = borrowingsData.find(b => b['ID'] && b['ID'].toString() === borrowingId.toString());
+            if (!borrowing) {
+                showToast('Data peminjaman tidak ditemukan', 'error');
+                return;
+            }
+
+            document.getElementById('r_id').value = borrowingId;
+            document.getElementById('r_tool_id').value = borrowing['Tool ID'] || '';
+            document.getElementById('r_nama_tool').textContent = borrowing['Nama Tool'] || '-';
+            document.getElementById('r_nama_peminjam').textContent = borrowing['Nama Peminjam'] || '-';
+            
+            document.getElementById('r_foto_kembali').value = '';
+            document.getElementById('fotoPreviewReturn').classList.add('hidden');
+            document.getElementById('previewImgReturn').src = '';
+            document.getElementById('cameraBoxReturn').classList.add('hidden');
+            document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
+            stopCamera();
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('r_tanggal_kembali').value = today;
+
+            const modal = document.getElementById('returnModal');
+            const content = document.getElementById('modalReturnContent');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        async function submitReturn() {
+            const form = document.getElementById('returnForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const fotoKembali = document.getElementById('r_foto_kembali').value;
+            if (!fotoKembali) {
+                showToast('Harap ambil foto kembali terlebih dahulu!', 'error');
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmitReturn');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Memproses...</span>`;
+            btnSubmit.disabled = true;
+
+            const id = document.getElementById('r_id').value;
+            const toolId = document.getElementById('r_tool_id').value;
+
+            try {
+                const payload = {
+                    action: 'update',
+                    sheet: 'Borrowings',
+                    id: id,
+                    tanggal_kembali: document.getElementById('r_tanggal_kembali').value,
+                    status: 'Selesai',
+                    foto_kembali: fotoKembali
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    await updateToolStatus(toolId, 'Tersedia');
+                    closeModal('return');
+                    showToast("Pengembalian berhasil!", "success");
+                    fetchBorrowings();
+                    fetchTools();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+                stopCamera();
+            }
+        }
+
+        function deleteBorrowing(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus data peminjaman ini?", async () => {
+                try {
+                    const tbody = document.getElementById('borrowingsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Borrowings', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Data peminjaman berhasil dihapus!", "success");
+                        fetchBorrowings();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchBorrowings();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchBorrowings();
+                }
+            });
+        }
+
+        // ========================================================================
         // MODAL FUNCTIONS
         // ========================================================================
         function openModal(type) {
-            const map = {
+            const modalMap = {
                 'project': 'projectModal',
                 'product': 'productModal',
                 'sparepart': 'sparepartModal',
                 'tool': 'toolModal'
             };
-            const modal = document.getElementById(map[type]);
-            const content = modal.querySelector('.bg-white');
+            const modal = document.getElementById(modalMap[type]);
+            const content = modal.querySelector('.bg-white') || modal.querySelector('#modalContent');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
-                if (content) content.classList.remove('scale-95');
+                content.classList.remove('scale-95');
             }, 10);
         }
 
         function closeModal(type) {
-            const map = {
+            const modalMap = {
                 'project': 'projectModal',
                 'product': 'productModal',
                 'sparepart': 'sparepartModal',
@@ -1952,53 +2514,29 @@
                 'borrowing': 'borrowingModal',
                 'return': 'returnModal'
             };
-            const modal = document.getElementById(map[type]);
-            const content = modal.querySelector('.bg-white') || modal.querySelector('#modalBorrowingContent') || modal.querySelector('#modalReturnContent');
+            const modal = document.getElementById(modalMap[type]);
+            const content = modal.querySelector('.bg-white') || modal.querySelector('#modalContent') || modal.querySelector('#modalBorrowingContent') || modal.querySelector('#modalReturnContent');
             modal.classList.add('opacity-0');
-            if (content) content.classList.add('scale-95');
+            content.classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-                if (content) content.classList.remove('scale-95');
-                if (type === 'borrowing' || type === 'return') {
+                content.classList.remove('scale-95');
+                if (type === 'borrowing') {
                     stopCamera();
                     document.getElementById('cameraBox').classList.add('hidden');
-                    document.getElementById('cameraBoxReturn').classList.add('hidden');
                     document.getElementById('cameraPlaceholder').classList.remove('hidden');
+                }
+                if (type === 'return') {
+                    stopCamera();
+                    document.getElementById('cameraBoxReturn').classList.add('hidden');
                     document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-                }
-                // Reset form jika project/product/sparepart/tool
-                if (type === 'project') {
-                    document.getElementById('p_id').value = '';
-                    document.getElementById('projectModalTitle').textContent = 'Project Baru';
-                    document.getElementById('projectBtnText').textContent = 'Simpan';
-                    document.getElementById('addProjectForm').reset();
-                    document.getElementById('p_tanggal').value = new Date().toISOString().split('T')[0];
-                }
-                if (type === 'product') {
-                    document.getElementById('prod_id').value = '';
-                    document.getElementById('productModalTitle').textContent = 'Product Baru';
-                    document.getElementById('productBtnText').textContent = 'Simpan';
-                    document.getElementById('addProductForm').reset();
-                    document.getElementById('prod_tanggal').value = new Date().toISOString().split('T')[0];
-                }
-                if (type === 'sparepart') {
-                    document.getElementById('s_id').value = '';
-                    document.getElementById('sparepartModalTitle').textContent = 'Sparepart Baru';
-                    document.getElementById('sparepartBtnText').textContent = 'Simpan';
-                    document.getElementById('addSparepartForm').reset();
-                }
-                if (type === 'tool') {
-                    document.getElementById('t_id').value = '';
-                    document.getElementById('toolModalTitle').textContent = 'Tool Baru';
-                    document.getElementById('toolBtnText').textContent = 'Simpan';
-                    document.getElementById('addToolForm').reset();
                 }
             }, 300);
         }
 
         // ========================================================================
-        // EVENT LISTENERS
+        // EVENT LISTENERS FOR CAMERA
         // ========================================================================
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
@@ -2009,15 +2547,18 @@
 
             // BUKA KAMERA - PINJAM
             document.getElementById('btnOpenCamera').addEventListener('click', async function() {
-                const box = document.getElementById('cameraBox');
+                const cameraBox = document.getElementById('cameraBox');
                 const placeholder = document.getElementById('cameraPlaceholder');
-                if (box.classList.contains('hidden')) {
-                    box.classList.remove('hidden');
+                
+                if (cameraBox.classList.contains('hidden')) {
+                    cameraBox.classList.remove('hidden');
                     placeholder.classList.remove('hidden');
                     const success = await startCamera('videoPreview', 'cameraPlaceholder');
-                    if (!success) box.classList.add('hidden');
+                    if (!success) {
+                        cameraBox.classList.add('hidden');
+                    }
                 } else {
-                    box.classList.add('hidden');
+                    cameraBox.classList.add('hidden');
                     placeholder.classList.remove('hidden');
                     stopCamera();
                 }
@@ -2039,15 +2580,18 @@
 
             // BUKA KAMERA - KEMBALI
             document.getElementById('btnOpenCameraReturn').addEventListener('click', async function() {
-                const box = document.getElementById('cameraBoxReturn');
+                const cameraBox = document.getElementById('cameraBoxReturn');
                 const placeholder = document.getElementById('cameraPlaceholderReturn');
-                if (box.classList.contains('hidden')) {
-                    box.classList.remove('hidden');
+                
+                if (cameraBox.classList.contains('hidden')) {
+                    cameraBox.classList.remove('hidden');
                     placeholder.classList.remove('hidden');
                     const success = await startCamera('videoPreviewReturn', 'cameraPlaceholderReturn');
-                    if (!success) box.classList.add('hidden');
+                    if (!success) {
+                        cameraBox.classList.add('hidden');
+                    }
                 } else {
-                    box.classList.add('hidden');
+                    cameraBox.classList.add('hidden');
                     placeholder.classList.remove('hidden');
                     stopCamera();
                 }
@@ -2067,6 +2611,16 @@
                 removePhoto('kembali');
             });
         });
+
+        // Override openModal untuk borrowing
+        const originalOpenModal = openModal;
+        openModal = function(type) {
+            if (type === 'borrowing') {
+                openBorrowingModal();
+            } else {
+                originalOpenModal(type);
+            }
+        };
     </script>
 
 </body>

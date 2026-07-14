@@ -642,6 +642,7 @@
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
                 tr.innerHTML = `
                     <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
                     <td class="p-4 font-extrabold text-slate-900">${item['Nama Project'] || '-'}</td>
@@ -666,7 +667,35 @@
         }
 
         function editProject(id) {
-            const data = projectsData.find(item => item['ID'] === id);
+            console.log('Mencari ID:', id);
+            console.log('Data Projects:', projectsData);
+            
+            // Cari di projectsData
+            let data = projectsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            // Jika tidak ditemukan, coba cari dari DOM
+            if (!data) {
+                const rows = document.querySelectorAll('#projectsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 7) {
+                            data = {
+                                'ID': id,
+                                'Nama Project': cells[1]?.textContent || '',
+                                'No SO/PO': cells[2]?.textContent || '',
+                                'Customer': cells[3]?.textContent || '',
+                                'Tanggal': cells[4]?.textContent || '',
+                                'Link BOM/BOQ': '',
+                                'Keterangan': cells[6]?.textContent || ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
             if (data) {
                 document.getElementById('p_id').value = id;
                 document.getElementById('p_nama').value = data['Nama Project'] || '';
@@ -681,7 +710,9 @@
                 
                 openModal('project');
             } else {
-                showToast('Data tidak ditemukan', 'error');
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                // Refresh data
+                fetchProjects();
             }
         }
 
@@ -820,6 +851,7 @@
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
                 tr.innerHTML = `
                     <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
                     <td class="p-4 text-slate-600 font-semibold">${item['No SO/PO'] || '-'}</td>
@@ -845,7 +877,36 @@
         }
 
         function editProduct(id) {
-            const data = productsData.find(item => item['ID'] === id);
+            console.log('Mencari ID Product:', id);
+            console.log('Data Products:', productsData);
+            
+            // Cari di productsData
+            let data = productsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            // Jika tidak ditemukan, coba cari dari DOM
+            if (!data) {
+                const rows = document.querySelectorAll('#productsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 8) {
+                            data = {
+                                'ID': id,
+                                'No SO/PO': cells[1]?.textContent || '',
+                                'Nama Produk': cells[2]?.textContent || '',
+                                'Customer': cells[3]?.textContent || '',
+                                'Tanggal': cells[4]?.textContent || '',
+                                'Link Video Test': '',
+                                'Status': cells[6]?.textContent || '',
+                                'Keterangan': cells[7]?.textContent || ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
             if (data) {
                 document.getElementById('prod_id').value = id;
                 document.getElementById('prod_nama').value = data['Nama Produk'] || '';
@@ -861,7 +922,8 @@
                 
                 openModal('product');
             } else {
-                showToast('Data tidak ditemukan', 'error');
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchProducts();
             }
         }
 

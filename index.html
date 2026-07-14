@@ -79,7 +79,7 @@
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVdZ5b6dMfmK6L7yj0J5h9K0H5CAfE_5-iRSgMuxLv32eObOoyvpkuFVaZ9-JTpG5YuA/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH8uOMpxhpjIGHhxBbPfGikbJIhqHiuR2UYsaHFH0FgRko60_nsPLBjg_VyQvLMePOCA/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -233,7 +233,7 @@
                                         <th class="p-4">Tanggal</th>
                                         <th class="p-4">Link BOM/BOQ</th>
                                         <th class="p-4">Keterangan</th>
-                                        <th class="p-4 w-24 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
+                                        <th class="p-4 w-32 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="projectsTableBody" class="text-sm divide-y divide-slate-100">
@@ -276,7 +276,7 @@
                                         <th class="p-4">Link Video Test</th>
                                         <th class="p-4">Status</th>
                                         <th class="p-4">Keterangan</th>
-                                        <th class="p-4 w-24 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
+                                        <th class="p-4 w-32 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="productsTableBody" class="text-sm divide-y divide-slate-100">
@@ -298,7 +298,7 @@
         </div>
     </div>
 
-    <!-- MODAL UNTUK PROJECT -->
+    <!-- MODAL UNTUK PROJECT (Tambah & Edit) -->
     <div id="projectModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalContent">
             <!-- Header Modal -->
@@ -307,7 +307,7 @@
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
                         <i class="ph-duotone ph-file-plus text-xl text-white"></i>
                     </div>
-                    <h3 class="text-xl font-bold tracking-tight" id="modalTitle">Project Baru</h3>
+                    <h3 class="text-xl font-bold tracking-tight" id="projectModalTitle">Project Baru</h3>
                 </div>
                 <button onclick="closeModal('project')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
                     <i class="ph-bold ph-x text-xl"></i>
@@ -317,6 +317,7 @@
             <!-- Body Modal -->
             <div class="p-6 overflow-y-auto bg-slate-50/50">
                 <form id="addProjectForm" class="space-y-5">
+                    <input type="hidden" id="p_id" value="">
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Project <span class="text-brand-red">*</span></label>
                         <input type="text" id="p_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
@@ -355,13 +356,13 @@
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal('project')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitProject()" id="btnSubmitProject" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
-                    <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
+                    <i class="ph-duotone ph-floppy-disk text-base"></i> <span id="projectBtnText">Simpan</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL UNTUK PRODUCT -->
+    <!-- MODAL UNTUK PRODUCT (Tambah & Edit) -->
     <div id="productModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalProductContent">
             <!-- Header Modal -->
@@ -370,7 +371,7 @@
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
                         <i class="ph-duotone ph-package-plus text-xl text-white"></i>
                     </div>
-                    <h3 class="text-xl font-bold tracking-tight">Product Baru</h3>
+                    <h3 class="text-xl font-bold tracking-tight" id="productModalTitle">Product Baru</h3>
                 </div>
                 <button onclick="closeModal('product')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
                     <i class="ph-bold ph-x text-xl"></i>
@@ -380,6 +381,7 @@
             <!-- Body Modal -->
             <div class="p-6 overflow-y-auto bg-slate-50/50">
                 <form id="addProductForm" class="space-y-5">
+                    <input type="hidden" id="prod_id" value="">
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Produk <span class="text-brand-red">*</span></label>
                         <input type="text" id="prod_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
@@ -427,7 +429,7 @@
             <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
                 <button onclick="closeModal('product')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
                 <button onclick="submitProduct()" id="btnSubmitProduct" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
-                    <i class="ph-duotone ph-floppy-disk text-base"></i> Simpan
+                    <i class="ph-duotone ph-floppy-disk text-base"></i> <span id="productBtnText">Simpan</span>
                 </button>
             </div>
         </div>
@@ -505,11 +507,9 @@
 
         // --- SISTEM CUSTOM CONFIRM ---
         let onConfirmCallback = null;
-        let confirmType = 'project'; // 'project' or 'product'
         
-        function showConfirm(message, callback, type = 'project') {
+        function showConfirm(message, callback) {
             onConfirmCallback = callback;
-            confirmType = type;
             const confirmModal = document.getElementById('confirmModal');
             const confirmContent = document.getElementById('confirmContent');
             
@@ -674,16 +674,57 @@
                     <td class="p-4">${linkHTML}</td>
                     <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan'] || ''}">${item['Keterangan'] || '-'}</td>
                     <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
-                        <button onclick="deleteProject('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2.5 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
-                            <i class="ph-duotone ph-trash text-base"></i>
-                        </button>
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editProject('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteProject('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // Tambah Data Project
+        // Edit Project - Isi form dengan data existing
+        function editProject(id) {
+            // Cari data berdasarkan ID
+            const tbody = document.getElementById('projectsTableBody');
+            const rows = tbody.querySelectorAll('tr');
+            
+            // Ambil data dari Google Sheets lagi untuk mendapatkan data lengkap
+            fetch(APPS_SCRIPT_URL + '?sheet=Projects')
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        const data = result.data.find(item => item['ID'] === id);
+                        if (data) {
+                            // Isi form dengan data
+                            document.getElementById('p_id').value = id;
+                            document.getElementById('p_nama').value = data['Nama Project'] || '';
+                            document.getElementById('p_sopo').value = data['No SO/PO'] || '';
+                            document.getElementById('p_tanggal').value = data['Tanggal'] || '';
+                            document.getElementById('p_customer').value = data['Customer'] || '';
+                            document.getElementById('p_link').value = data['Link BOM/BOQ'] || '';
+                            document.getElementById('p_keterangan').value = data['Keterangan'] || '';
+                            
+                            // Ubah judul modal dan tombol
+                            document.getElementById('projectModalTitle').textContent = 'Edit Project';
+                            document.getElementById('projectBtnText').textContent = 'Update';
+                            
+                            // Buka modal
+                            openModal('project');
+                        }
+                    }
+                })
+                .catch(error => {
+                    showToast('Gagal mengambil data untuk diedit', 'error');
+                });
+        }
+
+        // Tambah / Update Data Project
         async function submitProject() {
             const form = document.getElementById('addProjectForm');
             if(!form.checkValidity()) {
@@ -691,14 +732,18 @@
                 return;
             }
 
+            const id = document.getElementById('p_id').value;
+            const isEdit = id !== '';
+            
             const btnSubmit = document.getElementById('btnSubmitProject');
             const originalHTML = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
             btnSubmit.disabled = true;
 
             const payload = {
-                action: 'add',
+                action: isEdit ? 'update' : 'add',
                 sheet: 'Projects',
+                id: id,
                 nama_project: document.getElementById('p_nama').value,
                 no_so: document.getElementById('p_sopo').value,
                 tanggal: document.getElementById('p_tanggal').value,
@@ -717,8 +762,12 @@
                 
                 if (result.status === 'success') {
                     closeModal('project');
-                    showToast("Project baru berhasil disimpan!", "success");
+                    showToast(isEdit ? "Project berhasil diupdate!" : "Project baru berhasil disimpan!", "success");
                     fetchProjects();
+                    // Reset form
+                    document.getElementById('p_id').value = '';
+                    document.getElementById('projectModalTitle').textContent = 'Project Baru';
+                    document.getElementById('projectBtnText').textContent = 'Simpan';
                 } else {
                     showToast('Gagal menyimpan: ' + result.message, "error");
                 }
@@ -755,7 +804,7 @@
                     showToast('Terjadi kesalahan jaringan.', 'error');
                     fetchProjects();
                 }
-            }, 'project');
+            });
         }
 
         // ========================================================================
@@ -798,7 +847,6 @@
                     `<a href="${item['Link Video Test']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-video-camera text-sm"></i> Tonton</a>` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
 
-                // Status badge
                 const status = item['Status'] || 'Pending';
                 let statusClass = 'status-default';
                 if (status === 'Completed' || status === 'Success') statusClass = 'status-success';
@@ -828,16 +876,50 @@
                     <td class="p-4"><span class="status-badge ${statusClass}">${status}</span></td>
                     <td class="p-4 max-w-xs truncate text-slate-500 font-medium" title="${item['Keterangan'] || ''}">${item['Keterangan'] || '-'}</td>
                     <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
-                        <button onclick="deleteProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2.5 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
-                            <i class="ph-duotone ph-trash text-base"></i>
-                        </button>
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteProduct('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // Tambah Data Product
+        // Edit Product - Isi form dengan data existing
+        function editProduct(id) {
+            fetch(APPS_SCRIPT_URL + '?sheet=Products')
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        const data = result.data.find(item => item['ID'] === id);
+                        if (data) {
+                            document.getElementById('prod_id').value = id;
+                            document.getElementById('prod_nama').value = data['Nama Produk'] || '';
+                            document.getElementById('prod_sopo').value = data['No SO/PO'] || '';
+                            document.getElementById('prod_customer').value = data['Customer'] || '';
+                            document.getElementById('prod_tanggal').value = data['Tanggal'] || '';
+                            document.getElementById('prod_link').value = data['Link Video Test'] || '';
+                            document.getElementById('prod_status').value = data['Status'] || '';
+                            document.getElementById('prod_keterangan').value = data['Keterangan'] || '';
+                            
+                            document.getElementById('productModalTitle').textContent = 'Edit Product';
+                            document.getElementById('productBtnText').textContent = 'Update';
+                            
+                            openModal('product');
+                        }
+                    }
+                })
+                .catch(error => {
+                    showToast('Gagal mengambil data untuk diedit', 'error');
+                });
+        }
+
+        // Tambah / Update Data Product
         async function submitProduct() {
             const form = document.getElementById('addProductForm');
             if(!form.checkValidity()) {
@@ -845,14 +927,18 @@
                 return;
             }
 
+            const id = document.getElementById('prod_id').value;
+            const isEdit = id !== '';
+            
             const btnSubmit = document.getElementById('btnSubmitProduct');
             const originalHTML = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
             btnSubmit.disabled = true;
 
             const payload = {
-                action: 'add',
+                action: isEdit ? 'update' : 'add',
                 sheet: 'Products',
+                id: id,
                 nama_produk: document.getElementById('prod_nama').value,
                 no_so: document.getElementById('prod_sopo').value,
                 customer: document.getElementById('prod_customer').value,
@@ -872,8 +958,11 @@
                 
                 if (result.status === 'success') {
                     closeModal('product');
-                    showToast("Product baru berhasil disimpan!", "success");
+                    showToast(isEdit ? "Product berhasil diupdate!" : "Product baru berhasil disimpan!", "success");
                     fetchProducts();
+                    document.getElementById('prod_id').value = '';
+                    document.getElementById('productModalTitle').textContent = 'Product Baru';
+                    document.getElementById('productBtnText').textContent = 'Simpan';
                 } else {
                     showToast('Gagal menyimpan: ' + result.message, "error");
                 }
@@ -910,7 +999,7 @@
                     showToast('Terjadi kesalahan jaringan.', 'error');
                     fetchProducts();
                 }
-            }, 'product');
+            });
         }
 
         // ========================================================================
@@ -919,7 +1008,6 @@
         
         function openModal(type) {
             if (type === 'project') {
-                document.getElementById('addProjectForm').reset();
                 const modal = document.getElementById('projectModal');
                 const modalContent = document.getElementById('modalContent');
                 modal.classList.remove('hidden');
@@ -929,7 +1017,6 @@
                     modalContent.classList.remove('scale-95');
                 }, 10);
             } else if (type === 'product') {
-                document.getElementById('addProductForm').reset();
                 const modal = document.getElementById('productModal');
                 const modalContent = document.getElementById('modalProductContent');
                 modal.classList.remove('hidden');
@@ -950,6 +1037,11 @@
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
+                    // Reset form
+                    document.getElementById('p_id').value = '';
+                    document.getElementById('projectModalTitle').textContent = 'Project Baru';
+                    document.getElementById('projectBtnText').textContent = 'Simpan';
+                    document.getElementById('addProjectForm').reset();
                 }, 300);
             } else if (type === 'product') {
                 const modal = document.getElementById('productModal');
@@ -959,6 +1051,10 @@
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
+                    document.getElementById('prod_id').value = '';
+                    document.getElementById('productModalTitle').textContent = 'Product Baru';
+                    document.getElementById('productBtnText').textContent = 'Simpan';
+                    document.getElementById('addProductForm').reset();
                 }, 300);
             }
         }
@@ -967,7 +1063,6 @@
         // --- INITIAL LOAD ---
         // ========================================================================
         
-        // Setup default date untuk modal
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('p_tanggal').value = today;

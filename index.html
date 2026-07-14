@@ -92,130 +92,13 @@
         .condition-worn { background: #fef3c7; color: #92400e; }
         .condition-broken { background: #fecaca; color: #991b1b; }
         .condition-default { background: #f1f5f9; color: #475569; }
-
-        /* Camera Styles */
-        .camera-box {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #0f172a;
-            aspect-ratio: 4/3;
-        }
-        .camera-box video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .camera-box canvas {
-            display: none;
-        }
-        .camera-box .btn-capture {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            background: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        .camera-box .btn-capture .inner {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #e41e26;
-            margin: 6px auto;
-            border: 3px solid white;
-        }
-        .camera-box .btn-close-camera {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            z-index: 10;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .camera-box .camera-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #0f172a;
-            color: white;
-            z-index: 5;
-            border-radius: 12px;
-            gap: 8px;
-        }
-        .camera-box .camera-placeholder i {
-            font-size: 40px;
-            color: #475569;
-        }
-        .camera-box .camera-placeholder p {
-            font-size: 13px;
-            color: #94a3b8;
-        }
-        .camera-box .camera-placeholder.hidden {
-            display: none;
-        }
-        .camera-box .flash-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: white;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 15;
-            border-radius: 12px;
-            transition: opacity 0.15s;
-        }
-        .camera-box .flash-overlay.active {
-            opacity: 0.7;
-        }
-
-        .photo-thumb {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid #e2e8f0;
-            cursor: pointer;
-        }
-        .photo-thumb:hover {
-            border-color: #2b3a8c;
-        }
-        .photo-modal-img {
-            max-width: 90vw;
-            max-height: 80vh;
-            border-radius: 12px;
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZeZOKKfal5rEUUYM_J0xl05m19N54sScO1ykUE0NrV7MGIo9g60pmHuOsN2imKflZSA/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDEF_12zR1h5djJLY-cIY_serUbbyfOX0ELbaC-4sSg70zKVc_-iDvB5bQSsROewohcg/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -308,11 +191,6 @@
                 <button onclick="switchMenu('tools')" id="nav-tools" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
                     <i class="ph-duotone ph-wrench text-xl opacity-70 group-hover:opacity-100 transition"></i>
                     <span class="font-semibold">Tools</span>
-                </button>
-
-                <button onclick="switchMenu('borrowings')" id="nav-borrowings" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
-                    <i class="ph-duotone ph-handshake text-xl opacity-70 group-hover:opacity-100 transition"></i>
-                    <span class="font-semibold">Peminjaman Tool</span>
                 </button>
             </div>
 
@@ -498,49 +376,6 @@
                                 <tbody id="toolsTableBody" class="text-sm divide-y divide-slate-100">
                                     <tr>
                                         <td colspan="6" class="p-16 text-center">
-                                            <div class="flex flex-col items-center justify-center gap-4">
-                                                <div class="loader"></div>
-                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- View Borrowings -->
-                <div id="view-borrowings" class="hidden max-w-[1400px] mx-auto">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                        <div>
-                            <p class="text-slate-500 text-sm font-medium">Manajemen peminjaman tools R&D.</p>
-                        </div>
-                        <button onclick="openBorrowingModal()" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
-                            <i class="ph-bold ph-handshake text-base"></i> Pinjam Tool
-                        </button>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse min-w-[1300px]">
-                                <thead>
-                                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
-                                        <th class="p-4 w-16 text-center">No</th>
-                                        <th class="p-4">Nama Tool</th>
-                                        <th class="p-4">Nama Peminjam</th>
-                                        <th class="p-4">Departemen</th>
-                                        <th class="p-4">Foto Pinjam</th>
-                                        <th class="p-4">Tanggal Pinjam</th>
-                                        <th class="p-4">Tanggal Kembali</th>
-                                        <th class="p-4">Status</th>
-                                        <th class="p-4">Foto Kembali</th>
-                                        <th class="p-4 w-32 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="borrowingsTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr>
-                                        <td colspan="10" class="p-16 text-center">
                                             <div class="flex flex-col items-center justify-center gap-4">
                                                 <div class="loader"></div>
                                                 <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
@@ -791,195 +626,6 @@
         </div>
     </div>
 
-    <!-- MODAL BORROWING -->
-    <div id="borrowingModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalBorrowingContent">
-            <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
-                        <i class="ph-duotone ph-handshake text-xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight" id="borrowingModalTitle">Pinjam Tool</h3>
-                </div>
-                <button onclick="closeModal('borrowing')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
-                    <i class="ph-bold ph-x text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 overflow-y-auto bg-slate-50/50">
-                <form id="addBorrowingForm" class="space-y-5">
-                    <input type="hidden" id="b_id" value="">
-                    <input type="hidden" id="b_status_borrowing" value="Dipinjam">
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Pilih Tool <span class="text-brand-red">*</span></label>
-                        <select id="b_tool_id" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                            <option value="">-- Pilih Tool --</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Peminjam <span class="text-brand-red">*</span></label>
-                        <input type="text" id="b_peminjam" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Departemen <span class="text-brand-red">*</span></label>
-                        <input type="text" id="b_departemen" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Contoh: R&D, Production, QC">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Foto Pinjam <span class="text-brand-red">*</span></label>
-                        
-                        <button type="button" id="btnOpenCamera" class="w-full bg-brand-blue hover:bg-brand-darkblue text-white py-3 rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20">
-                            <i class="ph-bold ph-camera text-xl"></i> Buka Kamera
-                        </button>
-
-                        <div id="cameraBox" class="camera-box mt-3 hidden">
-                            <video id="videoPreview" autoplay playsinline></video>
-                            <canvas id="canvasPreview"></canvas>
-                            <div class="flash-overlay" id="flashOverlay"></div>
-                            <button type="button" id="btnCapture" class="btn-capture">
-                                <div class="inner"></div>
-                            </button>
-                            <button type="button" id="btnCloseCamera" class="btn-close-camera">
-                                <i class="ph-bold ph-x"></i> Tutup
-                            </button>
-                            <div class="camera-placeholder" id="cameraPlaceholder">
-                                <i class="ph-fill ph-camera-slash"></i>
-                                <p>Kamera belum aktif</p>
-                                <p class="text-xs text-slate-500">Klik tombol "Buka Kamera" di atas</p>
-                            </div>
-                        </div>
-
-                        <div id="fotoPreview" class="mt-3 hidden">
-                            <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-200">
-                                <i class="ph-bold ph-check-circle text-emerald-500 text-xl"></i>
-                                <div>
-                                    <p class="text-xs font-semibold text-emerald-700">Foto berhasil diambil</p>
-                                    <img id="previewImg" class="rounded-lg border border-emerald-200 max-h-28 w-auto mt-1">
-                                </div>
-                                <button type="button" id="btnRemovePhoto" class="ml-auto text-slate-400 hover:text-brand-red p-1">
-                                    <i class="ph-bold ph-x text-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <input type="hidden" id="b_foto_pinjam" value="">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Pinjam <span class="text-brand-red">*</span></label>
-                        <input type="date" id="b_tanggal_pinjam" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium text-slate-700">
-                    </div>
-                </form>
-            </div>
-            
-            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
-                <button onclick="closeModal('borrowing')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
-                <button onclick="submitBorrowing()" id="btnSubmitBorrowing" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
-                    <i class="ph-duotone ph-floppy-disk text-base"></i> <span id="borrowingBtnText">Simpan</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL RETURN -->
-    <div id="returnModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalReturnContent">
-            <div class="bg-emerald-600 p-6 text-white flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
-                        <i class="ph-duotone ph-arrow-counter-clockwise text-xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Kembalikan Tool</h3>
-                </div>
-                <button onclick="closeModal('return')" class="text-emerald-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
-                    <i class="ph-bold ph-x text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 overflow-y-auto bg-slate-50/50">
-                <form id="returnForm" class="space-y-5">
-                    <input type="hidden" id="r_id" value="">
-                    <input type="hidden" id="r_tool_id" value="">
-                    <input type="hidden" id="r_status_return" value="Selesai">
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Tool</label>
-                            <p id="r_nama_tool" class="px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl font-semibold text-slate-700">-</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Peminjam</label>
-                            <p id="r_nama_peminjam" class="px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl font-semibold text-slate-700">-</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Foto Kembali <span class="text-brand-red">*</span></label>
-                        
-                        <button type="button" id="btnOpenCameraReturn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
-                            <i class="ph-bold ph-camera text-xl"></i> Buka Kamera
-                        </button>
-
-                        <div id="cameraBoxReturn" class="camera-box mt-3 hidden">
-                            <video id="videoPreviewReturn" autoplay playsinline></video>
-                            <canvas id="canvasPreviewReturn"></canvas>
-                            <div class="flash-overlay" id="flashOverlayReturn"></div>
-                            <button type="button" id="btnCaptureReturn" class="btn-capture">
-                                <div class="inner"></div>
-                            </button>
-                            <button type="button" id="btnCloseCameraReturn" class="btn-close-camera">
-                                <i class="ph-bold ph-x"></i> Tutup
-                            </button>
-                            <div class="camera-placeholder" id="cameraPlaceholderReturn">
-                                <i class="ph-fill ph-camera-slash"></i>
-                                <p>Kamera belum aktif</p>
-                                <p class="text-xs text-slate-500">Klik tombol "Buka Kamera" di atas</p>
-                            </div>
-                        </div>
-
-                        <div id="fotoPreviewReturn" class="mt-3 hidden">
-                            <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-200">
-                                <i class="ph-bold ph-check-circle text-emerald-500 text-xl"></i>
-                                <div>
-                                    <p class="text-xs font-semibold text-emerald-700">Foto berhasil diambil</p>
-                                    <img id="previewImgReturn" class="rounded-lg border border-emerald-200 max-h-28 w-auto mt-1">
-                                </div>
-                                <button type="button" id="btnRemovePhotoReturn" class="ml-auto text-slate-400 hover:text-brand-red p-1">
-                                    <i class="ph-bold ph-x text-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <input type="hidden" id="r_foto_kembali" value="">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Kembali <span class="text-brand-red">*</span></label>
-                        <input type="date" id="r_tanggal_kembali" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition shadow-sm font-medium text-slate-700">
-                    </div>
-                </form>
-            </div>
-            
-            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
-                <button onclick="closeModal('return')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
-                <button onclick="submitReturn()" id="btnSubmitReturn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-600/20">
-                    <i class="ph-duotone ph-floppy-disk text-base"></i> Kembalikan
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL PHOTO VIEWER -->
-    <div id="photoModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4 z-[100] opacity-0 transition-opacity duration-300" onclick="closePhotoModal()">
-        <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
-            <button onclick="closePhotoModal()" class="absolute -top-12 right-0 text-white hover:text-slate-300 p-2">
-                <i class="ph-bold ph-x text-3xl"></i>
-            </button>
-            <img id="photoModalImg" class="photo-modal-img w-full object-contain" src="" alt="Foto">
-        </div>
-    </div>
-
     <!-- CONFIRM MODAL -->
     <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center" id="confirmContent">
@@ -1002,21 +648,13 @@
     </div>
 
     <script>
-        // ========================================================================
-        // VARIABEL GLOBAL
-        // ========================================================================
+        // --- VARIABEL GLOBAL ---
         let projectsData = [];
         let productsData = [];
         let sparepartsData = [];
         let toolsData = [];
-        let borrowingsData = [];
 
-        // Camera
-        let currentStream = null;
-
-        // ========================================================================
-        // SIDEBAR
-        // ========================================================================
+        // --- SIDEBAR ---
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
         let isSidebarOpen = false;
@@ -1034,9 +672,7 @@
             }
         }
 
-        // ========================================================================
-        // TOAST
-        // ========================================================================
+        // --- TOAST ---
         let toastTimeout;
         function showToast(message, type = 'success') {
             clearTimeout(toastTimeout);
@@ -1065,9 +701,7 @@
             }, 3500);
         }
 
-        // ========================================================================
-        // CONFIRM
-        // ========================================================================
+        // --- CONFIRM ---
         let onConfirmCallback = null;
         
         function showConfirm(message, callback) {
@@ -1104,33 +738,7 @@
             closeConfirm();
         });
 
-        // ========================================================================
-        // PHOTO VIEWER
-        // ========================================================================
-        function openPhotoModal(src) {
-            const modal = document.getElementById('photoModal');
-            const img = document.getElementById('photoModalImg');
-            img.src = src;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-            }, 10);
-        }
-
-        function closePhotoModal() {
-            const modal = document.getElementById('photoModal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                document.getElementById('photoModalImg').src = '';
-            }, 300);
-        }
-
-        // ========================================================================
-        // LOGIN
-        // ========================================================================
+        // --- LOGIN ---
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1154,7 +762,6 @@
 
         function logout() {
             if (isSidebarOpen) toggleSidebar();
-            stopCamera();
             document.getElementById('mainApp').classList.add('hidden');
             const loginPage = document.getElementById('loginPage');
             loginPage.classList.remove('hidden');
@@ -1164,24 +771,19 @@
             showToast("Anda telah keluar sistem.", "info");
         }
 
-        // ========================================================================
-        // NAVIGASI
-        // ========================================================================
+        // --- NAVIGASI ---
         function switchMenu(menuName) {
             if(window.innerWidth < 768 && isSidebarOpen) {
                 toggleSidebar();
             }
-
-            stopCamera();
 
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-projects').classList.add('hidden');
             document.getElementById('view-products').classList.add('hidden');
             document.getElementById('view-spareparts').classList.add('hidden');
             document.getElementById('view-tools').classList.add('hidden');
-            document.getElementById('view-borrowings').classList.add('hidden');
             
-            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts', 'nav-tools', 'nav-borrowings'];
+            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts', 'nav-tools'];
             navButtons.forEach(id => {
                 const btn = document.getElementById(id);
                 btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
@@ -1199,8 +801,7 @@
                 'projects': 'Daftar Project',
                 'products': 'Products History',
                 'spareparts': 'Spareparts',
-                'tools': 'Tools',
-                'borrowings': 'Peminjaman Tool'
+                'tools': 'Tools'
             };
             document.getElementById('pageTitle').innerText = titles[menuName];
 
@@ -1212,116 +813,13 @@
                 fetchSpareparts();
             } else if(menuName === 'tools') {
                 fetchTools();
-            } else if(menuName === 'borrowings') {
-                fetchBorrowings();
             }
         }
 
         // ========================================================================
-        // CAMERA FUNCTIONS
+        // --- CRUD PROJECT ---
         // ========================================================================
-        function stopCamera() {
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
-                currentStream = null;
-            }
-            // Sembunyikan semua camera box
-            document.getElementById('cameraBox').classList.add('hidden');
-            document.getElementById('cameraBoxReturn').classList.add('hidden');
-            document.getElementById('cameraPlaceholder').classList.remove('hidden');
-            document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-        }
-
-        async function startCamera(videoId, placeholderId) {
-            try {
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    showToast('Browser tidak mendukung kamera', 'error');
-                    return false;
-                }
-
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment', width: { ideal: 640 } },
-                    audio: false
-                });
-
-                const video = document.getElementById(videoId);
-                video.srcObject = stream;
-                await video.play();
-
-                currentStream = stream;
-                document.getElementById(placeholderId).classList.add('hidden');
-                return true;
-            } catch (err) {
-                console.error('Camera error:', err);
-                if (err.name === 'NotAllowedError') {
-                    showToast('Izin kamera ditolak. Berikan izin di browser.', 'error');
-                } else if (err.name === 'NotFoundError') {
-                    showToast('Tidak ada kamera yang terdeteksi.', 'error');
-                } else {
-                    showToast('Gagal mengakses kamera: ' + err.message, 'error');
-                }
-                return false;
-            }
-        }
-
-        function capturePhoto(type) {
-            const videoId = type === 'pinjam' ? 'videoPreview' : 'videoPreviewReturn';
-            const canvasId = type === 'pinjam' ? 'canvasPreview' : 'canvasPreviewReturn';
-            const previewId = type === 'pinjam' ? 'previewImg' : 'previewImgReturn';
-            const previewContainerId = type === 'pinjam' ? 'fotoPreview' : 'fotoPreviewReturn';
-            const hiddenInputId = type === 'pinjam' ? 'b_foto_pinjam' : 'r_foto_kembali';
-            const flashId = type === 'pinjam' ? 'flashOverlay' : 'flashOverlayReturn';
-            const cameraBoxId = type === 'pinjam' ? 'cameraBox' : 'cameraBoxReturn';
-            const placeholderId = type === 'pinjam' ? 'cameraPlaceholder' : 'cameraPlaceholderReturn';
-
-            const video = document.getElementById(videoId);
-            const canvas = document.getElementById(canvasId);
-
-            if (!video || !video.videoWidth) {
-                showToast('Kamera belum siap. Tunggu sebentar.', 'error');
-                return;
-            }
-
-            // Flash effect
-            const flash = document.getElementById(flashId);
-            flash.classList.add('active');
-            setTimeout(() => flash.classList.remove('active'), 200);
-
-            // Capture
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 480;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            const imageData = canvas.toDataURL('image/jpeg', 0.85);
-            
-            document.getElementById(hiddenInputId).value = imageData;
-            document.getElementById(previewId).src = imageData;
-            document.getElementById(previewContainerId).classList.remove('hidden');
-            
-            // Tutup kamera
-            document.getElementById(cameraBoxId).classList.add('hidden');
-            document.getElementById(placeholderId).classList.remove('hidden');
-            stopCamera();
-            
-            showToast('Foto berhasil diambil!', 'success');
-        }
-
-        function removePhoto(type) {
-            if (type === 'pinjam') {
-                document.getElementById('b_foto_pinjam').value = '';
-                document.getElementById('fotoPreview').classList.add('hidden');
-                document.getElementById('previewImg').src = '';
-            } else {
-                document.getElementById('r_foto_kembali').value = '';
-                document.getElementById('fotoPreviewReturn').classList.add('hidden');
-                document.getElementById('previewImgReturn').src = '';
-            }
-        }
-
-        // ========================================================================
-        // CRUD PROJECT
-        // ========================================================================
+        
         async function fetchProjects() {
             const tbody = document.getElementById('projectsTableBody');
             tbody.innerHTML = `<tr><td colspan="8" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
@@ -1515,8 +1013,9 @@
         }
 
         // ========================================================================
-        // CRUD PRODUCT
+        // --- CRUD PRODUCT ---
         // ========================================================================
+        
         async function fetchProducts() {
             const tbody = document.getElementById('productsTableBody');
             tbody.innerHTML = `<tr><td colspan="9" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
@@ -1721,8 +1220,9 @@
         }
 
         // ========================================================================
-        // CRUD SPAREPART
+        // --- CRUD SPAREPART ---
         // ========================================================================
+        
         async function fetchSpareparts() {
             const tbody = document.getElementById('sparepartsTableBody');
             tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
@@ -1908,8 +1408,9 @@
         }
 
         // ========================================================================
-        // CRUD TOOLS
+        // --- CRUD TOOLS (FIXED) ---
         // ========================================================================
+        
         async function fetchTools() {
             const tbody = document.getElementById('toolsTableBody');
             tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
@@ -1947,7 +1448,10 @@
                 else if (kondisi === 'Sedang') conditionClass = 'condition-worn';
                 else if (kondisi === 'Rusak') conditionClass = 'condition-broken';
 
+                // PERBAIKAN: Gunakan trim() untuk membersihkan spasi
                 const statusRaw = (item['Status'] || 'Unknown').trim();
+                
+                // Mapping status dengan class dan label yang benar
                 const statusMap = {
                     'Tersedia': { class: 'status-success', label: 'Tersedia' },
                     'Dipinjam': { class: 'status-warning', label: 'Dipinjam' },
@@ -1955,6 +1459,7 @@
                     'Rusak': { class: 'status-danger', label: 'Rusak' }
                 };
                 
+                // Cari status di mapping, jika tidak ada gunakan default
                 const statusInfo = statusMap[statusRaw];
                 let statusClass, statusDisplay;
                 
@@ -2106,521 +1611,115 @@
         }
 
         // ========================================================================
-        // CRUD BORROWINGS
+        // --- MODAL ---
         // ========================================================================
-        let borrowingsData = [];
-
-        async function fetchBorrowings() {
-            const tbody = document.getElementById('borrowingsTableBody');
-            tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
-            
-            try {
-                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Borrowings');
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    borrowingsData = result.data;
-                    renderBorrowingsTable(borrowingsData);
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
-                    showToast("Gagal memuat data: " + result.message, "error");
-                }
-            } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
-                showToast("Kesalahan jaringan.", "error");
-            }
-        }
-
-        function renderBorrowingsTable(data) {
-            const tbody = document.getElementById('borrowingsTableBody');
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada peminjaman. Klik "Pinjam Tool".</td></tr>`;
-                return;
-            }
-
-            data.forEach((item, index) => {
-                const status = (item['Status'] || 'Dipinjam').trim();
-                let statusClass = 'status-warning';
-                let statusDisplay = 'Dipinjam';
-                
-                if (status === 'Selesai' || status === 'Kembali') {
-                    statusClass = 'status-success';
-                    statusDisplay = 'Selesai';
-                } else if (status === 'Dipinjam') {
-                    statusClass = 'status-warning';
-                    statusDisplay = 'Dipinjam';
-                } else {
-                    statusClass = 'status-default';
-                    statusDisplay = status;
-                }
-
-                let tglPinjam = item['Tanggal Pinjam'] || '-';
-                let tglKembali = item['Tanggal Kembali'] || '-';
-                
-                try {
-                    if (tglPinjam && tglPinjam !== '-') {
-                        const dateObj = new Date(tglPinjam);
-                        if (!isNaN(dateObj.getTime())) {
-                            tglPinjam = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
-                        }
-                    }
-                } catch(e) {}
-                
-                try {
-                    if (tglKembali && tglKembali !== '-') {
-                        const dateObj = new Date(tglKembali);
-                        if (!isNaN(dateObj.getTime())) {
-                            tglKembali = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
-                        }
-                    }
-                } catch(e) {}
-
-                const fotoPinjam = item['Foto Pinjam'] || '';
-                const fotoPinjamHTML = fotoPinjam ? 
-                    `<img src="${fotoPinjam}" class="photo-thumb" onclick="openPhotoModal('${fotoPinjam}')" title="Klik untuk perbesar">` : 
-                    `<span class="text-slate-300 text-xs">-</span>`;
-
-                const fotoKembali = item['Foto Kembali'] || '';
-                const fotoKembaliHTML = fotoKembali ? 
-                    `<img src="${fotoKembali}" class="photo-thumb" onclick="openPhotoModal('${fotoKembali}')" title="Klik untuk perbesar">` : 
-                    `<span class="text-slate-300 text-xs">-</span>`;
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition duration-200 group";
-                tr.setAttribute('data-id', item['ID']);
-                tr.innerHTML = `
-                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
-                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Tool'] || '-'}</td>
-                    <td class="p-4 text-slate-600 font-medium">${item['Nama Peminjam'] || '-'}</td>
-                    <td class="p-4 text-slate-600 font-medium">${item['Departemen'] || '-'}</td>
-                    <td class="p-4 text-center">${fotoPinjamHTML}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tglPinjam}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${tglKembali}</td>
-                    <td class="p-4"><span class="status-badge ${statusClass}">${statusDisplay}</span></td>
-                    <td class="p-4 text-center">${fotoKembaliHTML}</td>
-                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
-                        <div class="flex items-center justify-center gap-1">
-                            ${status === 'Dipinjam' ? `
-                                <button onclick="openReturnModal('${item['ID']}')" class="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Kembalikan Tool">
-                                    <i class="ph-duotone ph-arrow-counter-clockwise text-base"></i>
-                                </button>
-                            ` : `
-                                <span class="text-xs text-slate-400 font-semibold">Selesai</span>
-                            `}
-                            <button onclick="deleteBorrowing('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
-                                <i class="ph-duotone ph-trash text-base"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // ========================================================================
-        // BORROWING FUNCTIONS
-        // ========================================================================
-        async function openBorrowingModal() {
-            // Reset form
-            document.getElementById('b_id').value = '';
-            document.getElementById('b_peminjam').value = '';
-            document.getElementById('b_departemen').value = '';
-            document.getElementById('b_foto_pinjam').value = '';
-            document.getElementById('fotoPreview').classList.add('hidden');
-            document.getElementById('previewImg').src = '';
-            document.getElementById('cameraBox').classList.add('hidden');
-            document.getElementById('cameraPlaceholder').classList.remove('hidden');
-            stopCamera();
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('b_tanggal_pinjam').value = today;
-            
-            await fetchToolsForDropdown();
-            
-            const modal = document.getElementById('borrowingModal');
-            const content = document.getElementById('modalBorrowingContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
-        }
-
-        async function fetchToolsForDropdown() {
-            const select = document.getElementById('b_tool_id');
-            select.innerHTML = '<option value="">-- Pilih Tool --</option>';
-            
-            try {
-                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Tools');
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    const tools = result.data;
-                    const availableTools = tools.filter(t => {
-                        const status = (t['Status'] || '').trim();
-                        return status === 'Tersedia';
-                    });
-                    
-                    availableTools.forEach(tool => {
-                        const option = document.createElement('option');
-                        option.value = tool['ID'];
-                        option.textContent = `${tool['Nama Tool']} (${tool['Jumlah']} pcs)`;
-                        select.appendChild(option);
-                    });
-                    
-                    if (availableTools.length === 0) {
-                        select.innerHTML = '<option value="">-- Tidak ada tool tersedia --</option>';
-                    }
-                }
-            } catch (error) {
-                showToast('Gagal memuat daftar tool', 'error');
-            }
-        }
-
-        async function submitBorrowing() {
-            const form = document.getElementById('addBorrowingForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const fotoPinjam = document.getElementById('b_foto_pinjam').value;
-            if (!fotoPinjam) {
-                showToast('Harap ambil foto pinjam terlebih dahulu!', 'error');
-                return;
-            }
-
-            const btnSubmit = document.getElementById('btnSubmitBorrowing');
-            const originalHTML = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Menyimpan...</span>`;
-            btnSubmit.disabled = true;
-
-            const toolId = document.getElementById('b_tool_id').value;
-            const toolName = document.getElementById('b_tool_id').selectedOptions[0]?.textContent || '';
-            const cleanToolName = toolName.replace(/\s*\(.*\)\s*$/, '').trim();
-
-            const payload = {
-                action: 'add',
-                sheet: 'Borrowings',
-                id: new Date().getTime().toString(),
-                nama_tool: cleanToolName,
-                nama_peminjam: document.getElementById('b_peminjam').value,
-                departemen: document.getElementById('b_departemen').value,
-                foto_pinjam: fotoPinjam,
-                tanggal_pinjam: document.getElementById('b_tanggal_pinjam').value,
-                tanggal_kembali: '',
-                status: 'Dipinjam',
-                foto_kembali: ''
-            };
-
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    await updateToolStatus(toolId, 'Dipinjam');
-                    closeModal('borrowing');
-                    showToast("Peminjaman berhasil disimpan!", "success");
-                    fetchBorrowings();
-                    fetchTools();
-                } else {
-                    showToast('Gagal menyimpan: ' + result.message, "error");
-                }
-            } catch (error) {
-                showToast('Terjadi kesalahan koneksi.', "error");
-            } finally {
-                btnSubmit.innerHTML = originalHTML;
-                btnSubmit.disabled = false;
-                stopCamera();
-            }
-        }
-
-        async function updateToolStatus(toolId, newStatus) {
-            try {
-                const tool = toolsData.find(t => t['ID'] && t['ID'].toString() === toolId.toString());
-                if (!tool) return;
-                
-                const payload = {
-                    action: 'update',
-                    sheet: 'Tools',
-                    id: toolId,
-                    nama_tool: tool['Nama Tool'] || '',
-                    jumlah: tool['Jumlah'] || 0,
-                    kondisi: tool['Kondisi'] || 'Baik',
-                    status: newStatus
-                };
-                
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-            } catch (error) {
-                console.error('Error updating tool status:', error);
-            }
-        }
-
-        // ========================================================================
-        // RETURN FUNCTIONS
-        // ========================================================================
-        async function openReturnModal(borrowingId) {
-            const borrowing = borrowingsData.find(b => b['ID'] && b['ID'].toString() === borrowingId.toString());
-            if (!borrowing) {
-                showToast('Data peminjaman tidak ditemukan', 'error');
-                return;
-            }
-
-            document.getElementById('r_id').value = borrowingId;
-            document.getElementById('r_tool_id').value = borrowing['Tool ID'] || '';
-            document.getElementById('r_nama_tool').textContent = borrowing['Nama Tool'] || '-';
-            document.getElementById('r_nama_peminjam').textContent = borrowing['Nama Peminjam'] || '-';
-            
-            document.getElementById('r_foto_kembali').value = '';
-            document.getElementById('fotoPreviewReturn').classList.add('hidden');
-            document.getElementById('previewImgReturn').src = '';
-            document.getElementById('cameraBoxReturn').classList.add('hidden');
-            document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-            stopCamera();
-
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('r_tanggal_kembali').value = today;
-
-            const modal = document.getElementById('returnModal');
-            const content = document.getElementById('modalReturnContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
-        }
-
-        async function submitReturn() {
-            const form = document.getElementById('returnForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const fotoKembali = document.getElementById('r_foto_kembali').value;
-            if (!fotoKembali) {
-                showToast('Harap ambil foto kembali terlebih dahulu!', 'error');
-                return;
-            }
-
-            const btnSubmit = document.getElementById('btnSubmitReturn');
-            const originalHTML = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Memproses...</span>`;
-            btnSubmit.disabled = true;
-
-            const id = document.getElementById('r_id').value;
-            const toolId = document.getElementById('r_tool_id').value;
-
-            try {
-                const payload = {
-                    action: 'update',
-                    sheet: 'Borrowings',
-                    id: id,
-                    tanggal_kembali: document.getElementById('r_tanggal_kembali').value,
-                    status: 'Selesai',
-                    foto_kembali: fotoKembali
-                };
-
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    await updateToolStatus(toolId, 'Tersedia');
-                    closeModal('return');
-                    showToast("Pengembalian berhasil!", "success");
-                    fetchBorrowings();
-                    fetchTools();
-                } else {
-                    showToast('Gagal menyimpan: ' + result.message, "error");
-                }
-            } catch (error) {
-                showToast('Terjadi kesalahan koneksi.', "error");
-            } finally {
-                btnSubmit.innerHTML = originalHTML;
-                btnSubmit.disabled = false;
-                stopCamera();
-            }
-        }
-
-        function deleteBorrowing(id) {
-            showConfirm("Apakah Anda yakin ingin menghapus data peminjaman ini?", async () => {
-                try {
-                    const tbody = document.getElementById('borrowingsTableBody');
-                    tbody.innerHTML = `<tr><td colspan="10" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
-
-                    const response = await fetch(APPS_SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: 'delete', sheet: 'Borrowings', id: id }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        showToast("Data peminjaman berhasil dihapus!", "success");
-                        fetchBorrowings();
-                    } else {
-                        showToast('Gagal menghapus: ' + result.message, 'error');
-                        fetchBorrowings();
-                    }
-                } catch (error) {
-                    showToast('Terjadi kesalahan jaringan.', 'error');
-                    fetchBorrowings();
-                }
-            });
-        }
-
-        // ========================================================================
-        // MODAL FUNCTIONS
-        // ========================================================================
+        
         function openModal(type) {
-            const modalMap = {
-                'project': 'projectModal',
-                'product': 'productModal',
-                'sparepart': 'sparepartModal',
-                'tool': 'toolModal'
-            };
-            const modal = document.getElementById(modalMap[type]);
-            const content = modal.querySelector('.bg-white') || modal.querySelector('#modalContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
+            if (type === 'project') {
+                const modal = document.getElementById('projectModal');
+                const modalContent = document.getElementById('modalContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else if (type === 'product') {
+                const modal = document.getElementById('productModal');
+                const modalContent = document.getElementById('modalProductContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else if (type === 'sparepart') {
+                const modal = document.getElementById('sparepartModal');
+                const modalContent = document.getElementById('modalSparepartContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else if (type === 'tool') {
+                const modal = document.getElementById('toolModal');
+                const modalContent = document.getElementById('modalToolContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            }
         }
 
         function closeModal(type) {
-            const modalMap = {
-                'project': 'projectModal',
-                'product': 'productModal',
-                'sparepart': 'sparepartModal',
-                'tool': 'toolModal',
-                'borrowing': 'borrowingModal',
-                'return': 'returnModal'
-            };
-            const modal = document.getElementById(modalMap[type]);
-            const content = modal.querySelector('.bg-white') || modal.querySelector('#modalContent') || modal.querySelector('#modalBorrowingContent') || modal.querySelector('#modalReturnContent');
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                content.classList.remove('scale-95');
-                if (type === 'borrowing') {
-                    stopCamera();
-                    document.getElementById('cameraBox').classList.add('hidden');
-                    document.getElementById('cameraPlaceholder').classList.remove('hidden');
-                }
-                if (type === 'return') {
-                    stopCamera();
-                    document.getElementById('cameraBoxReturn').classList.add('hidden');
-                    document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-                }
-            }, 300);
+            if (type === 'project') {
+                const modal = document.getElementById('projectModal');
+                const modalContent = document.getElementById('modalContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('p_id').value = '';
+                    document.getElementById('projectModalTitle').textContent = 'Project Baru';
+                    document.getElementById('projectBtnText').textContent = 'Simpan';
+                    document.getElementById('addProjectForm').reset();
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('p_tanggal').value = today;
+                }, 300);
+            } else if (type === 'product') {
+                const modal = document.getElementById('productModal');
+                const modalContent = document.getElementById('modalProductContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('prod_id').value = '';
+                    document.getElementById('productModalTitle').textContent = 'Product Baru';
+                    document.getElementById('productBtnText').textContent = 'Simpan';
+                    document.getElementById('addProductForm').reset();
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('prod_tanggal').value = today;
+                }, 300);
+            } else if (type === 'sparepart') {
+                const modal = document.getElementById('sparepartModal');
+                const modalContent = document.getElementById('modalSparepartContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('s_id').value = '';
+                    document.getElementById('sparepartModalTitle').textContent = 'Sparepart Baru';
+                    document.getElementById('sparepartBtnText').textContent = 'Simpan';
+                    document.getElementById('addSparepartForm').reset();
+                }, 300);
+            } else if (type === 'tool') {
+                const modal = document.getElementById('toolModal');
+                const modalContent = document.getElementById('modalToolContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('t_id').value = '';
+                    document.getElementById('toolModalTitle').textContent = 'Tool Baru';
+                    document.getElementById('toolBtnText').textContent = 'Simpan';
+                    document.getElementById('addToolForm').reset();
+                }, 300);
+            }
         }
 
-        // ========================================================================
-        // EVENT LISTENERS FOR CAMERA
-        // ========================================================================
+        // --- INIT ---
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('p_tanggal').value = today;
             document.getElementById('prod_tanggal').value = today;
-            document.getElementById('b_tanggal_pinjam').value = today;
-            document.getElementById('r_tanggal_kembali').value = today;
-
-            // BUKA KAMERA - PINJAM
-            document.getElementById('btnOpenCamera').addEventListener('click', async function() {
-                const cameraBox = document.getElementById('cameraBox');
-                const placeholder = document.getElementById('cameraPlaceholder');
-                
-                if (cameraBox.classList.contains('hidden')) {
-                    cameraBox.classList.remove('hidden');
-                    placeholder.classList.remove('hidden');
-                    const success = await startCamera('videoPreview', 'cameraPlaceholder');
-                    if (!success) {
-                        cameraBox.classList.add('hidden');
-                    }
-                } else {
-                    cameraBox.classList.add('hidden');
-                    placeholder.classList.remove('hidden');
-                    stopCamera();
-                }
-            });
-
-            document.getElementById('btnCapture').addEventListener('click', function() {
-                capturePhoto('pinjam');
-            });
-
-            document.getElementById('btnCloseCamera').addEventListener('click', function() {
-                document.getElementById('cameraBox').classList.add('hidden');
-                document.getElementById('cameraPlaceholder').classList.remove('hidden');
-                stopCamera();
-            });
-
-            document.getElementById('btnRemovePhoto').addEventListener('click', function() {
-                removePhoto('pinjam');
-            });
-
-            // BUKA KAMERA - KEMBALI
-            document.getElementById('btnOpenCameraReturn').addEventListener('click', async function() {
-                const cameraBox = document.getElementById('cameraBoxReturn');
-                const placeholder = document.getElementById('cameraPlaceholderReturn');
-                
-                if (cameraBox.classList.contains('hidden')) {
-                    cameraBox.classList.remove('hidden');
-                    placeholder.classList.remove('hidden');
-                    const success = await startCamera('videoPreviewReturn', 'cameraPlaceholderReturn');
-                    if (!success) {
-                        cameraBox.classList.add('hidden');
-                    }
-                } else {
-                    cameraBox.classList.add('hidden');
-                    placeholder.classList.remove('hidden');
-                    stopCamera();
-                }
-            });
-
-            document.getElementById('btnCaptureReturn').addEventListener('click', function() {
-                capturePhoto('kembali');
-            });
-
-            document.getElementById('btnCloseCameraReturn').addEventListener('click', function() {
-                document.getElementById('cameraBoxReturn').classList.add('hidden');
-                document.getElementById('cameraPlaceholderReturn').classList.remove('hidden');
-                stopCamera();
-            });
-
-            document.getElementById('btnRemovePhotoReturn').addEventListener('click', function() {
-                removePhoto('kembali');
-            });
         });
-
-        // Override openModal untuk borrowing
-        const originalOpenModal = openModal;
-        openModal = function(type) {
-            if (type === 'borrowing') {
-                openBorrowingModal();
-            } else {
-                originalOpenModal(type);
-            }
-        };
     </script>
 
 </body>

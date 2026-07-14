@@ -817,7 +817,7 @@
         }
 
         // ========================================================================
-        // --- CRUD PROJECT (Sama seperti sebelumnya) ---
+        // --- CRUD PROJECT ---
         // ========================================================================
         
         async function fetchProjects() {
@@ -1013,7 +1013,7 @@
         }
 
         // ========================================================================
-        // --- CRUD PRODUCT (Sama seperti sebelumnya) ---
+        // --- CRUD PRODUCT ---
         // ========================================================================
         
         async function fetchProducts() {
@@ -1220,7 +1220,7 @@
         }
 
         // ========================================================================
-        // --- CRUD SPAREPART (Sama seperti sebelumnya) ---
+        // --- CRUD SPAREPART ---
         // ========================================================================
         
         async function fetchSpareparts() {
@@ -1442,15 +1442,13 @@
             }
 
             data.forEach((item, index) => {
-                // Kondisi badge
-                const kondisi = item['Kondisi'] || 'Unknown';
+                const kondisi = (item['Kondisi'] || 'Unknown').trim();
                 let conditionClass = 'condition-default';
                 if (kondisi === 'Baik') conditionClass = 'condition-good';
                 else if (kondisi === 'Sedang') conditionClass = 'condition-worn';
                 else if (kondisi === 'Rusak') conditionClass = 'condition-broken';
 
-                // Status badge
-                const status = item['Status'] || 'Unknown';
+                const status = (item['Status'] || 'Unknown').trim();
                 let statusClass = 'status-default';
                 if (status === 'Tersedia') statusClass = 'status-success';
                 else if (status === 'Dipinjam') statusClass = 'status-warning';
@@ -1494,9 +1492,9 @@
                             data = {
                                 'ID': id,
                                 'Nama Tool': cells[1]?.textContent || '',
-                                'Jumlah': cells[2]?.textContent || 0,
-                                'Kondisi': cells[3]?.textContent || '',
-                                'Status': cells[4]?.textContent || ''
+                                'Jumlah': parseInt(cells[2]?.textContent) || 0,
+                                'Kondisi': (cells[3]?.textContent || '').trim(),
+                                'Status': (cells[4]?.textContent || '').trim()
                             };
                         }
                         break;
@@ -1540,7 +1538,7 @@
                 action: isEdit ? 'update' : 'add',
                 sheet: 'Tools',
                 id: id,
-                nama_tool: document.getElementById('t_nama').value,
+                nama_tool: document.getElementById('t_nama').value.trim(),
                 jumlah: document.getElementById('t_jumlah').value,
                 kondisi: document.getElementById('t_kondisi').value,
                 status: document.getElementById('t_status').value

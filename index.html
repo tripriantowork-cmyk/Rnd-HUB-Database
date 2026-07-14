@@ -68,6 +68,19 @@
         .status-danger { background: #fecaca; color: #991b1b; }
         .status-info { background: #dbeafe; color: #1e40af; }
         .status-default { background: #f1f5f9; color: #475569; }
+
+        /* Stok Badge */
+        .stock-badge {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .stock-high { background: #dcfce7; color: #166534; }
+        .stock-medium { background: #fef3c7; color: #92400e; }
+        .stock-low { background: #fecaca; color: #991b1b; }
+        .stock-empty { background: #f1f5f9; color: #475569; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
@@ -157,6 +170,11 @@
                 <button onclick="switchMenu('products')" id="nav-products" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
                     <i class="ph-duotone ph-package text-xl opacity-70 group-hover:opacity-100 transition"></i>
                     <span class="font-semibold">Products History</span>
+                </button>
+                
+                <button onclick="switchMenu('spareparts')" id="nav-spareparts" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
+                    <i class="ph-duotone ph-toolbox text-xl opacity-70 group-hover:opacity-100 transition"></i>
+                    <span class="font-semibold">Spareparts</span>
                 </button>
             </div>
 
@@ -264,6 +282,45 @@
                                 <tbody id="productsTableBody" class="text-sm divide-y divide-slate-100">
                                     <tr>
                                         <td colspan="9" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Spareparts -->
+                <div id="view-spareparts" class="hidden max-w-[1400px] mx-auto">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <p class="text-slate-500 text-sm font-medium">Manajemen inventory spareparts R&D.</p>
+                        </div>
+                        <button onclick="openModal('sparepart')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                            <i class="ph-bold ph-plus text-base"></i> Tambah Sparepart
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
+                                <thead>
+                                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
+                                        <th class="p-4 w-16 text-center">No</th>
+                                        <th class="p-4">Nama Sparepart</th>
+                                        <th class="p-4">Spesifikasi</th>
+                                        <th class="p-4">Stok</th>
+                                        <th class="p-4">Lokasi Penyimpanan</th>
+                                        <th class="p-4 w-32 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sparepartsTableBody" class="text-sm divide-y divide-slate-100">
+                                    <tr>
+                                        <td colspan="6" class="p-16 text-center">
                                             <div class="flex flex-col items-center justify-center gap-4">
                                                 <div class="loader"></div>
                                                 <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
@@ -411,6 +468,52 @@
         </div>
     </div>
 
+    <!-- MODAL SPAREPART -->
+    <div id="sparepartModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalSparepartContent">
+            <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                        <i class="ph-duotone ph-toolbox text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight" id="sparepartModalTitle">Sparepart Baru</h3>
+                </div>
+                <button onclick="closeModal('sparepart')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
+                    <i class="ph-bold ph-x text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto bg-slate-50/50">
+                <form id="addSparepartForm" class="space-y-5">
+                    <input type="hidden" id="s_id" value="">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Sparepart <span class="text-brand-red">*</span></label>
+                        <input type="text" id="s_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Spesifikasi</label>
+                        <textarea id="s_spesifikasi" rows="2" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Detail spesifikasi sparepart..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Stok <span class="text-brand-red">*</span></label>
+                        <input type="number" id="s_stok" required min="0" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Lokasi Penyimpanan <span class="text-brand-red">*</span></label>
+                        <input type="text" id="s_lokasi" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Contoh: Rak A-1, Gudang 2">
+                    </div>
+                </form>
+            </div>
+            
+            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
+                <button onclick="closeModal('sparepart')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
+                <button onclick="submitSparepart()" id="btnSubmitSparepart" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
+                    <i class="ph-duotone ph-floppy-disk text-base"></i> <span id="sparepartBtnText">Simpan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- CONFIRM MODAL -->
     <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center" id="confirmContent">
@@ -433,9 +536,10 @@
     </div>
 
     <script>
-        // --- VARIABEL GLOBAL UNTUK MENYIMPAN DATA ---
+        // --- VARIABEL GLOBAL ---
         let projectsData = [];
         let productsData = [];
+        let sparepartsData = [];
 
         // --- SIDEBAR ---
         const sidebar = document.getElementById('sidebar');
@@ -563,8 +667,9 @@
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-projects').classList.add('hidden');
             document.getElementById('view-products').classList.add('hidden');
+            document.getElementById('view-spareparts').classList.add('hidden');
             
-            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products'];
+            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts'];
             navButtons.forEach(id => {
                 const btn = document.getElementById(id);
                 btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
@@ -580,7 +685,8 @@
             const titles = {
                 'dashboard': 'Dashboard',
                 'projects': 'Daftar Project',
-                'products': 'Products History'
+                'products': 'Products History',
+                'spareparts': 'Spareparts'
             };
             document.getElementById('pageTitle').innerText = titles[menuName];
 
@@ -588,11 +694,13 @@
                 fetchProjects();
             } else if(menuName === 'products') {
                 fetchProducts();
+            } else if(menuName === 'spareparts') {
+                fetchSpareparts();
             }
         }
 
         // ========================================================================
-        // --- CRUD PROJECT ---
+        // --- CRUD PROJECT (Sama seperti sebelumnya) ---
         // ========================================================================
         
         async function fetchProjects() {
@@ -667,13 +775,8 @@
         }
 
         function editProject(id) {
-            console.log('Mencari ID:', id);
-            console.log('Data Projects:', projectsData);
-            
-            // Cari di projectsData
             let data = projectsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
             
-            // Jika tidak ditemukan, coba cari dari DOM
             if (!data) {
                 const rows = document.querySelectorAll('#projectsTableBody tr');
                 for (let row of rows) {
@@ -711,7 +814,6 @@
                 openModal('project');
             } else {
                 showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
-                // Refresh data
                 fetchProjects();
             }
         }
@@ -794,7 +896,7 @@
         }
 
         // ========================================================================
-        // --- CRUD PRODUCT ---
+        // --- CRUD PRODUCT (Sama seperti sebelumnya) ---
         // ========================================================================
         
         async function fetchProducts() {
@@ -877,13 +979,8 @@
         }
 
         function editProduct(id) {
-            console.log('Mencari ID Product:', id);
-            console.log('Data Products:', productsData);
-            
-            // Cari di productsData
             let data = productsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
             
-            // Jika tidak ditemukan, coba cari dari DOM
             if (!data) {
                 const rows = document.querySelectorAll('#productsTableBody tr');
                 for (let row of rows) {
@@ -1006,6 +1103,196 @@
         }
 
         // ========================================================================
+        // --- CRUD SPAREPART ---
+        // ========================================================================
+        
+        async function fetchSpareparts() {
+            const tbody = document.getElementById('sparepartsTableBody');
+            tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=Spareparts');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    sparepartsData = result.data;
+                    renderSparepartsTable(sparepartsData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderSparepartsTable(data) {
+            const tbody = document.getElementById('sparepartsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada sparepart terdaftar. Klik "Tambah Sparepart".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                // Stok badge
+                const stok = parseInt(item['Stok']) || 0;
+                let stockClass = 'stock-empty';
+                let stockLabel = 'Habis';
+                if (stok > 50) { stockClass = 'stock-high'; stockLabel = 'Tersedia'; }
+                else if (stok > 10) { stockClass = 'stock-medium'; stockLabel = 'Sedang'; }
+                else if (stok > 0) { stockClass = 'stock-low'; stockLabel = 'Menipis'; }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Sparepart'] || '-'}</td>
+                    <td class="p-4 text-slate-600 font-medium max-w-xs truncate" title="${item['Spesifikasi'] || ''}">${item['Spesifikasi'] || '-'}</td>
+                    <td class="p-4">
+                        <span class="stock-badge ${stockClass}">${stok} pcs</span>
+                        <span class="text-xs text-slate-400 ml-1">(${stockLabel})</span>
+                    </td>
+                    <td class="p-4 text-slate-600 font-medium">${item['Lokasi Penyimpanan'] || '-'}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editSparepart('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteSparepart('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editSparepart(id) {
+            let data = sparepartsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            if (!data) {
+                const rows = document.querySelectorAll('#sparepartsTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 5) {
+                            // Ambil stok dari badge
+                            const stockText = cells[3]?.textContent || '0';
+                            const stokMatch = stockText.match(/(\d+)/);
+                            const stok = stokMatch ? parseInt(stokMatch[1]) : 0;
+                            
+                            data = {
+                                'ID': id,
+                                'Nama Sparepart': cells[1]?.textContent || '',
+                                'Spesifikasi': cells[2]?.textContent || '',
+                                'Stok': stok,
+                                'Lokasi Penyimpanan': cells[4]?.textContent || ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (data) {
+                document.getElementById('s_id').value = id;
+                document.getElementById('s_nama').value = data['Nama Sparepart'] || '';
+                document.getElementById('s_spesifikasi').value = data['Spesifikasi'] || '';
+                document.getElementById('s_stok').value = data['Stok'] || 0;
+                document.getElementById('s_lokasi').value = data['Lokasi Penyimpanan'] || '';
+                
+                document.getElementById('sparepartModalTitle').textContent = 'Edit Sparepart';
+                document.getElementById('sparepartBtnText').textContent = 'Update';
+                
+                openModal('sparepart');
+            } else {
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchSpareparts();
+            }
+        }
+
+        async function submitSparepart() {
+            const form = document.getElementById('addSparepartForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const id = document.getElementById('s_id').value;
+            const isEdit = id !== '';
+            
+            const btnSubmit = document.getElementById('btnSubmitSparepart');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: isEdit ? 'update' : 'add',
+                sheet: 'Spareparts',
+                id: id,
+                nama_sparepart: document.getElementById('s_nama').value,
+                spesifikasi: document.getElementById('s_spesifikasi').value,
+                stok: document.getElementById('s_stok').value,
+                lokasi: document.getElementById('s_lokasi').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('sparepart');
+                    showToast(isEdit ? "Sparepart berhasil diupdate!" : "Sparepart baru berhasil disimpan!", "success");
+                    fetchSpareparts();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function deleteSparepart(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus sparepart ini?", async () => {
+                try {
+                    const tbody = document.getElementById('sparepartsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'Spareparts', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Sparepart berhasil dihapus!", "success");
+                        fetchSpareparts();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchSpareparts();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchSpareparts();
+                }
+            });
+        }
+
+        // ========================================================================
         // --- MODAL ---
         // ========================================================================
         
@@ -1022,6 +1309,15 @@
             } else if (type === 'product') {
                 const modal = document.getElementById('productModal');
                 const modalContent = document.getElementById('modalProductContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else if (type === 'sparepart') {
+                const modal = document.getElementById('sparepartModal');
+                const modalContent = document.getElementById('modalSparepartContent');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 setTimeout(() => {
@@ -1061,6 +1357,19 @@
                     document.getElementById('addProductForm').reset();
                     const today = new Date().toISOString().split('T')[0];
                     document.getElementById('prod_tanggal').value = today;
+                }, 300);
+            } else if (type === 'sparepart') {
+                const modal = document.getElementById('sparepartModal');
+                const modalContent = document.getElementById('modalSparepartContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('s_id').value = '';
+                    document.getElementById('sparepartModalTitle').textContent = 'Sparepart Baru';
+                    document.getElementById('sparepartBtnText').textContent = 'Simpan';
+                    document.getElementById('addSparepartForm').reset();
                 }, 300);
             }
         }

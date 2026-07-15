@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rnd HUB - PT Interskala Mandiri Indonesia</title>
     
-    <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <script>
@@ -93,7 +89,6 @@
         .condition-broken { background: #fecaca; color: #991b1b; }
         .condition-default { background: #f1f5f9; color: #475569; }
 
-        /* Camera styles */
         .camera-container {
             position: relative;
             width: 100%;
@@ -143,6 +138,7 @@
         .camera-container .camera-overlay .btn-close-camera:hover {
             background: rgba(255,255,255,0.3);
         }
+
         .photo-preview {
             max-height: 200px;
             object-fit: cover;
@@ -150,25 +146,10 @@
             border: 3px solid #2b3a8c;
             width: 100%;
         }
-        .photo-thumb {
-            max-height: 60px;
-            max-width: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid #e2e8f0;
-            background: #f1f5f9;
-        }
-        .photo-thumb:hover {
-            border-color: #2b3a8c;
-            opacity: 0.8;
-        }
-        .photo-thumb[src=""] {
-            display: none;
-        }
         .photo-preview-container {
             position: relative;
             display: inline-block;
+            width: 100%;
         }
         .photo-preview-container .btn-remove-photo {
             position: absolute;
@@ -192,10 +173,29 @@
             transform: scale(1.1);
             background: #b8171e;
         }
+
+        /* THUMBNAIL FOTO DI TABEL */
+        .photo-thumbnail {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f1f5f9;
+        }
+        .photo-thumbnail:hover {
+            border-color: #2b3a8c;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(43, 58, 140, 0.2);
+        }
+
         .photo-modal-img {
             max-height: 80vh;
             max-width: 90vw;
             border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         .camera-error {
             color: #e41e26;
@@ -210,7 +210,7 @@
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-xcv1T2j2bY1vQ12og-PBnujs_8nxzwDCBXp80GWuUfCjSaaW_nuKaeHRhT3G5KOPXw/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPQMvzr4ympE6oCh3O4ENCdRhPHjhPBUfKtLmoTQpo06B4Ic302G9iNQmLK8_jqtSvtw/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -910,12 +910,15 @@
     </div>
 
     <!-- PHOTO VIEW MODAL -->
-    <div id="photoViewModal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-sm hidden items-center justify-center p-4 z-[80]" onclick="closePhotoView()">
+    <div id="photoViewModal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm hidden items-center justify-center p-4 z-[80]" onclick="closePhotoView()">
         <div class="max-w-4xl max-h-full relative" onclick="event.stopPropagation()">
             <img id="photoViewImg" src="" alt="Foto" class="photo-modal-img">
-            <button onclick="closePhotoView()" class="absolute -top-12 right-0 text-white hover:text-slate-300 text-3xl p-2">
+            <button onclick="closePhotoView()" class="absolute -top-12 right-0 text-white hover:text-slate-300 text-3xl p-2 transition">
                 <i class="ph-bold ph-x"></i>
             </button>
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-xs bg-black/50 px-4 py-2 rounded-full">
+                Klik di luar gambar untuk menutup
+            </div>
         </div>
     </div>
 
@@ -1956,32 +1959,72 @@
                 if (status === 'Dikembalikan') statusClass = 'status-success';
                 else if (status === 'Terlambat') statusClass = 'status-danger';
 
-                // FOTO PEMINJAM - cek URL atau base64
+                // ===== FOTO PEMINJAM - THUMBNAIL =====
                 const borrowerPhotoValue = item['Foto Peminjam'] || '';
-                let borrowerPhotoHTML = '<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>';
+                let borrowerPhotoHTML = '';
                 
-                if (borrowerPhotoValue) {
-                    if (borrowerPhotoValue.startsWith('http')) {
-                        // URL dari Google Drive
-                        borrowerPhotoHTML = `<img src="${borrowerPhotoValue}" class="photo-thumb" onclick="viewPhoto('${borrowerPhotoValue}')" title="Klik untuk perbesar" alt="Foto Peminjam" onerror="this.outerHTML='<span class=\\'text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg\\'>Error</span>'">`;
-                    } else if (borrowerPhotoValue.startsWith('data:image')) {
-                        // Base64 (fallback)
-                        borrowerPhotoHTML = `<img src="${borrowerPhotoValue}" class="photo-thumb" onclick="viewPhoto('${borrowerPhotoValue}')" title="Klik untuk perbesar" alt="Foto Peminjam" onerror="this.outerHTML='<span class=\\'text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg\\'>Error</span>'">`;
-                    }
+                if (borrowerPhotoValue && borrowerPhotoValue.startsWith('http')) {
+                    borrowerPhotoHTML = `
+                        <div class="flex justify-center">
+                            <img src="${borrowerPhotoValue}" 
+                                 class="photo-thumbnail" 
+                                 onclick="viewPhoto('${borrowerPhotoValue}')" 
+                                 title="Klik untuk perbesar" 
+                                 alt="Foto Peminjam"
+                                 onerror="this.outerHTML='<span class=\\'text-slate-300 text-xs font-medium bg-slate-50 px-2 py-1 rounded\\'>-</span>'">
+                        </div>
+                    `;
+                } else if (borrowerPhotoValue && borrowerPhotoValue.startsWith('data:image')) {
+                    borrowerPhotoHTML = `
+                        <div class="flex justify-center">
+                            <img src="${borrowerPhotoValue}" 
+                                 class="photo-thumbnail" 
+                                 onclick="viewPhoto('${borrowerPhotoValue}')" 
+                                 title="Klik untuk perbesar" 
+                                 alt="Foto Peminjam"
+                                 onerror="this.outerHTML='<span class=\\'text-slate-300 text-xs font-medium bg-slate-50 px-2 py-1 rounded\\'>-</span>'">
+                        </div>
+                    `;
+                } else {
+                    borrowerPhotoHTML = `
+                        <div class="flex justify-center">
+                            <span class="text-slate-300 text-xs font-medium bg-slate-50 px-2 py-1 rounded">-</span>
+                        </div>
+                    `;
                 }
 
-                // FOTO KEMBALI - cek URL atau base64
+                // ===== FOTO KEMBALI - THUMBNAIL =====
                 const returnPhotoValue = item['Foto Kembali'] || '';
-                let returnPhotoHTML = '<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>';
+                let returnPhotoHTML = '';
                 
-                if (returnPhotoValue) {
-                    if (returnPhotoValue.startsWith('http')) {
-                        // URL dari Google Drive
-                        returnPhotoHTML = `<img src="${returnPhotoValue}" class="photo-thumb" onclick="viewPhoto('${returnPhotoValue}')" title="Klik untuk perbesar" alt="Foto Kembali" onerror="this.outerHTML='<span class=\\'text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg\\'>Error</span>'">`;
-                    } else if (returnPhotoValue.startsWith('data:image')) {
-                        // Base64 (fallback)
-                        returnPhotoHTML = `<img src="${returnPhotoValue}" class="photo-thumb" onclick="viewPhoto('${returnPhotoValue}')" title="Klik untuk perbesar" alt="Foto Kembali" onerror="this.outerHTML='<span class=\\'text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg\\'>Error</span>'">`;
-                    }
+                if (returnPhotoValue && returnPhotoValue.startsWith('http')) {
+                    returnPhotoHTML = `
+                        <div class="flex justify-center">
+                            <img src="${returnPhotoValue}" 
+                                 class="photo-thumbnail" 
+                                 onclick="viewPhoto('${returnPhotoValue}')" 
+                                 title="Klik untuk perbesar" 
+                                 alt="Foto Kembali"
+                                 onerror="this.outerHTML='<span class=\\'text-slate-300 text-xs font-medium bg-slate-50 px-2 py-1 rounded\\'>-</span>'">
+                        </div>
+                    `;
+                } else if (returnPhotoValue && returnPhotoValue.startsWith('data:image')) {
+                    returnPhotoHTML = `
+                        <div class="flex justify-center">
+                            <img src="${returnPhotoValue}" 
+                                 class="photo-thumbnail" 
+                                 onclick="viewPhoto('${returnPhotoValue}')" 
+                                 title="Klik untuk perbesar" 
+                                 alt="Foto Kembali"
+                                 onerror="this.outerHTML='<span class=\\'text-slate-300 text-xs font-medium bg-slate-50 px-2 py-1 rounded\\'>-</span>'">
+                        </div>
+                    `;
+                } else {
+                    returnPhotoHTML = `
+                        <div class="flex justify-center">
+                            <span class="text-slate-300 text-xs font-medium bg-slate-50 px-2 py-1 rounded">-</span>
+                        </div>
+                    `;
                 }
 
                 const borrowDate = item['Tanggal Pinjam'] ? new Date(item['Tanggal Pinjam']).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : '-';
@@ -1991,16 +2034,16 @@
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
                 tr.setAttribute('data-id', item['ID']);
                 tr.innerHTML = `
-                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
-                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Tool'] || '-'}</td>
-                    <td class="p-4 text-slate-600 font-semibold">${item['Nama Peminjam'] || '-'}</td>
-                    <td class="p-4 text-slate-600 font-medium">${item['Departemen'] || '-'}</td>
-                    <td class="p-4">${borrowerPhotoHTML}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${borrowDate}</td>
-                    <td class="p-4 whitespace-nowrap text-slate-500 font-medium">${returnDate}</td>
-                    <td class="p-4"><span class="status-badge ${statusClass}">${status}</span></td>
-                    <td class="p-4">${returnPhotoHTML}</td>
-                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                    <td class="p-3 text-center text-slate-400 font-bold text-sm">${index + 1}</td>
+                    <td class="p-3 font-extrabold text-slate-900 text-sm">${item['Nama Tool'] || '-'}</td>
+                    <td class="p-3 text-slate-600 font-semibold text-sm">${item['Nama Peminjam'] || '-'}</td>
+                    <td class="p-3 text-slate-600 font-medium text-sm">${item['Departemen'] || '-'}</td>
+                    <td class="p-3">${borrowerPhotoHTML}</td>
+                    <td class="p-3 whitespace-nowrap text-slate-500 font-medium text-sm">${borrowDate}</td>
+                    <td class="p-3 whitespace-nowrap text-slate-500 font-medium text-sm">${returnDate}</td>
+                    <td class="p-3"><span class="status-badge ${statusClass} text-xs">${status}</span></td>
+                    <td class="p-3">${returnPhotoHTML}</td>
+                    <td class="p-3 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
                         <div class="flex items-center justify-center gap-1">
                             ${status !== 'Dikembalikan' ? `
                             <button onclick="returnBorrowing('${item['ID']}')" class="text-brand-blue hover:text-brand-darkblue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Kembalikan Tool">
@@ -2018,6 +2061,10 @@
         }
 
         function viewPhoto(src) {
+            if (!src || src === '') {
+                showToast('Foto tidak tersedia', 'error');
+                return;
+            }
             const modal = document.getElementById('photoViewModal');
             const img = document.getElementById('photoViewImg');
             img.src = src;
@@ -2029,7 +2076,6 @@
             const modal = document.getElementById('photoViewModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.getElementById('photoViewImg').src = '';
         }
 
         function openBorrowingModal() {
@@ -2046,21 +2092,17 @@
             document.getElementById('borrowerPhotoImg').src = '';
             document.getElementById('returnPhotoImg').src = '';
             
-            // Set default date
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('b_borrow_date').value = today;
             document.getElementById('b_return_date').value = today;
             
-            // Populate tool dropdown
             populateToolDropdown();
-            
             openModal('borrowing');
         }
 
         function openReturnBorrowingModal(id) {
             closeCamera();
             
-            // Find borrowing data
             const borrowing = borrowingsData.find(item => item['ID'] && item['ID'].toString() === id.toString());
             if (!borrowing) {
                 showToast('Data peminjaman tidak ditemukan!', 'error');
@@ -2074,19 +2116,15 @@
             document.getElementById('borrowingModalTitle').textContent = `Kembalikan Tool: ${borrowing['Nama Tool']}`;
             document.getElementById('borrowingBtnText').textContent = 'Kembalikan';
             
-            // Show return fields, hide borrow fields
             document.getElementById('borrowFields').classList.add('hidden');
             document.getElementById('returnFields').classList.remove('hidden');
             
-            // Fill return fields with data
             document.getElementById('b_return_tool_name').value = borrowing['Nama Tool'] || '-';
             document.getElementById('b_return_borrower').value = borrowing['Nama Peminjam'] || '-';
             
-            // Set default return date
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('b_return_date').value = today;
             
-            // Reset photo
             document.getElementById('returnPhotoPreview').classList.add('hidden');
             document.getElementById('returnPhotoImg').src = '';
             
@@ -2097,7 +2135,6 @@
             const select = document.getElementById('b_tool');
             select.innerHTML = '<option value="">-- Pilih Tool --</option>';
             
-            // Get available tools (status Tersedia)
             const availableTools = toolsData.filter(t => (t['Status'] || '').trim() === 'Tersedia');
             
             if (availableTools.length === 0) {
@@ -2128,7 +2165,7 @@
                 }
                 
                 const borrowerPhoto = document.getElementById('borrowerPhotoImg').src;
-                if (!borrowerPhoto || borrowerPhoto === '') {
+                if (!borrowerPhoto || borrowerPhoto === '' || borrowerPhoto === '#') {
                     showToast('Harap ambil foto peminjam!', 'error');
                     return;
                 }
@@ -2144,7 +2181,6 @@
                 btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Meminjam...</span>`;
                 btnSubmit.disabled = true;
 
-                // Kompres foto
                 const compressedPhoto = await compressPhoto(borrowerPhoto);
 
                 const payload = {
@@ -2178,16 +2214,15 @@
                         showToast('Gagal menyimpan: ' + result.message, "error");
                     }
                 } catch (error) {
-                    showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+                    showToast('Terjadi kesalahan koneksi: ' + error.message, "error");
                 } finally {
                     btnSubmit.innerHTML = originalHTML;
                     btnSubmit.disabled = false;
                 }
                 
             } else {
-                // Return action
                 const returnPhoto = document.getElementById('returnPhotoImg').src;
-                if (!returnPhoto || returnPhoto === '') {
+                if (!returnPhoto || returnPhoto === '' || returnPhoto === '#') {
                     showToast('Harap ambil foto pengembalian!', 'error');
                     return;
                 }
@@ -2204,7 +2239,6 @@
                 btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">Mengembalikan...</span>`;
                 btnSubmit.disabled = true;
 
-                // Kompres foto
                 const compressedPhoto = await compressPhoto(returnPhoto);
 
                 const payload = {
@@ -2234,7 +2268,7 @@
                         showToast('Gagal menyimpan: ' + result.message, "error");
                     }
                 } catch (error) {
-                    showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+                    showToast('Terjadi kesalahan koneksi: ' + error.message, "error");
                 } finally {
                     btnSubmit.innerHTML = originalHTML;
                     btnSubmit.disabled = false;
@@ -2242,7 +2276,6 @@
             }
         }
 
-        // Fungsi kompres foto di sisi client
         function compressPhoto(base64Data, maxWidth = 300, maxHeight = 300, quality = 0.7) {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -2320,6 +2353,12 @@
                 cameraStream = null;
             }
             
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                errorEl.classList.remove('hidden');
+                errorEl.innerHTML = '<i class="ph-bold ph-warning-circle text-xl"></i><p class="mt-2">Browser tidak mendukung kamera. Gunakan Chrome di HP.</p>';
+                return;
+            }
+            
             navigator.mediaDevices.getUserMedia({ 
                 video: { 
                     facingMode: 'environment',
@@ -2342,10 +2381,8 @@
                 console.error('Camera error:', err);
                 const errorEl = document.getElementById('cameraError');
                 errorEl.classList.remove('hidden');
+                errorEl.innerHTML = '<i class="ph-bold ph-warning-circle text-xl"></i><p class="mt-2">Gagal akses kamera: ' + err.message + '</p>';
                 showToast('Gagal mengakses kamera: ' + err.message, 'error');
-                setTimeout(() => {
-                    closeCamera();
-                }, 2000);
             });
         }
 
@@ -2372,11 +2409,12 @@
                 if (currentCameraType === 'borrower') {
                     document.getElementById('borrowerPhotoImg').src = capturedPhotoData;
                     document.getElementById('borrowerPhotoPreview').classList.remove('hidden');
+                    showToast('Foto peminjam berhasil diambil!', 'success');
                 } else if (currentCameraType === 'return') {
                     document.getElementById('returnPhotoImg').src = capturedPhotoData;
                     document.getElementById('returnPhotoPreview').classList.remove('hidden');
+                    showToast('Foto pengembalian berhasil diambil!', 'success');
                 }
-                showToast('Foto berhasil diambil!', 'success');
                 capturedPhotoData = null;
             }
             
@@ -2398,7 +2436,7 @@
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, width, height);
             
-            const photoData = canvas.toDataURL('image/jpeg', 0.85);
+            const photoData = canvas.toDataURL('image/jpeg', 0.8);
             capturedPhotoData = photoData;
             
             closeCamera();
@@ -2408,9 +2446,11 @@
             if (type === 'borrower') {
                 document.getElementById('borrowerPhotoImg').src = '';
                 document.getElementById('borrowerPhotoPreview').classList.add('hidden');
+                showToast('Foto peminjam dihapus', 'info');
             } else if (type === 'return') {
                 document.getElementById('returnPhotoImg').src = '';
                 document.getElementById('returnPhotoPreview').classList.add('hidden');
+                showToast('Foto pengembalian dihapus', 'info');
             }
         }
 

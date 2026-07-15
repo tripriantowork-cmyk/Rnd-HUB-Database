@@ -181,7 +181,7 @@
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwH38ED7ZdiEZORtr0KsH1IRS0BB-YKocFqcEqy1jEPzQB9kUL6vrQpgurF8H3NCFGv5Q/exec";
+        const APPS_SCRIPT_URL = "AKfycbwH38ED7ZdiEZORtr0KsH1IRS0BB-YKocFqcEqy1jEPzQB9kUL6vrQpgurF8H3NCFGv5Q";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -773,7 +773,7 @@
             </div>
             
             <div class="p-6 overflow-y-auto bg-slate-50/50">
-                <form id="addBorrowingForm" class="space-y-5">
+                <form id="addBorrowingForm" class="space-y-5" onsubmit="return false;">
                     <input type="hidden" id="b_id" value="">
                     <input type="hidden" id="b_action" value="borrow">
                     
@@ -796,12 +796,12 @@
                     
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Pinjam <span class="text-brand-red">*</span></label>
-                        <input type="datetime-local" id="b_borrow_date" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        <input type="date" id="b_borrow_date" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
                     </div>
                     
                     <div id="returnDateGroup" class="hidden">
                         <label class="block text-sm font-bold text-slate-700 mb-1.5">Tanggal Kembali <span class="text-brand-red">*</span></label>
-                        <input type="datetime-local" id="b_return_date" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        <input type="date" id="b_return_date" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
                     </div>
 
                     <div id="photoSection" class="space-y-4">
@@ -831,30 +831,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Camera Modal -->
-                    <div id="cameraModal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-sm hidden items-center justify-center p-4 z-[70]">
-                        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-4">
-                            <div class="flex justify-between items-center mb-4">
-                                <h4 class="text-lg font-bold text-slate-800">Ambil Foto</h4>
-                                <button onclick="closeCamera()" class="text-slate-400 hover:text-slate-600 p-1">
-                                    <i class="ph-bold ph-x text-2xl"></i>
-                                </button>
-                            </div>
-                            <div class="camera-container">
-                                <video id="cameraVideo" autoplay playsinline></video>
-                                <div class="camera-overlay">
-                                    <button onclick="capturePhoto()" class="btn-capture">
-                                        <i class="ph-bold ph-camera text-base"></i> Ambil
-                                    </button>
-                                    <button onclick="closeCamera()" class="btn-close-camera">
-                                        <i class="ph-bold ph-x text-base"></i> Tutup
-                                    </button>
-                                </div>
-                            </div>
-                            <canvas id="cameraCanvas" class="hidden"></canvas>
-                        </div>
-                    </div>
                 </form>
             </div>
             
@@ -864,6 +840,30 @@
                     <i class="ph-duotone ph-floppy-disk text-base"></i> <span id="borrowingBtnText">Simpan</span>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- CAMERA MODAL -->
+    <div id="cameraModal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-sm hidden items-center justify-center p-4 z-[70]">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-lg font-bold text-slate-800">Ambil Foto</h4>
+                <button onclick="closeCamera()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="ph-bold ph-x text-2xl"></i>
+                </button>
+            </div>
+            <div class="camera-container">
+                <video id="cameraVideo" autoplay playsinline></video>
+                <div class="camera-overlay">
+                    <button onclick="capturePhoto()" class="btn-capture">
+                        <i class="ph-bold ph-camera text-base"></i> Ambil
+                    </button>
+                    <button onclick="closeCamera()" class="btn-close-camera">
+                        <i class="ph-bold ph-x text-base"></i> Tutup
+                    </button>
+                </div>
+            </div>
+            <canvas id="cameraCanvas" class="hidden"></canvas>
         </div>
     </div>
 
@@ -896,6 +896,8 @@
         let toolsData = [];
         let borrowingsData = [];
         let currentCameraType = null;
+        let cameraStream = null;
+        let capturedPhotoData = null;
 
         // --- SIDEBAR ---
         const sidebar = document.getElementById('sidebar');
@@ -1004,6 +1006,8 @@
         });
 
         function logout() {
+            // Close camera if open
+            closeCamera();
             if (isSidebarOpen) toggleSidebar();
             document.getElementById('mainApp').classList.add('hidden');
             const loginPage = document.getElementById('loginPage');
@@ -1016,6 +1020,9 @@
 
         // --- NAVIGASI ---
         function switchMenu(menuName) {
+            // Close camera if open
+            closeCamera();
+            
             if(window.innerWidth < 768 && isSidebarOpen) {
                 toggleSidebar();
             }
@@ -1906,8 +1913,8 @@
                     `<a href="${item['Foto Kembali']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-image text-sm"></i> Lihat</a>` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
 
-                const borrowDate = item['Tanggal Pinjam'] ? new Date(item['Tanggal Pinjam']).toLocaleString('id-ID', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}) : '-';
-                const returnDate = item['Tanggal Kembali'] ? new Date(item['Tanggal Kembali']).toLocaleString('id-ID', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}) : '-';
+                const borrowDate = item['Tanggal Pinjam'] ? new Date(item['Tanggal Pinjam']).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : '-';
+                const returnDate = item['Tanggal Kembali'] ? new Date(item['Tanggal Kembali']).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : '-';
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition duration-200 group";
@@ -1940,20 +1947,27 @@
         }
 
         function openBorrowingModal() {
+            closeCamera();
             document.getElementById('b_id').value = '';
             document.getElementById('b_action').value = 'borrow';
             document.getElementById('borrowingModalTitle').textContent = 'Form Peminjaman Tool';
             document.getElementById('borrowingBtnText').textContent = 'Pinjam';
             document.getElementById('returnDateGroup').classList.add('hidden');
             document.getElementById('returnPhotoGroup').classList.add('hidden');
+            document.getElementById('b_tool').disabled = false;
+            document.getElementById('b_borrower').disabled = false;
+            document.getElementById('b_department').disabled = false;
+            document.getElementById('b_borrow_date').disabled = false;
             document.getElementById('addBorrowingForm').reset();
             document.getElementById('borrowerPhotoPreview').classList.add('hidden');
             document.getElementById('returnPhotoPreview').classList.add('hidden');
+            document.getElementById('borrowerPhotoImg').src = '';
+            document.getElementById('returnPhotoImg').src = '';
             
-            // Set default datetime
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('b_borrow_date').value = now.toISOString().slice(0, 16);
+            // Set default date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('b_borrow_date').value = today;
+            document.getElementById('b_return_date').value = today;
             
             // Populate tool dropdown
             populateToolDropdown();
@@ -1962,6 +1976,7 @@
         }
 
         function openReturnBorrowingModal(id, toolName) {
+            closeCamera();
             document.getElementById('b_id').value = id;
             document.getElementById('b_action').value = 'return';
             document.getElementById('borrowingModalTitle').textContent = `Kembalikan Tool: ${toolName}`;
@@ -1971,18 +1986,19 @@
             document.getElementById('addBorrowingForm').reset();
             document.getElementById('borrowerPhotoPreview').classList.add('hidden');
             document.getElementById('returnPhotoPreview').classList.add('hidden');
+            document.getElementById('borrowerPhotoImg').src = '';
+            document.getElementById('returnPhotoImg').src = '';
             
-            // Set default datetime for return
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('b_return_date').value = now.toISOString().slice(0, 16);
+            // Set default date for return
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('b_return_date').value = today;
             
             // Disable tool selection for return
             const toolSelect = document.getElementById('b_tool');
             toolSelect.disabled = true;
             toolSelect.innerHTML = `<option value="">${toolName}</option>`;
             
-            // Hide borrower fields
+            // Disable borrower fields
             document.getElementById('b_borrower').disabled = true;
             document.getElementById('b_department').disabled = true;
             document.getElementById('b_borrow_date').disabled = true;
@@ -2117,12 +2133,8 @@
         // --- CAMERA FUNCTIONS ---
         // ========================================================================
         
-        let cameraStream = null;
-        let capturedPhotoData = null;
-        let currentPhotoType = null;
-
         function openCamera(type) {
-            currentPhotoType = type;
+            currentCameraType = type;
             const modal = document.getElementById('cameraModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -2150,6 +2162,11 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             capturedPhotoData = null;
+            currentCameraType = null;
+            
+            // Reset video
+            const video = document.getElementById('cameraVideo');
+            video.srcObject = null;
         }
 
         function capturePhoto() {
@@ -2167,15 +2184,16 @@
             closeCamera();
             
             // Show preview
-            if (currentPhotoType === 'borrower') {
+            if (currentCameraType === 'borrower') {
                 document.getElementById('borrowerPhotoImg').src = photoData;
                 document.getElementById('borrowerPhotoPreview').classList.remove('hidden');
-            } else if (currentPhotoType === 'return') {
+            } else if (currentCameraType === 'return') {
                 document.getElementById('returnPhotoImg').src = photoData;
                 document.getElementById('returnPhotoPreview').classList.remove('hidden');
             }
             
             showToast('Foto berhasil diambil!', 'success');
+            currentCameraType = null;
         }
 
         function removePhoto(type) {
@@ -2318,6 +2336,8 @@
                     document.getElementById('addBorrowingForm').reset();
                     document.getElementById('borrowerPhotoPreview').classList.add('hidden');
                     document.getElementById('returnPhotoPreview').classList.add('hidden');
+                    document.getElementById('borrowerPhotoImg').src = '';
+                    document.getElementById('returnPhotoImg').src = '';
                     // Close camera if open
                     closeCamera();
                 }, 300);
@@ -2329,12 +2349,8 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('p_tanggal').value = today;
             document.getElementById('prod_tanggal').value = today;
-            
-            // Set default datetime for borrowing
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('b_borrow_date').value = now.toISOString().slice(0, 16);
-            document.getElementById('b_return_date').value = now.toISOString().slice(0, 16);
+            document.getElementById('b_borrow_date').value = today;
+            document.getElementById('b_return_date').value = today;
         });
     </script>
 

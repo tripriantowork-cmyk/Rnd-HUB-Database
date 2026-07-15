@@ -107,6 +107,7 @@
             width: 100%;
             display: block;
             border-radius: 16px;
+            max-height: 70vh;
         }
         .camera-container .camera-overlay {
             position: absolute;
@@ -142,59 +143,62 @@
         .camera-container .camera-overlay .btn-close-camera:hover {
             background: rgba(255,255,255,0.3);
         }
-        .camera-preview {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            border-radius: 16px;
-            overflow: hidden;
+        .photo-preview {
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
             border: 3px solid #2b3a8c;
-        }
-        .camera-preview img {
             width: 100%;
-            display: block;
+        }
+        .photo-thumb {
+            max-height: 60px;
+            max-width: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+        }
+        .photo-thumb:hover {
+            border-color: #2b3a8c;
+            opacity: 0.8;
         }
         .photo-preview-container {
             position: relative;
+            display: inline-block;
         }
         .photo-preview-container .btn-remove-photo {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: -8px;
+            right: -8px;
             background: #e41e26;
             color: white;
             border: none;
             border-radius: 9999px;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
             font-weight: 700;
             transition: all 0.2s;
             z-index: 10;
+            font-size: 14px;
+            line-height: 28px;
+            text-align: center;
         }
         .photo-preview-container .btn-remove-photo:hover {
             transform: scale(1.1);
             background: #b8171e;
         }
-        .photo-preview {
-            max-height: 250px;
-            object-fit: cover;
-            border-radius: 16px;
-            border: 3px solid #2b3a8c;
-        }
-        .photo-thumb {
-            max-height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .photo-thumb:hover {
-            opacity: 0.8;
-        }
         .photo-modal-img {
             max-height: 80vh;
             max-width: 90vw;
             border-radius: 16px;
+        }
+        .camera-error {
+            color: #e41e26;
+            padding: 20px;
+            text-align: center;
+            background: #fef2f2;
+            border-radius: 12px;
         }
     </style>
 </head>
@@ -894,14 +898,18 @@
                 </div>
             </div>
             <canvas id="cameraCanvas" class="hidden"></canvas>
+            <div id="cameraError" class="camera-error hidden">
+                <i class="ph-bold ph-warning-circle text-xl"></i>
+                <p class="mt-2">Gagal mengakses kamera. Pastikan izin kamera diberikan.</p>
+            </div>
         </div>
     </div>
 
     <!-- PHOTO VIEW MODAL -->
     <div id="photoViewModal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-sm hidden items-center justify-center p-4 z-[80]" onclick="closePhotoView()">
-        <div class="max-w-4xl max-h-full" onclick="event.stopPropagation()">
+        <div class="max-w-4xl max-h-full relative" onclick="event.stopPropagation()">
             <img id="photoViewImg" src="" alt="Foto" class="photo-modal-img">
-            <button onclick="closePhotoView()" class="absolute top-4 right-4 text-white hover:text-slate-300 text-3xl p-2">
+            <button onclick="closePhotoView()" class="absolute -top-12 right-0 text-white hover:text-slate-300 text-3xl p-2">
                 <i class="ph-bold ph-x"></i>
             </button>
         </div>
@@ -937,7 +945,6 @@
         let borrowingsData = [];
         let currentCameraType = null;
         let cameraStream = null;
-        let capturedPhotoData = null;
         let currentBorrowingData = null;
 
         // --- SIDEBAR ---
@@ -1944,12 +1951,14 @@
                 if (status === 'Dikembalikan') statusClass = 'status-success';
                 else if (status === 'Terlambat') statusClass = 'status-danger';
 
-                const borrowerPhoto = item['Foto Peminjam'] && item['Foto Peminjam'] !== '' ? 
-                    `<img src="${item['Foto Peminjam']}" class="photo-thumb" onclick="viewPhoto('${item['Foto Peminjam']}')" title="Klik untuk perbesar">` 
+                // Foto Peminjam - tampilkan thumbnail jika ada
+                const borrowerPhoto = item['Foto Peminjam'] && item['Foto Peminjam'] !== '' && item['Foto Peminjam'].startsWith('data:image') ? 
+                    `<img src="${item['Foto Peminjam']}" class="photo-thumb" onclick="viewPhoto('${item['Foto Peminjam']}')" title="Klik untuk perbesar" alt="Foto Peminjam">` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
 
-                const returnPhoto = item['Foto Kembali'] && item['Foto Kembali'] !== '' ? 
-                    `<img src="${item['Foto Kembali']}" class="photo-thumb" onclick="viewPhoto('${item['Foto Kembali']}')" title="Klik untuk perbesar">` 
+                // Foto Kembali - tampilkan thumbnail jika ada
+                const returnPhoto = item['Foto Kembali'] && item['Foto Kembali'] !== '' && item['Foto Kembali'].startsWith('data:image') ? 
+                    `<img src="${item['Foto Kembali']}" class="photo-thumb" onclick="viewPhoto('${item['Foto Kembali']}')" title="Klik untuk perbesar" alt="Foto Kembali">` 
                     : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
 
                 const borrowDate = item['Tanggal Pinjam'] ? new Date(item['Tanggal Pinjam']).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : '-';
@@ -2238,14 +2247,22 @@
         function openCamera(type) {
             currentCameraType = type;
             const modal = document.getElementById('cameraModal');
+            const errorEl = document.getElementById('cameraError');
+            errorEl.classList.add('hidden');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            
+            // Clear any existing stream
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
             
             navigator.mediaDevices.getUserMedia({ 
                 video: { 
                     facingMode: 'environment',
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
                 }, 
                 audio: false 
             })
@@ -2253,40 +2270,59 @@
                 cameraStream = stream;
                 const video = document.getElementById('cameraVideo');
                 video.srcObject = stream;
-                video.play();
+                video.play().catch(err => {
+                    console.log('Video play error:', err);
+                });
             })
             .catch(err => {
+                console.error('Camera error:', err);
+                const errorEl = document.getElementById('cameraError');
+                errorEl.classList.remove('hidden');
                 showToast('Gagal mengakses kamera: ' + err.message, 'error');
-                closeCamera();
+                setTimeout(() => {
+                    closeCamera();
+                }, 2000);
             });
         }
 
         function closeCamera() {
             if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream.getTracks().forEach(track => {
+                    track.stop();
+                });
                 cameraStream = null;
             }
             const modal = document.getElementById('cameraModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            capturedPhotoData = null;
             
             const video = document.getElementById('cameraVideo');
             if (video.srcObject) {
                 video.srcObject = null;
             }
+            
+            const errorEl = document.getElementById('cameraError');
+            errorEl.classList.add('hidden');
+            
+            currentCameraType = null;
         }
 
         function capturePhoto() {
             const video = document.getElementById('cameraVideo');
-            const canvas = document.getElementById('cameraCanvas');
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 480;
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            if (!video.srcObject) {
+                showToast('Kamera tidak aktif. Silakan buka kamera lagi.', 'error');
+                return;
+            }
             
-            const photoData = canvas.toDataURL('image/jpeg', 0.9);
-            capturedPhotoData = photoData;
+            const canvas = document.getElementById('cameraCanvas');
+            const width = video.videoWidth || 640;
+            const height = video.videoHeight || 480;
+            canvas.width = width;
+            canvas.height = height;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, width, height);
+            
+            const photoData = canvas.toDataURL('image/jpeg', 0.85);
             
             // Close camera
             closeCamera();

@@ -946,6 +946,7 @@
         let currentCameraType = null;
         let cameraStream = null;
         let currentBorrowingData = null;
+        let capturedPhotoData = null;
 
         // --- SIDEBAR ---
         const sidebar = document.getElementById('sidebar');
@@ -1121,7 +1122,7 @@
         }
 
         // ========================================================================
-        // --- CRUD PROJECT (SAME AS ORIGINAL) ---
+        // --- CRUD PROJECT ---
         // ========================================================================
         
         async function fetchProjects() {
@@ -1317,7 +1318,7 @@
         }
 
         // ========================================================================
-        // --- CRUD PRODUCT (SAME AS ORIGINAL) ---
+        // --- CRUD PRODUCT ---
         // ========================================================================
         
         async function fetchProducts() {
@@ -1524,7 +1525,7 @@
         }
 
         // ========================================================================
-        // --- CRUD SPAREPART (SAME AS ORIGINAL) ---
+        // --- CRUD SPAREPART ---
         // ========================================================================
         
         async function fetchSpareparts() {
@@ -1712,7 +1713,7 @@
         }
 
         // ========================================================================
-        // --- CRUD TOOLS (FIXED) ---
+        // --- CRUD TOOLS ---
         // ========================================================================
         
         async function fetchTools() {
@@ -2241,7 +2242,7 @@
         }
 
         // ========================================================================
-        // --- CAMERA FUNCTIONS ---
+        // --- CAMERA FUNCTIONS (FIXED) ---
         // ========================================================================
         
         function openCamera(type) {
@@ -2251,8 +2252,8 @@
             errorEl.classList.add('hidden');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            capturedPhotoData = null;
             
-            // Clear any existing stream
             if (cameraStream) {
                 cameraStream.getTracks().forEach(track => track.stop());
                 cameraStream = null;
@@ -2270,9 +2271,11 @@
                 cameraStream = stream;
                 const video = document.getElementById('cameraVideo');
                 video.srcObject = stream;
-                video.play().catch(err => {
-                    console.log('Video play error:', err);
-                });
+                video.onloadedmetadata = function() {
+                    video.play().catch(err => {
+                        console.log('Video play error:', err);
+                    });
+                };
             })
             .catch(err => {
                 console.error('Camera error:', err);
@@ -2304,6 +2307,18 @@
             const errorEl = document.getElementById('cameraError');
             errorEl.classList.add('hidden');
             
+            if (capturedPhotoData) {
+                if (currentCameraType === 'borrower') {
+                    document.getElementById('borrowerPhotoImg').src = capturedPhotoData;
+                    document.getElementById('borrowerPhotoPreview').classList.remove('hidden');
+                } else if (currentCameraType === 'return') {
+                    document.getElementById('returnPhotoImg').src = capturedPhotoData;
+                    document.getElementById('returnPhotoPreview').classList.remove('hidden');
+                }
+                showToast('Foto berhasil diambil!', 'success');
+                capturedPhotoData = null;
+            }
+            
             currentCameraType = null;
         }
 
@@ -2323,21 +2338,9 @@
             context.drawImage(video, 0, 0, width, height);
             
             const photoData = canvas.toDataURL('image/jpeg', 0.85);
+            capturedPhotoData = photoData;
             
-            // Close camera
             closeCamera();
-            
-            // Show preview
-            if (currentCameraType === 'borrower') {
-                document.getElementById('borrowerPhotoImg').src = photoData;
-                document.getElementById('borrowerPhotoPreview').classList.remove('hidden');
-            } else if (currentCameraType === 'return') {
-                document.getElementById('returnPhotoImg').src = photoData;
-                document.getElementById('returnPhotoPreview').classList.remove('hidden');
-            }
-            
-            showToast('Foto berhasil diambil!', 'success');
-            currentCameraType = null;
         }
 
         function removePhoto(type) {

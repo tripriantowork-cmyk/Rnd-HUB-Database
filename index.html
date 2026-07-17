@@ -235,13 +235,44 @@
             z-index: 1;
             opacity: 0.8;
         }
+
+        /* Master Link Styles */
+        .link-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .link-card:hover {
+            border-color: #2b3a8c40;
+            box-shadow: 0 4px 12px rgba(43, 58, 140, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #dbeafe;
+            color: #2b3a8c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
 
     <!-- URL WEB APP GOOGLE APPS SCRIPT -->
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKfKLVsL2yAvBv316pWYSZxB024d9BSS2X2MrJVXFjQKzJX8zJPdjTCaM8F51eCCsJCQ/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxZubEuwZaq5v15Lh_mFhVF16cOfcZcVDmEhsEmJEZ7v6w5UIHXZF7mOUfkX9YIM7vK7A/exec";
     </script>
 
     <!-- HALAMAN LOGIN -->
@@ -334,6 +365,11 @@
                 <button onclick="switchMenu('tools')" id="nav-tools" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
                     <i class="ph-duotone ph-wrench text-xl opacity-70 group-hover:opacity-100 transition"></i>
                     <span class="font-semibold">Tools</span>
+                </button>
+                
+                <button onclick="switchMenu('masterlink')" id="nav-masterlink" class="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-left transition text-blue-100 hover:bg-white/10 hover:text-white group">
+                    <i class="ph-duotone ph-link-simple text-xl opacity-70 group-hover:opacity-100 transition"></i>
+                    <span class="font-semibold">Master Link</span>
                 </button>
             </div>
 
@@ -527,7 +563,6 @@
                             <p class="text-slate-500 text-sm font-medium">Manajemen database pusat Interskala R&D.</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                            <!-- FITUR PENCARIAN PROJECTS -->
                             <div class="relative w-full sm:w-64">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
@@ -578,7 +613,6 @@
                             <p class="text-slate-500 text-sm font-medium">Manajemen history produk yang telah diuji.</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                            <!-- FITUR PENCARIAN PRODUCTS -->
                             <div class="relative w-full sm:w-64">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
@@ -630,7 +664,6 @@
                             <p class="text-slate-500 text-sm font-medium">Manajemen inventory spareparts R&D.</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                            <!-- FITUR PENCARIAN SPAREPARTS -->
                             <div class="relative w-full sm:w-64">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
@@ -679,7 +712,6 @@
                             <p class="text-slate-500 text-sm font-medium">Manajemen tools dan peralatan R&D.</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                            <!-- FITUR PENCARIAN TOOLS -->
                             <div class="relative w-full sm:w-64">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
@@ -709,6 +741,52 @@
                                 <tbody id="toolsTableBody" class="text-sm divide-y divide-slate-100">
                                     <tr>
                                         <td colspan="6" class="p-16 text-center">
+                                            <div class="flex flex-col items-center justify-center gap-4">
+                                                <div class="loader"></div>
+                                                <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Master Link -->
+                <div id="view-masterlink" class="hidden max-w-[1400px] mx-auto">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <p class="text-slate-500 text-sm font-medium">Kumpulan link spreadsheet penting R&D.</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
+                                </div>
+                                <input type="text" id="searchMasterLink" placeholder="Cari link..." 
+                                    class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm text-sm font-medium">
+                            </div>
+                            <button onclick="openModal('masterlink')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                                <i class="ph-bold ph-plus text-base"></i> Tambah Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-bold">
+                                        <th class="p-4 w-16 text-center">No</th>
+                                        <th class="p-4">Nama Link</th>
+                                        <th class="p-4">Link</th>
+                                        <th class="p-4 w-32 text-center sticky right-0 bg-slate-50/80 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="masterlinkTableBody" class="text-sm divide-y divide-slate-100">
+                                    <tr>
+                                        <td colspan="4" class="p-16 text-center">
                                             <div class="flex flex-col items-center justify-center gap-4">
                                                 <div class="loader"></div>
                                                 <span class="text-sm font-bold text-slate-400">Menghubungkan ke Database...</span>
@@ -959,6 +1037,49 @@
         </div>
     </div>
 
+    <!-- MODAL MASTER LINK -->
+    <div id="masterlinkModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[95vh] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden" id="modalMasterLinkContent">
+            <div class="bg-brand-blue p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                        <i class="ph-duotone ph-link-plus text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight" id="masterlinkModalTitle">Tambah Link Baru</h3>
+                </div>
+                <button onclick="closeModal('masterlink')" class="text-blue-200 hover:text-white hover:bg-white/10 p-2 rounded-xl transition">
+                    <i class="ph-bold ph-x text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto bg-slate-50/50">
+                <form id="addMasterLinkForm" class="space-y-5">
+                    <input type="hidden" id="ml_id" value="">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Nama Link <span class="text-brand-red">*</span></label>
+                        <input type="text" id="ml_nama" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium" placeholder="Contoh: Data Customer 2024">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Link Spreadsheet <span class="text-brand-red">*</span></label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="ph-duotone ph-link text-base text-slate-400"></i>
+                            </div>
+                            <input type="url" id="ml_link" required placeholder="https://docs.google.com/spreadsheets/..." class="w-full pl-9 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm font-medium">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="p-5 border-t border-slate-100 flex justify-end gap-3 bg-white">
+                <button onclick="closeModal('masterlink')" class="px-5 py-2.5 text-slate-600 hover:bg-slate-100 font-bold rounded-xl transition">Batal</button>
+                <button onclick="submitMasterLink()" id="btnSubmitMasterLink" class="bg-brand-blue hover:bg-brand-darkblue text-white px-6 py-2.5 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-blue/20">
+                    <i class="ph-duotone ph-floppy-disk text-base"></i> <span id="masterlinkBtnText">Simpan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- CONFIRM MODAL -->
     <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center" id="confirmContent">
@@ -986,6 +1107,7 @@
         let productsData = [];
         let sparepartsData = [];
         let toolsData = [];
+        let masterlinkData = [];
 
         // --- SIDEBAR ---
         const sidebar = document.getElementById('sidebar');
@@ -1115,8 +1237,9 @@
             document.getElementById('view-products').classList.add('hidden');
             document.getElementById('view-spareparts').classList.add('hidden');
             document.getElementById('view-tools').classList.add('hidden');
+            document.getElementById('view-masterlink').classList.add('hidden');
             
-            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts', 'nav-tools'];
+            const navButtons = ['nav-dashboard', 'nav-projects', 'nav-products', 'nav-spareparts', 'nav-tools', 'nav-masterlink'];
             navButtons.forEach(id => {
                 const btn = document.getElementById(id);
                 btn.classList.remove('bg-white/15', 'text-white', 'shadow-inner');
@@ -1134,13 +1257,13 @@
                 'projects': 'Daftar Project',
                 'products': 'Products History',
                 'spareparts': 'Spareparts',
-                'tools': 'Tools'
+                'tools': 'Tools',
+                'masterlink': 'Master Link'
             };
             document.getElementById('pageTitle').innerText = titles[menuName];
 
             if(menuName === 'dashboard') {
                 setCurrentDate();
-                // Fetch all data for dashboard
                 Promise.all([
                     fetch(APPS_SCRIPT_URL + '?sheet=Projects').then(r => r.json()),
                     fetch(APPS_SCRIPT_URL + '?sheet=Products').then(r => r.json()),
@@ -1164,6 +1287,8 @@
                 fetchSpareparts();
             } else if(menuName === 'tools') {
                 fetchTools();
+            } else if(menuName === 'masterlink') {
+                fetchMasterLink();
             }
         }
 
@@ -1172,19 +1297,16 @@
         // ========================================================================
 
         function updateDashboard() {
-            // Update Total Counts
             document.getElementById('totalProjects').textContent = projectsData.length;
             document.getElementById('totalProducts').textContent = productsData.length;
             document.getElementById('totalSpareparts').textContent = sparepartsData.length;
             document.getElementById('totalTools').textContent = toolsData.length;
             
-            // Quick Stats
             document.getElementById('quickProjects').textContent = projectsData.length;
             document.getElementById('quickProducts').textContent = productsData.length;
             document.getElementById('quickSpareparts').textContent = sparepartsData.length;
             document.getElementById('quickTools').textContent = toolsData.length;
             
-            // Status Texts
             document.getElementById('projectStatusText').textContent = projectsData.length > 0 ? 
                 `${projectsData.length} project terdaftar` : 'Belum ada data';
             document.getElementById('productStatusText').textContent = productsData.length > 0 ? 
@@ -1194,7 +1316,6 @@
             document.getElementById('toolStatusText').textContent = toolsData.length > 0 ? 
                 `${toolsData.length} tool terdaftar` : 'Belum ada data';
             
-            // Update Recent Activities
             updateRecentActivities();
         }
 
@@ -1202,7 +1323,6 @@
             const container = document.getElementById('recentActivities');
             const activities = [];
             
-            // Get latest projects (max 3)
             if (projectsData.length > 0) {
                 const recentProjects = projectsData.slice(-3).reverse();
                 recentProjects.forEach(project => {
@@ -1216,7 +1336,6 @@
                 });
             }
             
-            // Get latest products (max 3)
             if (productsData.length > 0) {
                 const recentProducts = productsData.slice(-3).reverse();
                 recentProducts.forEach(product => {
@@ -1236,7 +1355,6 @@
                 });
             }
             
-            // If no activities
             if (activities.length === 0) {
                 container.innerHTML = `
                     <div class="py-8 text-center text-slate-400">
@@ -1247,7 +1365,6 @@
                 return;
             }
             
-            // Render activities (max 6 items)
             const maxItems = 6;
             const displayActivities = activities.slice(0, maxItems);
             
@@ -2082,6 +2199,176 @@
         }
 
         // ========================================================================
+        // --- CRUD MASTER LINK ---
+        // ========================================================================
+
+        async function fetchMasterLink() {
+            const tbody = document.getElementById('masterlinkTableBody');
+            tbody.innerHTML = `<tr><td colspan="4" class="p-16 text-center"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold text-slate-400">Mensinkronisasi Data...</span></div></td></tr>`;
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?sheet=MasterLink');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    masterlinkData = result.data;
+                    renderMasterLinkTable(masterlinkData);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-brand-red font-bold">Error: ${result.message}</td></tr>`;
+                    showToast("Gagal memuat data: " + result.message, "error");
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-brand-red font-bold">Gagal terhubung ke database server.</td></tr>`;
+                showToast("Kesalahan jaringan.", "error");
+            }
+        }
+
+        function renderMasterLinkTable(data) {
+            const tbody = document.getElementById('masterlinkTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-16 text-center text-slate-400 font-semibold text-sm">Belum ada link terdaftar. Klik "Tambah Link".</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const linkHTML = item['Link'] ? 
+                    `<a href="${item['Link']}" target="_blank" class="text-brand-blue hover:text-brand-darkblue hover:underline inline-flex items-center gap-1.5 font-bold bg-blue-50 px-3 py-1 rounded-lg transition"><i class="ph-bold ph-arrow-square-out text-sm"></i> Buka</a>` 
+                    : `<span class="text-slate-300 font-medium bg-slate-50 px-3 py-1 rounded-lg">-</span>`;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition duration-200 group";
+                tr.setAttribute('data-id', item['ID']);
+                tr.innerHTML = `
+                    <td class="p-4 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="p-4 font-extrabold text-slate-900">${item['Nama Link'] || '-'}</td>
+                    <td class="p-4">${linkHTML}</td>
+                    <td class="p-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 transition duration-200 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] border-l border-slate-50">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editMasterLink('${item['ID']}')" class="text-slate-400 hover:text-brand-blue hover:bg-blue-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Edit Data">
+                                <i class="ph-duotone ph-pencil-simple text-base"></i>
+                            </button>
+                            <button onclick="deleteMasterLink('${item['ID']}')" class="text-slate-400 hover:text-brand-red hover:bg-red-50 p-2 rounded-xl transition inline-flex items-center justify-center" title="Hapus Data">
+                                <i class="ph-duotone ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editMasterLink(id) {
+            let data = masterlinkData.find(item => item['ID'] && item['ID'].toString() === id.toString());
+            
+            if (!data) {
+                const rows = document.querySelectorAll('#masterlinkTableBody tr');
+                for (let row of rows) {
+                    const rowId = row.getAttribute('data-id');
+                    if (rowId === id) {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 3) {
+                            data = {
+                                'ID': id,
+                                'Nama Link': cells[1]?.textContent || '',
+                                'Link': ''
+                            };
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (data) {
+                document.getElementById('ml_id').value = id;
+                document.getElementById('ml_nama').value = data['Nama Link'] || '';
+                document.getElementById('ml_link').value = data['Link'] || '';
+                
+                document.getElementById('masterlinkModalTitle').textContent = 'Edit Link';
+                document.getElementById('masterlinkBtnText').textContent = 'Update';
+                
+                openModal('masterlink');
+            } else {
+                showToast('Data tidak ditemukan. Silakan refresh halaman.', 'error');
+                fetchMasterLink();
+            }
+        }
+
+        async function submitMasterLink() {
+            const form = document.getElementById('addMasterLinkForm');
+            if(!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const id = document.getElementById('ml_id').value;
+            const isEdit = id !== '';
+            
+            const btnSubmit = document.getElementById('btnSubmitMasterLink');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<div class="loader w-4 h-4 border-white border-t-white"></div> <span class="ml-2">${isEdit ? 'Mengupdate...' : 'Menyimpan...'}</span>`;
+            btnSubmit.disabled = true;
+
+            const payload = {
+                action: isEdit ? 'update' : 'add',
+                sheet: 'MasterLink',
+                id: id,
+                nama_link: document.getElementById('ml_nama').value,
+                link: document.getElementById('ml_link').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    closeModal('masterlink');
+                    showToast(isEdit ? "Link berhasil diupdate!" : "Link baru berhasil disimpan!", "success");
+                    fetchMasterLink();
+                } else {
+                    showToast('Gagal menyimpan: ' + result.message, "error");
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan koneksi saat mengirim data.', "error");
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function deleteMasterLink(id) {
+            showConfirm("Apakah Anda yakin ingin menghapus link ini?", async () => {
+                try {
+                    const tbody = document.getElementById('masterlinkTableBody');
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-16 text-center text-slate-500"><div class="flex flex-col items-center justify-center gap-4"><div class="loader"></div><span class="text-sm font-bold">Menghapus data...</span></div></td></tr>`;
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', sheet: 'MasterLink', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        showToast("Link berhasil dihapus!", "success");
+                        fetchMasterLink();
+                    } else {
+                        showToast('Gagal menghapus: ' + result.message, 'error');
+                        fetchMasterLink();
+                    }
+                } catch (error) {
+                    showToast('Terjadi kesalahan jaringan.', 'error');
+                    fetchMasterLink();
+                }
+            });
+        }
+
+        // ========================================================================
         // --- MODAL ---
         // ========================================================================
         
@@ -2116,6 +2403,15 @@
             } else if (type === 'tool') {
                 const modal = document.getElementById('toolModal');
                 const modalContent = document.getElementById('modalToolContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else if (type === 'masterlink') {
+                const modal = document.getElementById('masterlinkModal');
+                const modalContent = document.getElementById('modalMasterLinkContent');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 setTimeout(() => {
@@ -2181,6 +2477,19 @@
                     document.getElementById('toolModalTitle').textContent = 'Tool Baru';
                     document.getElementById('toolBtnText').textContent = 'Simpan';
                     document.getElementById('addToolForm').reset();
+                }, 300);
+            } else if (type === 'masterlink') {
+                const modal = document.getElementById('masterlinkModal');
+                const modalContent = document.getElementById('modalMasterLinkContent');
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('ml_id').value = '';
+                    document.getElementById('masterlinkModalTitle').textContent = 'Tambah Link Baru';
+                    document.getElementById('masterlinkBtnText').textContent = 'Simpan';
+                    document.getElementById('addMasterLinkForm').reset();
                 }, 300);
             }
         }
@@ -2383,13 +2692,54 @@
             }
         });
 
+        // Search Master Link
+        document.getElementById('searchMasterLink').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#masterlinkTableBody tr');
+            
+            if (rows.length === 0 || rows[0].querySelector('.loader')) return;
+            
+            let visibleCount = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 3) return;
+                
+                const namaLink = (cells[1]?.textContent || '').toLowerCase();
+                
+                const match = searchTerm === '' || namaLink.includes(searchTerm);
+                
+                row.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            
+            const tbody = document.getElementById('masterlinkTableBody');
+            const existingMsg = tbody.querySelector('.no-result-msg');
+            if (visibleCount === 0 && searchTerm !== '') {
+                if (!existingMsg) {
+                    const msgRow = document.createElement('tr');
+                    msgRow.className = 'no-result-msg';
+                    msgRow.innerHTML = `<td colspan="4" class="p-16 text-center text-slate-400 font-semibold text-sm">
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada link yang cocok dengan "<strong>${searchTerm}</strong>"
+                    </td>`;
+                    tbody.appendChild(msgRow);
+                } else {
+                    existingMsg.querySelector('td').innerHTML = `
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada link yang cocok dengan "<strong>${searchTerm}</strong>"
+                    `;
+                }
+            } else {
+                if (existingMsg) existingMsg.remove();
+            }
+        });
+
         // --- INIT ---
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('p_tanggal').value = today;
             document.getElementById('prod_tanggal').value = today;
             
-            // Set current date for dashboard
             setCurrentDate();
         });
     </script>

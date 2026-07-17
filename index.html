@@ -92,6 +92,149 @@
         .condition-worn { background: #fef3c7; color: #92400e; }
         .condition-broken { background: #fecaca; color: #991b1b; }
         .condition-default { background: #f1f5f9; color: #475569; }
+
+        /* Dashboard Card Styles */
+        .dashboard-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(43, 58, 140, 0.08);
+            border-color: #2b3a8c20;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon-blue { background: #dbeafe; color: #2b3a8c; }
+        .stat-icon-red { background: #fecaca; color: #e41e26; }
+        .stat-icon-green { background: #dcfce7; color: #166534; }
+        .stat-icon-purple { background: #ede9fe; color: #7c3aed; }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .activity-dot-blue { background: #2b3a8c; }
+        .activity-dot-green { background: #22c55e; }
+        .activity-dot-yellow { background: #eab308; }
+        .activity-dot-red { background: #ef4444; }
+
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #0f172a;
+        }
+
+        .activity-desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .activity-time {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .quick-stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+
+        .quick-stat-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #2b3a8c 0%, #1e2968 100%);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: 20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+
+        .welcome-banner h2 {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-banner p {
+            position: relative;
+            z-index: 1;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
@@ -225,7 +368,157 @@
 
             <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50">
                 
-                <div id="view-dashboard" class="hidden max-w-6xl mx-auto"></div>
+                <!-- View Dashboard -->
+                <div id="view-dashboard" class="max-w-7xl mx-auto">
+                    
+                    <!-- Welcome Banner -->
+                    <div class="welcome-banner mb-8">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">
+                                    Selamat Datang, <span class="text-brand-red">Administrator</span>
+                                </h2>
+                                <p class="text-blue-200 mt-1 text-sm md:text-base">
+                                    Kelola data R&D dengan mudah dan efisien di Rnd HUB.
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10">
+                                <i class="ph-duotone ph-calendar-check text-lg text-blue-200"></i>
+                                <span class="text-sm font-medium text-white" id="currentDate"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                        <div class="dashboard-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Project</p>
+                                    <h3 class="text-3xl font-extrabold text-slate-900 mt-1" id="totalProjects">0</h3>
+                                    <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                                        <i class="ph-bold ph-folder-open text-xs"></i> 
+                                        <span id="projectStatusText">Belum ada data</span>
+                                    </p>
+                                </div>
+                                <div class="stat-icon stat-icon-blue">
+                                    <i class="ph-duotone ph-folder-open"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Produk</p>
+                                    <h3 class="text-3xl font-extrabold text-slate-900 mt-1" id="totalProducts">0</h3>
+                                    <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                                        <i class="ph-bold ph-package text-xs"></i> 
+                                        <span id="productStatusText">Belum ada data</span>
+                                    </p>
+                                </div>
+                                <div class="stat-icon stat-icon-green">
+                                    <i class="ph-duotone ph-package"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Spareparts</p>
+                                    <h3 class="text-3xl font-extrabold text-slate-900 mt-1" id="totalSpareparts">0</h3>
+                                    <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                                        <i class="ph-bold ph-toolbox text-xs"></i> 
+                                        <span id="sparepartStatusText">Belum ada data</span>
+                                    </p>
+                                </div>
+                                <div class="stat-icon stat-icon-purple">
+                                    <i class="ph-duotone ph-toolbox"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Tools</p>
+                                    <h3 class="text-3xl font-extrabold text-slate-900 mt-1" id="totalTools">0</h3>
+                                    <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                                        <i class="ph-bold ph-wrench text-xs"></i> 
+                                        <span id="toolStatusText">Belum ada data</span>
+                                    </p>
+                                </div>
+                                <div class="stat-icon stat-icon-red">
+                                    <i class="ph-duotone ph-wrench"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats & Activity -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <!-- Quick Stats -->
+                        <div class="dashboard-card lg:col-span-1">
+                            <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                <i class="ph-duotone ph-chart-bar text-brand-blue"></i> 
+                                Ringkasan Cepat
+                            </h4>
+                            
+                            <div class="space-y-3">
+                                <div class="quick-stat">
+                                    <div class="flex-1">
+                                        <div class="quick-stat-value" id="quickProjects">0</div>
+                                        <div class="quick-stat-label">Total Project</div>
+                                    </div>
+                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-folder-open"></i></div>
+                                </div>
+                                
+                                <div class="quick-stat">
+                                    <div class="flex-1">
+                                        <div class="quick-stat-value" id="quickProducts">0</div>
+                                        <div class="quick-stat-label">Total Produk</div>
+                                    </div>
+                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-package"></i></div>
+                                </div>
+                                
+                                <div class="quick-stat">
+                                    <div class="flex-1">
+                                        <div class="quick-stat-value" id="quickSpareparts">0</div>
+                                        <div class="quick-stat-label">Total Sparepart</div>
+                                    </div>
+                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-toolbox"></i></div>
+                                </div>
+                                
+                                <div class="quick-stat">
+                                    <div class="flex-1">
+                                        <div class="quick-stat-value" id="quickTools">0</div>
+                                        <div class="quick-stat-label">Total Tools</div>
+                                    </div>
+                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-wrench"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activities -->
+                        <div class="dashboard-card lg:col-span-2">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                                    <i class="ph-duotone ph-clock-clockwise text-brand-blue"></i> 
+                                    Aktivitas Terbaru
+                                </h4>
+                                <span class="text-xs text-slate-400 font-medium">Data terbaru</span>
+                            </div>
+                            
+                            <div id="recentActivities" class="divide-y divide-slate-100">
+                                <div class="py-8 text-center text-slate-400">
+                                    <i class="ph-duotone ph-database text-3xl block mb-2"></i>
+                                    <span class="text-sm font-medium">Data akan muncul setelah sinkronisasi</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- View Projects -->
                 <div id="view-projects" class="hidden max-w-[1400px] mx-auto">
@@ -845,7 +1138,25 @@
             };
             document.getElementById('pageTitle').innerText = titles[menuName];
 
-            if(menuName === 'projects') {
+            if(menuName === 'dashboard') {
+                setCurrentDate();
+                // Fetch all data for dashboard
+                Promise.all([
+                    fetch(APPS_SCRIPT_URL + '?sheet=Projects').then(r => r.json()),
+                    fetch(APPS_SCRIPT_URL + '?sheet=Products').then(r => r.json()),
+                    fetch(APPS_SCRIPT_URL + '?sheet=Spareparts').then(r => r.json()),
+                    fetch(APPS_SCRIPT_URL + '?sheet=Tools').then(r => r.json())
+                ]).then(results => {
+                    if (results[0].status === 'success') projectsData = results[0].data;
+                    if (results[1].status === 'success') productsData = results[1].data;
+                    if (results[2].status === 'success') sparepartsData = results[2].data;
+                    if (results[3].status === 'success') toolsData = results[3].data;
+                    
+                    updateDashboard();
+                }).catch(error => {
+                    console.error('Error fetching dashboard data:', error);
+                });
+            } else if(menuName === 'projects') {
                 fetchProjects();
             } else if(menuName === 'products') {
                 fetchProducts();
@@ -854,6 +1165,129 @@
             } else if(menuName === 'tools') {
                 fetchTools();
             }
+        }
+
+        // ========================================================================
+        // --- DASHBOARD FUNCTIONS ---
+        // ========================================================================
+
+        function updateDashboard() {
+            // Update Total Counts
+            document.getElementById('totalProjects').textContent = projectsData.length;
+            document.getElementById('totalProducts').textContent = productsData.length;
+            document.getElementById('totalSpareparts').textContent = sparepartsData.length;
+            document.getElementById('totalTools').textContent = toolsData.length;
+            
+            // Quick Stats
+            document.getElementById('quickProjects').textContent = projectsData.length;
+            document.getElementById('quickProducts').textContent = productsData.length;
+            document.getElementById('quickSpareparts').textContent = sparepartsData.length;
+            document.getElementById('quickTools').textContent = toolsData.length;
+            
+            // Status Texts
+            document.getElementById('projectStatusText').textContent = projectsData.length > 0 ? 
+                `${projectsData.length} project terdaftar` : 'Belum ada data';
+            document.getElementById('productStatusText').textContent = productsData.length > 0 ? 
+                `${productsData.length} produk terdaftar` : 'Belum ada data';
+            document.getElementById('sparepartStatusText').textContent = sparepartsData.length > 0 ? 
+                `${sparepartsData.length} sparepart terdaftar` : 'Belum ada data';
+            document.getElementById('toolStatusText').textContent = toolsData.length > 0 ? 
+                `${toolsData.length} tool terdaftar` : 'Belum ada data';
+            
+            // Update Recent Activities
+            updateRecentActivities();
+        }
+
+        function updateRecentActivities() {
+            const container = document.getElementById('recentActivities');
+            const activities = [];
+            
+            // Get latest projects (max 3)
+            if (projectsData.length > 0) {
+                const recentProjects = projectsData.slice(-3).reverse();
+                recentProjects.forEach(project => {
+                    activities.push({
+                        type: 'project',
+                        title: `Project: ${project['Nama Project'] || 'Untitled'}`,
+                        desc: `Customer: ${project['Customer'] || '-'} • SO/PO: ${project['No SO/PO'] || '-'}`,
+                        time: project['Tanggal'] || 'Baru',
+                        dotColor: 'activity-dot-blue'
+                    });
+                });
+            }
+            
+            // Get latest products (max 3)
+            if (productsData.length > 0) {
+                const recentProducts = productsData.slice(-3).reverse();
+                recentProducts.forEach(product => {
+                    const status = product['Status'] || 'Pending';
+                    let dotColor = 'activity-dot-blue';
+                    if (status === 'Completed') dotColor = 'activity-dot-green';
+                    else if (status === 'In Progress') dotColor = 'activity-dot-yellow';
+                    else if (status === 'Failed') dotColor = 'activity-dot-red';
+                    
+                    activities.push({
+                        type: 'product',
+                        title: `Produk: ${product['Nama Produk'] || 'Untitled'}`,
+                        desc: `Status: ${status} • Customer: ${product['Customer'] || '-'}`,
+                        time: product['Tanggal'] || 'Baru',
+                        dotColor: dotColor
+                    });
+                });
+            }
+            
+            // If no activities
+            if (activities.length === 0) {
+                container.innerHTML = `
+                    <div class="py-8 text-center text-slate-400">
+                        <i class="ph-duotone ph-inbox text-3xl block mb-2"></i>
+                        <span class="text-sm font-medium">Belum ada aktivitas terbaru</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Render activities (max 6 items)
+            const maxItems = 6;
+            const displayActivities = activities.slice(0, maxItems);
+            
+            container.innerHTML = displayActivities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-dot ${activity.dotColor}"></div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-desc">${activity.desc}</div>
+                    </div>
+                    <div class="activity-time">
+                        <i class="ph-duotone ph-calendar-blank text-xs"></i> 
+                        ${formatDate(activity.time)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString || dateString === '-' || dateString === 'Baru') return 'Baru';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                const now = new Date();
+                const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+                
+                if (diff === 0) return 'Hari ini';
+                if (diff === 1) return 'Kemarin';
+                if (diff < 7) return `${diff} hari lalu`;
+                if (diff < 30) return `${Math.floor(diff/7)} minggu lalu`;
+                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            } catch(e) {
+                return dateString;
+            }
+        }
+
+        function setCurrentDate() {
+            const now = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('id-ID', options);
         }
 
         // ========================================================================
@@ -1954,6 +2388,9 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('p_tanggal').value = today;
             document.getElementById('prod_tanggal').value = today;
+            
+            // Set current date for dashboard
+            setCurrentDate();
         });
     </script>
 

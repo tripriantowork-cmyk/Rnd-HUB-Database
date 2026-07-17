@@ -124,76 +124,6 @@
         .stat-icon-green { background: #dcfce7; color: #166534; }
         .stat-icon-purple { background: #ede9fe; color: #7c3aed; }
 
-        .activity-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .activity-dot-blue { background: #2b3a8c; }
-        .activity-dot-green { background: #22c55e; }
-        .activity-dot-yellow { background: #eab308; }
-        .activity-dot-red { background: #ef4444; }
-
-        .activity-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .activity-title {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: #0f172a;
-        }
-
-        .activity-desc {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
-        .activity-time {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            white-space: nowrap;
-        }
-
-        .quick-stat {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid #f1f5f9;
-        }
-
-        .quick-stat-value {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #0f172a;
-        }
-
-        .quick-stat-label {
-            font-size: 0.7rem;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-        }
-
         .welcome-banner {
             background: linear-gradient(135deg, #2b3a8c 0%, #1e2968 100%);
             border-radius: 1.5rem;
@@ -234,37 +164,6 @@
             position: relative;
             z-index: 1;
             opacity: 0.8;
-        }
-
-        /* Master Link Styles */
-        .link-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 0.75rem 1.25rem;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .link-card:hover {
-            border-color: #2b3a8c40;
-            box-shadow: 0 4px 12px rgba(43, 58, 140, 0.06);
-            transform: translateY(-1px);
-        }
-
-        .link-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: #dbeafe;
-            color: #2b3a8c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
         }
     </style>
 </head>
@@ -426,7 +325,7 @@
                     </div>
 
                     <!-- Statistics Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                         <div class="dashboard-card">
                             <div class="flex items-start justify-between">
                                 <div>
@@ -487,69 +386,6 @@
                                 </div>
                                 <div class="stat-icon stat-icon-red">
                                     <i class="ph-duotone ph-wrench"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Stats & Activity -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                        <!-- Quick Stats -->
-                        <div class="dashboard-card lg:col-span-1">
-                            <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
-                                <i class="ph-duotone ph-chart-bar text-brand-blue"></i> 
-                                Ringkasan Cepat
-                            </h4>
-                            
-                            <div class="space-y-3">
-                                <div class="quick-stat">
-                                    <div class="flex-1">
-                                        <div class="quick-stat-value" id="quickProjects">0</div>
-                                        <div class="quick-stat-label">Total Project</div>
-                                    </div>
-                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-folder-open"></i></div>
-                                </div>
-                                
-                                <div class="quick-stat">
-                                    <div class="flex-1">
-                                        <div class="quick-stat-value" id="quickProducts">0</div>
-                                        <div class="quick-stat-label">Total Produk</div>
-                                    </div>
-                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-package"></i></div>
-                                </div>
-                                
-                                <div class="quick-stat">
-                                    <div class="flex-1">
-                                        <div class="quick-stat-value" id="quickSpareparts">0</div>
-                                        <div class="quick-stat-label">Total Sparepart</div>
-                                    </div>
-                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-toolbox"></i></div>
-                                </div>
-                                
-                                <div class="quick-stat">
-                                    <div class="flex-1">
-                                        <div class="quick-stat-value" id="quickTools">0</div>
-                                        <div class="quick-stat-label">Total Tools</div>
-                                    </div>
-                                    <div class="text-2xl text-slate-300"><i class="ph-duotone ph-wrench"></i></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recent Activities -->
-                        <div class="dashboard-card lg:col-span-2">
-                            <div class="flex items-center justify-between mb-4">
-                                <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                                    <i class="ph-duotone ph-clock-clockwise text-brand-blue"></i> 
-                                    Aktivitas Terbaru
-                                </h4>
-                                <span class="text-xs text-slate-400 font-medium">Data terbaru</span>
-                            </div>
-                            
-                            <div id="recentActivities" class="divide-y divide-slate-100">
-                                <div class="py-8 text-center text-slate-400">
-                                    <i class="ph-duotone ph-database text-3xl block mb-2"></i>
-                                    <span class="text-sm font-medium">Data akan muncul setelah sinkronisasi</span>
                                 </div>
                             </div>
                         </div>
@@ -1302,11 +1138,6 @@
             document.getElementById('totalSpareparts').textContent = sparepartsData.length;
             document.getElementById('totalTools').textContent = toolsData.length;
             
-            document.getElementById('quickProjects').textContent = projectsData.length;
-            document.getElementById('quickProducts').textContent = productsData.length;
-            document.getElementById('quickSpareparts').textContent = sparepartsData.length;
-            document.getElementById('quickTools').textContent = toolsData.length;
-            
             document.getElementById('projectStatusText').textContent = projectsData.length > 0 ? 
                 `${projectsData.length} project terdaftar` : 'Belum ada data';
             document.getElementById('productStatusText').textContent = productsData.length > 0 ? 
@@ -1315,90 +1146,6 @@
                 `${sparepartsData.length} sparepart terdaftar` : 'Belum ada data';
             document.getElementById('toolStatusText').textContent = toolsData.length > 0 ? 
                 `${toolsData.length} tool terdaftar` : 'Belum ada data';
-            
-            updateRecentActivities();
-        }
-
-        function updateRecentActivities() {
-            const container = document.getElementById('recentActivities');
-            const activities = [];
-            
-            if (projectsData.length > 0) {
-                const recentProjects = projectsData.slice(-3).reverse();
-                recentProjects.forEach(project => {
-                    activities.push({
-                        type: 'project',
-                        title: `Project: ${project['Nama Project'] || 'Untitled'}`,
-                        desc: `Customer: ${project['Customer'] || '-'} • SO/PO: ${project['No SO/PO'] || '-'}`,
-                        time: project['Tanggal'] || 'Baru',
-                        dotColor: 'activity-dot-blue'
-                    });
-                });
-            }
-            
-            if (productsData.length > 0) {
-                const recentProducts = productsData.slice(-3).reverse();
-                recentProducts.forEach(product => {
-                    const status = product['Status'] || 'Pending';
-                    let dotColor = 'activity-dot-blue';
-                    if (status === 'Completed') dotColor = 'activity-dot-green';
-                    else if (status === 'In Progress') dotColor = 'activity-dot-yellow';
-                    else if (status === 'Failed') dotColor = 'activity-dot-red';
-                    
-                    activities.push({
-                        type: 'product',
-                        title: `Produk: ${product['Nama Produk'] || 'Untitled'}`,
-                        desc: `Status: ${status} • Customer: ${product['Customer'] || '-'}`,
-                        time: product['Tanggal'] || 'Baru',
-                        dotColor: dotColor
-                    });
-                });
-            }
-            
-            if (activities.length === 0) {
-                container.innerHTML = `
-                    <div class="py-8 text-center text-slate-400">
-                        <i class="ph-duotone ph-inbox text-3xl block mb-2"></i>
-                        <span class="text-sm font-medium">Belum ada aktivitas terbaru</span>
-                    </div>
-                `;
-                return;
-            }
-            
-            const maxItems = 6;
-            const displayActivities = activities.slice(0, maxItems);
-            
-            container.innerHTML = displayActivities.map(activity => `
-                <div class="activity-item">
-                    <div class="activity-dot ${activity.dotColor}"></div>
-                    <div class="activity-content">
-                        <div class="activity-title">${activity.title}</div>
-                        <div class="activity-desc">${activity.desc}</div>
-                    </div>
-                    <div class="activity-time">
-                        <i class="ph-duotone ph-calendar-blank text-xs"></i> 
-                        ${formatDate(activity.time)}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function formatDate(dateString) {
-            if (!dateString || dateString === '-' || dateString === 'Baru') return 'Baru';
-            try {
-                const date = new Date(dateString);
-                if (isNaN(date.getTime())) return dateString;
-                const now = new Date();
-                const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-                
-                if (diff === 0) return 'Hari ini';
-                if (diff === 1) return 'Kemarin';
-                if (diff < 7) return `${diff} hari lalu`;
-                if (diff < 30) return `${Math.floor(diff/7)} minggu lalu`;
-                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            } catch(e) {
-                return dateString;
-            }
         }
 
         function setCurrentDate() {

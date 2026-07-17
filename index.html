@@ -233,9 +233,19 @@
                         <div>
                             <p class="text-slate-500 text-sm font-medium">Manajemen database pusat Interskala R&D.</p>
                         </div>
-                        <button onclick="openModal('project')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
-                            <i class="ph-bold ph-plus text-base"></i> Tambah Project
-                        </button>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <!-- FITUR PENCARIAN PROJECTS -->
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
+                                </div>
+                                <input type="text" id="searchProjects" placeholder="Cari project..." 
+                                    class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm text-sm font-medium">
+                            </div>
+                            <button onclick="openModal('project')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                                <i class="ph-bold ph-plus text-base"></i> Tambah Project
+                            </button>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -274,9 +284,19 @@
                         <div>
                             <p class="text-slate-500 text-sm font-medium">Manajemen history produk yang telah diuji.</p>
                         </div>
-                        <button onclick="openModal('product')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
-                            <i class="ph-bold ph-plus text-base"></i> Tambah Product
-                        </button>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <!-- FITUR PENCARIAN PRODUCTS -->
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
+                                </div>
+                                <input type="text" id="searchProducts" placeholder="Cari produk..." 
+                                    class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm text-sm font-medium">
+                            </div>
+                            <button onclick="openModal('product')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                                <i class="ph-bold ph-plus text-base"></i> Tambah Product
+                            </button>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -316,9 +336,19 @@
                         <div>
                             <p class="text-slate-500 text-sm font-medium">Manajemen inventory spareparts R&D.</p>
                         </div>
-                        <button onclick="openModal('sparepart')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
-                            <i class="ph-bold ph-plus text-base"></i> Tambah Sparepart
-                        </button>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <!-- FITUR PENCARIAN SPAREPARTS -->
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
+                                </div>
+                                <input type="text" id="searchSpareparts" placeholder="Cari sparepart..." 
+                                    class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm text-sm font-medium">
+                            </div>
+                            <button onclick="openModal('sparepart')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                                <i class="ph-bold ph-plus text-base"></i> Tambah Sparepart
+                            </button>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -355,9 +385,19 @@
                         <div>
                             <p class="text-slate-500 text-sm font-medium">Manajemen tools dan peralatan R&D.</p>
                         </div>
-                        <button onclick="openModal('tool')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
-                            <i class="ph-bold ph-plus text-base"></i> Tambah Tool
-                        </button>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <!-- FITUR PENCARIAN TOOLS -->
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-duotone ph-magnifying-glass text-slate-400"></i>
+                                </div>
+                                <input type="text" id="searchTools" placeholder="Cari tool..." 
+                                    class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition shadow-sm text-sm font-medium">
+                            </div>
+                            <button onclick="openModal('tool')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-darkred text-white px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition duration-300 font-bold text-sm shadow-lg shadow-brand-red/20">
+                                <i class="ph-bold ph-plus text-base"></i> Tambah Tool
+                            </button>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -1408,7 +1448,7 @@
         }
 
         // ========================================================================
-        // --- CRUD TOOLS (FIXED) ---
+        // --- CRUD TOOLS ---
         // ========================================================================
         
         async function fetchTools() {
@@ -1448,10 +1488,8 @@
                 else if (kondisi === 'Sedang') conditionClass = 'condition-worn';
                 else if (kondisi === 'Rusak') conditionClass = 'condition-broken';
 
-                // PERBAIKAN: Gunakan trim() untuk membersihkan spasi
                 const statusRaw = (item['Status'] || 'Unknown').trim();
                 
-                // Mapping status dengan class dan label yang benar
                 const statusMap = {
                     'Tersedia': { class: 'status-success', label: 'Tersedia' },
                     'Dipinjam': { class: 'status-warning', label: 'Dipinjam' },
@@ -1459,7 +1497,6 @@
                     'Rusak': { class: 'status-danger', label: 'Rusak' }
                 };
                 
-                // Cari status di mapping, jika tidak ada gunakan default
                 const statusInfo = statusMap[statusRaw];
                 let statusClass, statusDisplay;
                 
@@ -1713,6 +1750,204 @@
                 }, 300);
             }
         }
+
+        // ========================================================================
+        // --- FITUR PENCARIAN (SEARCH) ---
+        // ========================================================================
+
+        // Search Projects
+        document.getElementById('searchProjects').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#projectsTableBody tr');
+            
+            if (rows.length === 0 || rows[0].querySelector('.loader')) return;
+            
+            let visibleCount = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 7) return;
+                
+                const namaProject = (cells[1]?.textContent || '').toLowerCase();
+                const noSOPO = (cells[2]?.textContent || '').toLowerCase();
+                const customer = (cells[3]?.textContent || '').toLowerCase();
+                const keterangan = (cells[6]?.textContent || '').toLowerCase();
+                
+                const match = searchTerm === '' || 
+                    namaProject.includes(searchTerm) || 
+                    noSOPO.includes(searchTerm) || 
+                    customer.includes(searchTerm) ||
+                    keterangan.includes(searchTerm);
+                
+                row.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            
+            const tbody = document.getElementById('projectsTableBody');
+            const existingMsg = tbody.querySelector('.no-result-msg');
+            if (visibleCount === 0 && searchTerm !== '') {
+                if (!existingMsg) {
+                    const msgRow = document.createElement('tr');
+                    msgRow.className = 'no-result-msg';
+                    msgRow.innerHTML = `<td colspan="8" class="p-16 text-center text-slate-400 font-semibold text-sm">
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada project yang cocok dengan "<strong>${searchTerm}</strong>"
+                    </td>`;
+                    tbody.appendChild(msgRow);
+                } else {
+                    existingMsg.querySelector('td').innerHTML = `
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada project yang cocok dengan "<strong>${searchTerm}</strong>"
+                    `;
+                }
+            } else {
+                if (existingMsg) existingMsg.remove();
+            }
+        });
+
+        // Search Products
+        document.getElementById('searchProducts').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#productsTableBody tr');
+            
+            if (rows.length === 0 || rows[0].querySelector('.loader')) return;
+            
+            let visibleCount = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 8) return;
+                
+                const noSOPO = (cells[1]?.textContent || '').toLowerCase();
+                const namaProduk = (cells[2]?.textContent || '').toLowerCase();
+                const customer = (cells[3]?.textContent || '').toLowerCase();
+                const status = (cells[6]?.textContent || '').toLowerCase();
+                const keterangan = (cells[7]?.textContent || '').toLowerCase();
+                
+                const match = searchTerm === '' || 
+                    noSOPO.includes(searchTerm) || 
+                    namaProduk.includes(searchTerm) || 
+                    customer.includes(searchTerm) ||
+                    status.includes(searchTerm) ||
+                    keterangan.includes(searchTerm);
+                
+                row.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            
+            const tbody = document.getElementById('productsTableBody');
+            const existingMsg = tbody.querySelector('.no-result-msg');
+            if (visibleCount === 0 && searchTerm !== '') {
+                if (!existingMsg) {
+                    const msgRow = document.createElement('tr');
+                    msgRow.className = 'no-result-msg';
+                    msgRow.innerHTML = `<td colspan="9" class="p-16 text-center text-slate-400 font-semibold text-sm">
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada produk yang cocok dengan "<strong>${searchTerm}</strong>"
+                    </td>`;
+                    tbody.appendChild(msgRow);
+                } else {
+                    existingMsg.querySelector('td').innerHTML = `
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada produk yang cocok dengan "<strong>${searchTerm}</strong>"
+                    `;
+                }
+            } else {
+                if (existingMsg) existingMsg.remove();
+            }
+        });
+
+        // Search Spareparts
+        document.getElementById('searchSpareparts').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#sparepartsTableBody tr');
+            
+            if (rows.length === 0 || rows[0].querySelector('.loader')) return;
+            
+            let visibleCount = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 5) return;
+                
+                const namaSparepart = (cells[1]?.textContent || '').toLowerCase();
+                const spesifikasi = (cells[2]?.textContent || '').toLowerCase();
+                const lokasi = (cells[4]?.textContent || '').toLowerCase();
+                
+                const match = searchTerm === '' || 
+                    namaSparepart.includes(searchTerm) || 
+                    spesifikasi.includes(searchTerm) ||
+                    lokasi.includes(searchTerm);
+                
+                row.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            
+            const tbody = document.getElementById('sparepartsTableBody');
+            const existingMsg = tbody.querySelector('.no-result-msg');
+            if (visibleCount === 0 && searchTerm !== '') {
+                if (!existingMsg) {
+                    const msgRow = document.createElement('tr');
+                    msgRow.className = 'no-result-msg';
+                    msgRow.innerHTML = `<td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada sparepart yang cocok dengan "<strong>${searchTerm}</strong>"
+                    </td>`;
+                    tbody.appendChild(msgRow);
+                } else {
+                    existingMsg.querySelector('td').innerHTML = `
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada sparepart yang cocok dengan "<strong>${searchTerm}</strong>"
+                    `;
+                }
+            } else {
+                if (existingMsg) existingMsg.remove();
+            }
+        });
+
+        // Search Tools
+        document.getElementById('searchTools').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#toolsTableBody tr');
+            
+            if (rows.length === 0 || rows[0].querySelector('.loader')) return;
+            
+            let visibleCount = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 5) return;
+                
+                const namaTool = (cells[1]?.textContent || '').toLowerCase();
+                const kondisi = (cells[3]?.textContent || '').toLowerCase();
+                const status = (cells[4]?.textContent || '').toLowerCase();
+                
+                const match = searchTerm === '' || 
+                    namaTool.includes(searchTerm) || 
+                    kondisi.includes(searchTerm) ||
+                    status.includes(searchTerm);
+                
+                row.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            
+            const tbody = document.getElementById('toolsTableBody');
+            const existingMsg = tbody.querySelector('.no-result-msg');
+            if (visibleCount === 0 && searchTerm !== '') {
+                if (!existingMsg) {
+                    const msgRow = document.createElement('tr');
+                    msgRow.className = 'no-result-msg';
+                    msgRow.innerHTML = `<td colspan="6" class="p-16 text-center text-slate-400 font-semibold text-sm">
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada tool yang cocok dengan "<strong>${searchTerm}</strong>"
+                    </td>`;
+                    tbody.appendChild(msgRow);
+                } else {
+                    existingMsg.querySelector('td').innerHTML = `
+                        <i class="ph-duotone ph-magnifying-glass text-3xl block mb-2"></i>
+                        Tidak ada tool yang cocok dengan "<strong>${searchTerm}</strong>"
+                    `;
+                }
+            } else {
+                if (existingMsg) existingMsg.remove();
+            }
+        });
 
         // --- INIT ---
         document.addEventListener('DOMContentLoaded', function() {
